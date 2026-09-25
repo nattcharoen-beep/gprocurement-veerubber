@@ -46,7 +46,7 @@ async function main() {
   log('Starting Vee Rubber GProcurement Tracker Daily Job...');
 
   // 1. Load config from env vars
-  const D1_API_URL = process.env.D1_API_URL || 'https://gprocurement-veerubber.workers.dev';
+  const D1_API_URL = process.env.D1_API_URL || 'https://gprocurement-veerubber.natt-charoen.workers.dev';
   const D1_API_KEY = process.env.D1_API_KEY;
   const envRecipients = process.env.GMAIL_RECIPIENTS || '';
 

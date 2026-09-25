@@ -23,52 +23,44 @@ export function getThaiBudgetYear(date = new Date()) {
   return (month >= 10 ? year + 544 : year + 543).toString();
 }
 
+import { classifyAnnouncement } from './keywords.js';
+
 export const BATCHES = [
   {
-    name: 'Batch 1: Sport Grounds & Tracks',
-    keywords: ['ลานกีฬา', 'สนามกีฬา', 'สนามฟุตบอล', 'สนามฟุตซอล', 'ลู่วิ่ง']
+    name: 'Batch 1: Passenger Car, Pickup & Van Tires',
+    keywords: ['ยางรถยนต์', 'จัดซื้อยางรถยนต์', 'ซื้อยางรถยนต์', 'เปลี่ยนยางรถยนต์', 'ยางรถตู้', 'ยางรถกระบะ']
   },
   {
-    name: 'Batch 2: Facilities, Domes & Playgrounds',
-    keywords: ['หญ้าเทียม', 'โดมอเนกประสงค์', 'ลานอเนกประสงค์', 'สนามเด็กเล่น', 'เครื่องเล่นสนาม']
+    name: 'Batch 2: Truck, Bus & Heavy Commercial Tires',
+    keywords: ['ยางรถบรรทุก', 'จัดซื้อยางรถบรรทุก', 'ซื้อยางรถบรรทุก', 'ยางรถบัส', 'ยางรถโดยสาร', 'ยางรถดับเพลิง']
   },
   {
-    name: 'Batch 3: Fitness, Flooring & Waterproofing',
-    keywords: ['เครื่องออกกำลังกาย', 'พื้นยาง', 'พื้นอีพ็อกซี่', 'กันซึม', 'สระว่ายน้ำ']
+    name: 'Batch 3: Motorcycle, Scooter & Patrol Tires',
+    keywords: ['ยางรถจักรยานยนต์', 'ซื้อยางรถจักรยานยนต์', 'ยางมอเตอร์ไซค์', 'ยางสายตรวจ', 'ยางรถสายตรวจ']
   },
   {
-    name: 'Batch 4: Bangkok Metropolitan Administration & Key Agencies',
-    keywords: [
-      'กรุงเทพมหานคร ลานกีฬา',
-      'กรุงเทพมหานคร ศูนย์กีฬา',
-      'กรุงเทพมหานคร ศูนย์เยาวชน',
-      'สำนักวัฒนธรรม กีฬา',
-      'สำนักงานเขต ลานกีฬา',
-      'สำนักงานเขต สนามเด็กเล่น',
-      'สำนักงานเขต ปรับปรุง'
-    ]
+    name: 'Batch 4: OTR, Heavy Machinery, Tractor & Agr',
+    keywords: ['ยาง OTR', 'ยางรถแทรกเตอร์', 'ยางรถไถ', 'ยางรถตัก', 'ยางรถบด', 'ยางรถยก', 'ยางฟอร์คลิฟท์']
   },
   {
-    name: 'Batch 5: Curated Disguised Projects & High-Yield Target Agencies (Learned from Employee)',
-    keywords: [
-      'ปรับปรุงสวนสาธารณะ',
-      'สวนสาธารณะ',
-      'หลังคาโครงเหล็ก',
-      'ศูนย์นันทนาการ',
-      'ซ่อมแซมพื้น',
-      'ปรับปรุงพื้น'
-    ]
+    name: 'Batch 5: Bicycle, Wheelchair, Golf & ATV',
+    keywords: ['ยางรถจักรยาน', 'ซื้อยางรถจักรยาน', 'ยางวีลแชร์', 'ยางรถเข็นคนพิการ', 'ยางรถกอล์ฟ', 'ยางรถ ATV']
+  },
+  {
+    name: 'Batch 6: Inner Tubes & Wheel Accessories',
+    keywords: ['ยางใน', 'จัดซื้อยางใน', 'ยางในรถยนต์', 'ยางในรถบรรทุก', 'ยางรองคอด', 'จุ๊บลมยาง']
   }
 ];
 
 export const EXCLUDE_TERMS = [
-  'ยางรถยนต์', 'ยางมะตอย', 'ถุงมือยาง', 'ถนนลาดยาง', 'ไฟฟ้าส่องสว่าง', 'กล้องวงจรปิด', 'ถมดิน',
-  'เทศกาล', 'การแข่งขัน', 'จัดงาน', 'มหกรรม', 'จัดกิจกรรม', 'นำเที่ยว', 'ส่งเสริมการท่องเที่ยว',
-  'festival', 'organizer', 'สัมมนา', 'อบรม', 'ยุทธกีฬา', 'ฝึกหลักสูตร', 'สป.สายวศ.',
-  'จอภาพ', 'จอ led', 'สกอร์บอร์ด', 'ป้ายประชาสัมพันธ์',
-  'เสื้อกีฬา', 'ชุดกีฬา', 'ถ้วยรางวัล', 'เหรียญรางวัล', 'อุปกรณ์กีฬา', 'ลูกฟุตบอล', 'ลูกบอล',
-  'ลู่วิ่งไฟฟ้า', 'เครื่องปรับอากาศ', 'ทำความสะอาด', 'รักษาความปลอดภัย', 'คูระบายน้ำ',
-  'เก้าอี้สนามกีฬา', 'จ้างออกแบบ', 'จ้างควบคุมงาน', 'จ้างที่ปรึกษา'
+  'ยางมะตอย', 'แอสฟัลต์', 'แอสฟัลท์', 'ผิวทางแอสฟัลต์', 'ยางหยอดรอยต่อ', 'ถนนลาดยาง',
+  'ถุงมือยาง', 'ถุงมือตรวจโรค', 'ถุงมือแพทย์', 'ถุงมือผ่าตัด', 'ถุงยางอนามัย',
+  'น้ำยางพารา', 'ยางพาราแผ่น', 'ขี้ยาง', 'กล้ายางพารา', 'ต้นยางพารา', 'กรีดยาง', 'สวนยางพารา',
+  'ยางลบ', 'ตรายาง', 'หมึกตรายาง', 'ยางรัดของ', 'ยางรัด', 'ยางวง',
+  'แผ่นยางปูพื้น', 'พื้นยาง epdm', 'กระเบื้องยาง', 'ยางกันชนเสา',
+  'ขอบยางกระจก', 'ขอบยางประตู', 'ขอบยางตู้เย็น', 'ซีลยาง', 'ปะเก็นยาง', 'สายยางฉีดน้ำ', 'สายยางรดน้ำ',
+  'ปะยาง', 'ค่าปะยาง', 'จ้างปะยาง',
+  'ไฟฟ้าส่องสว่าง', 'กล้องวงจรปิด', 'ถมดิน', 'อาหารกลางวัน', 'จัดเลี้ยง', 'ชุดกีฬา', 'ลูกฟุตบอล'
 ];
 
 export function calculateTenderEndDate(announceDateStr, announceType, budget) {
@@ -401,43 +393,8 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
 
     const annDateStr = latestRow.announceDate?.split('T')[0] || cand.announceDate;
 
-    const lowerTitle = cand.title.toLowerCase();
-    let group = 'sport_flooring';
-    if (
-      lowerTitle.includes('เด็กเล่น') ||
-      lowerTitle.includes('เครื่องเล่น') ||
-      lowerTitle.includes('นิรภัย') ||
-      lowerTitle.includes('เด็กเล็ก') ||
-      lowerTitle.includes('สร้างปัญญา') ||
-      lowerTitle.includes('ออกกำลังกาย') ||
-      lowerTitle.includes('ลานออกกำลังกาย')
-    ) {
-      group = 'playground';
-    } else if (
-      lowerTitle.includes('กันซึม') ||
-      lowerTitle.includes('ดาดฟ้า') ||
-      lowerTitle.includes('กันรั่ว') ||
-      lowerTitle.includes('สระว่ายน้ำ') ||
-      lowerTitle.includes('ปรับปรุงสระ') ||
-      lowerTitle.includes('pvc สระ')
-    ) {
-      group = 'waterproofing';
-    } else if (
-      lowerTitle.includes('อีพ็อกซี่') ||
-      lowerTitle.includes('epoxy') ||
-      lowerTitle.includes('โรงงาน') ||
-      lowerTitle.includes('pu crete') ||
-      lowerTitle.includes('pu screed') ||
-      lowerTitle.includes('ซ่อมแซมคอนกรีต') ||
-      lowerTitle.includes('ขัดพื้น') ||
-      lowerTitle.includes('ปูนซ่อม') ||
-      lowerTitle.includes('ซ่อมแซมพื้น') ||
-      lowerTitle.includes('ปรับปรุงพื้น') ||
-      lowerTitle.includes('เคลือบพื้น') ||
-      lowerTitle.includes('ปูพื้น')
-    ) {
-      group = 'factory_flooring';
-    }
+    const matchedClass = classifyAnnouncement(cand.title);
+    let group = matchedClass.length > 0 ? matchedClass[0].group : 'passenger_car_tires';
 
     // In-Memory Document Inspection (Zero-Disk Footprint, 100% Scan Coverage)
     let boqSummary = null;
@@ -812,43 +769,8 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
 
     const annDateStr = latestRow.announceDate?.split('T')[0] || cand.announceDate;
 
-    const lowerTitle = cand.title.toLowerCase();
-    let group = 'sport_flooring';
-    if (
-      lowerTitle.includes('เด็กเล่น') ||
-      lowerTitle.includes('เครื่องเล่น') ||
-      lowerTitle.includes('นิรภัย') ||
-      lowerTitle.includes('เด็กเล็ก') ||
-      lowerTitle.includes('สร้างปัญญา') ||
-      lowerTitle.includes('ออกกำลังกาย') ||
-      lowerTitle.includes('ลานออกกำลังกาย')
-    ) {
-      group = 'playground';
-    } else if (
-      lowerTitle.includes('กันซึม') ||
-      lowerTitle.includes('ดาดฟ้า') ||
-      lowerTitle.includes('กันรั่ว') ||
-      lowerTitle.includes('สระว่ายน้ำ') ||
-      lowerTitle.includes('ปรับปรุงสระ') ||
-      lowerTitle.includes('pvc สระ')
-    ) {
-      group = 'waterproofing';
-    } else if (
-      lowerTitle.includes('อีพ็อกซี่') ||
-      lowerTitle.includes('epoxy') ||
-      lowerTitle.includes('โรงงาน') ||
-      lowerTitle.includes('pu crete') ||
-      lowerTitle.includes('pu screed') ||
-      lowerTitle.includes('ซ่อมแซมคอนกรีต') ||
-      lowerTitle.includes('ขัดพื้น') ||
-      lowerTitle.includes('ปูนซ่อม') ||
-      lowerTitle.includes('ซ่อมแซมพื้น') ||
-      lowerTitle.includes('ปรับปรุงพื้น') ||
-      lowerTitle.includes('เคลือบพื้น') ||
-      lowerTitle.includes('ปูพื้น')
-    ) {
-      group = 'factory_flooring';
-    }
+    const matchedClass = classifyAnnouncement(cand.title);
+    let group = matchedClass.length > 0 ? matchedClass[0].group : 'passenger_car_tires';
 
     // In-Memory Document Inspection (Zero-Disk Footprint, 100% Scan Coverage)
     let boqSummary = null;
