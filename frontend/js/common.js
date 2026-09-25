@@ -35,6 +35,33 @@ const groupLabels = {
   'tube_accessories': 'ยางใน & อุปกรณ์'
 };
 
+window.getEgpPortalUrl = function(item) {
+  const pid = (typeof item === 'string' ? item : (item?.project_id || item?.id || '')).replace(/-[A-Za-z0-9]+$/, '').trim();
+  if (!pid) return 'https://process5.gprocurement.go.th/egp-agpc01-web/announcement';
+  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(pid)}`;
+};
+
+window.openEgpWithCopy = function(item, event) {
+  const pid = (typeof item === 'string' ? item : (item?.project_id || item?.id || '')).replace(/-[A-Za-z0-9]+$/, '').trim();
+  if (pid && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pid).catch(() => {});
+  }
+  if (typeof showToast === 'function') {
+    showToast(`📋 คัดลอกเลขโครงการ ${pid} เรียบร้อยแล้ว! กำลังเปิดหน้า e-GP...`);
+  }
+  const url = window.getEgpPortalUrl(pid);
+  
+  if (event && event.currentTarget && event.currentTarget.tagName === 'A') {
+    event.currentTarget.href = url;
+    return true;
+  }
+  if (event && typeof event.preventDefault === 'function') {
+    event.preventDefault();
+  }
+  window.open(url, '_blank', 'noopener,noreferrer');
+  return false;
+};
+
 function addWorkDays(startDate, days) {
   const cur = new Date(startDate);
   let added = 0;
@@ -183,7 +210,7 @@ window.EXCLUDE_KEYWORDS = [
   "หม้อแปลงไฟฟ้า", "จอภาพ", "จอ LED", "LED", "กล้องวงจรปิด", "CCTV", "กล้องโทรทัศน์",
   "รักษาความปลอดภัย", "รปภ", "จ้างเหมาบริการ", "ดูแลทำความสะอาด", "รักษาความสะอาด", "ทำความสะอาด", "แม่บ้าน", "จัดเก็บขยะ", "จัดซื้อที่ดิน",
   "จ้างดูแลรักษา", "จ้างดูแลบำรุงรักษา", "จ้างเหมาดูแล",
-  "ตรายาง", "น้ำดื่ม", "ยางรถยนต์", "ถุงมือยาง", "ยางลบ", "ยาเวชภัณฑ์", "เครื่องพยุงน้ำหนัก", "เตียงผู้ป่วย",
+  "ตรายาง", "น้ำดื่ม", "ถุงมือยาง", "ยางลบ", "ยาเวชภัณฑ์", "เครื่องพยุงน้ำหนัก", "เตียงผู้ป่วย",
   "ห้องประชุม", "อาหาร", "อาหารกลางวัน",
   "ชุดกีฬา", "เสื้อกีฬา", "ลูกฟุตบอล", "ลูกบาส", "ลูกวอลเลย์บอล", "ถ้วยรางวัล", "เหรียญรางวัล", "อุปกรณ์กีฬา",
   "ลู่วิ่งไฟฟ้า", "จักรยานออกกำลังกาย", "เครื่องปรับอากาศ",

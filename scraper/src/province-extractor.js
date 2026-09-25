@@ -507,6 +507,10 @@ export function extractProvince(deptName = '', title = '', rawProvince = '') {
     cleanDept.includes('กรม') ||
     cleanDept.includes('กระทรวง') ||
     cleanDept.includes('สำนักงานศาลยุติธรรม') ||
+    cleanDept.includes('สภาผู้แทนราษฎร') ||
+    cleanDept.includes('วุฒิสภา') ||
+    cleanDept.includes('รัฐสภา') ||
+    cleanDept.includes('สำนักนายกรัฐมนตรี') ||
     cleanDept.includes('การทางพิเศษ') ||
     cleanDept.includes('การประปานครหลวง') ||
     cleanDept.includes('การกีฬาแห่งประเทศไทย')

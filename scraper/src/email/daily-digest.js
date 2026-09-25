@@ -71,10 +71,9 @@ export function normalizeItem(item) {
   const budget = Number(item.budget) || 0;
   const date = item.announce_date || item.announceDate || '';
   const dept = item.department || 'หน่วยงานภาครัฐ';
-  const prov = (item.province || '').replace(/^จ(ังหวัด|\.)\s*/, '').trim() || 'ไม่ระบุ';
-  const url = item.url || (item.project_id ? `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${item.project_id}` : 'https://veerubber-finder.pages.dev');
-  const deadline = item.deadline || '';
   const projectId = item.project_id || item.projectId || '';
+  const url = (item.url && !item.url.includes('/procurement/')) ? item.url : (projectId ? `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${projectId}` : 'https://gprocurement-veerubber.pages.dev');
+  const deadline = item.deadline || '';
 
   return {
     ...item,

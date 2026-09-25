@@ -13,7 +13,7 @@ function getEnvVars() {
     GMAIL_USER: process.env.GMAIL_USER || '',
     GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD || '',
     GMAIL_RECIPIENTS: process.env.GMAIL_RECIPIENTS || 'admin@veerubber.co.th',
-    D1_API_URL: process.env.D1_API_URL || 'https://gprocurement-veerubber.workers.dev'
+    D1_API_URL: process.env.D1_API_URL || 'https://gprocurement-veerubber.natt-charoen.workers.dev'
   };
 
   if (fs.existsSync(envPath)) {
@@ -30,7 +30,7 @@ function getEnvVars() {
   return env;
 }
 
-function updateEnvPassword(appPassword) {
+function updateEnvPassword(appPassword, userEmail) {
   if (!fs.existsSync(envPath)) return;
   let text = fs.readFileSync(envPath, 'utf8');
   if (text.includes('GMAIL_APP_PASSWORD=')) {
@@ -44,8 +44,8 @@ function updateEnvPassword(appPassword) {
   try {
     console.log('🔄 กำลังซิงค์ Secret ไปยัง GitHub Actions...');
     execSync('gh secret set GMAIL_APP_PASSWORD -b "' + appPassword + '"', { stdio: 'ignore' });
-    if (env.GMAIL_USER) {
-      execSync('gh secret set GMAIL_USER -b "' + env.GMAIL_USER + '"', { stdio: 'ignore' });
+    if (userEmail) {
+      execSync('gh secret set GMAIL_USER -b "' + userEmail + '"', { stdio: 'ignore' });
     }
     console.log('✅ ซิงค์ GitHub Secrets เรียบร้อย! ระบบจะส่งอีเมลอัตโนมัติได้ทุกวัน 07:00 น.');
   } catch (e) {}
@@ -82,7 +82,7 @@ async function main() {
   if (!pass || pass.length < 10) {
     pass = await promptPassword();
     if (pass && pass.length >= 10) {
-      updateEnvPassword(pass);
+      updateEnvPassword(pass, user);
     } else {
       console.error('❌ ไม่ได้ระบุรหัสผ่าน ยกเลิกการส่ง');
       process.exit(1);

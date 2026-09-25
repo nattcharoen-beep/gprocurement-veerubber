@@ -13,6 +13,12 @@ import { extractProvince } from './province-extractor.js';
 import { scanPdfBuffer } from './in-memory-pdf-parser.js';
 import { getEgpSessionToken } from './capsolver.js';
 
+export function getDirectProcurementUrl(projectId) {
+  if (!projectId) return 'https://process5.gprocurement.go.th/egp-agpc01-web/announcement';
+  const cleanId = String(projectId).replace(/-[A-Za-z0-9]+$/, '');
+  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(cleanId)}`;
+}
+
 /**
  * Calculate Thai Buddhist Budget Year (Fiscal year runs Oct 1 - Sep 30)
  */
@@ -226,7 +232,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
 
         if (items.length === 0) break;
 
-        let pastWindow = false;
+        let olderCount = 0;
         for (const it of items) {
           if (!it.projectId) continue;
           const pid = it.projectId;
@@ -235,7 +241,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
           if (annDate && annDate.includes('T')) annDate = annDate.split('T')[0];
 
           if (annDate && annDate < lookbackDateStr) {
-            pastWindow = true;
+            olderCount++;
             continue;
           }
 
@@ -272,11 +278,11 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
           }
         }
 
-        if (pastWindow) break;
-        await new Promise(r => setTimeout(r, 450));
+        if (olderCount === items.length) break;
+        await new Promise(r => setTimeout(r, 800));
       }
       console.log(`  [Pass 1] "${kw}" (${bYear}): +${kwAdded} candidates (Batch unique: ${candidates.size})`);
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 1200));
     }
   }
 
@@ -464,7 +470,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
       price_announce_date: timelineDates.price_announce_date || null,
       draft_tor_date: timelineDates.draft_tor_date || null,
       invitation_date: timelineDates.invitation_date || null,
-      url: `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${pid}`,
+      url: getDirectProcurementUrl(pid),
       boq_summary: boqSummary,
       boq_matches: boqMatches,
       doc_verified: docVerified
@@ -598,7 +604,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
         const items = Array.isArray(res?.data) ? res.data : (res?.data?.data || []);
         if (items.length === 0) break;
 
-        let pastWindow = false;
+        let olderCount = 0;
         for (const it of items) {
           if (!it.projectId) continue;
           const pid = it.projectId;
@@ -607,7 +613,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
           if (annDate && annDate.includes('T')) annDate = annDate.split('T')[0];
 
           if (annDate && annDate < lookbackDateStr) {
-            pastWindow = true;
+            olderCount++;
             continue;
           }
 
@@ -644,11 +650,11 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
           }
         }
 
-        if (pastWindow) break;
-        await new Promise(r => setTimeout(r, 450));
+        if (olderCount === items.length) break;
+        await new Promise(r => setTimeout(r, 800));
       }
       console.log(`  [Pass 1] "${kw}" (${bYear}): +${kwAdded} candidates (Batch unique: ${candidates.size})`);
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise(r => setTimeout(r, 1200));
     }
   }
 
@@ -845,7 +851,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
       price_announce_date: timelineDates.price_announce_date || null,
       draft_tor_date: timelineDates.draft_tor_date || null,
       invitation_date: timelineDates.invitation_date || null,
-      url: `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${pid}`,
+      url: getDirectProcurementUrl(pid),
       boq_summary: boqSummary,
       boq_matches: boqMatches,
       doc_verified: docVerified
@@ -917,6 +923,16 @@ export async function harvestEGP5(apiUrl, apiKey, options = {}) {
         allVerified.set(p.id, p);
       }
       console.log(`-> Running Total Unique Verified Projects: ${allVerified.size}`);
+
+      if (apiUrl && apiKey && batchResults.length > 0) {
+        console.log(`[${batch.name}] Incrementally uploading ${batchResults.length} projects to D1...`);
+        try {
+          await uploadToD1(batchResults, apiUrl, apiKey);
+        } catch (upErr) {
+          console.warn(`[${batch.name}] Incremental upload warning:`, upErr.message);
+        }
+      }
+
       await new Promise(r => setTimeout(r, 3500));
     } catch (err) {
       console.error(`Error in ${batch.name}:`, err.message);

@@ -153,7 +153,7 @@ async function loadWinnerList(append = false) {
         : (item.discount_percent ? item.discount_percent.toFixed(2) + '%' : '-');
 
       const projId = item.project_id || item.id || '';
-      const egpDirectUrl = item.url || `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+      const egpDirectUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
 
       // Derive fiscal year badge from project ID (e.g. 68... -> 2568, 63... -> 2563)
       const cleanMatch = projId.match(/(?:W0_)?(\d{2})\d{7,11}/);
@@ -241,7 +241,7 @@ async function loadWinnerList(append = false) {
           <div class="announcement-actions" style="margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <button onclick="openBiddingSimulator('${item.id}')" class="btn" style="padding: 6px 14px; font-size: 0.88rem; background: #ea580c; color: white; border: none; font-weight: 700; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" title="จำลองว่าถ้าเราเคาะงานนี้ จะได้กำไรเท่าไหร่">🧮 จำลองราคาเคาะ</button>
             <a href="detail.html?id=${encodeURIComponent(item.id)}" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.88rem;">ดูรายละเอียด</a>
-            <a href="${egpDirectUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.88rem;" title="กดคัดลอกเลขที่โครงการ แล้วเปิด e-GP เพื่อวางค้นหา (Ctrl+V)">เปิดค้นหาใน e-GP 🔗</a>
+            <a href="${egpDirectUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" style="padding: 6px 14px; font-size: 0.88rem;" title="กดคัดลอกเลขที่โครงการ แล้วเปิด e-GP เพื่อวางค้นหา (Ctrl+V)">เปิดค้นหาใน e-GP 🔗</a>
             <button onclick="hideProject('${projId}', this)" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.82rem; color: #94a3b8; border-color: #cbd5e1; margin-left: auto;" title="ซ่อนงานที่ไม่เกี่ยวข้องกับเรา">🚫 ซ่อนงานนี้</button>
           </div>
         </div>

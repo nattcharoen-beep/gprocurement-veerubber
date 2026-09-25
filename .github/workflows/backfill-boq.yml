@@ -22,7 +22,7 @@ jobs:
 
       - name: Run 100% In-Memory BOQ Scanner on all D1 projects
         env:
-          D1_API_URL: ${{ secrets.D1_API_URL || 'https://gprocurement-finder.natt-charoen.workers.dev' }}
+          D1_API_URL: ${{ secrets.D1_API_URL || 'https://gprocurement-veerubber.natt-charoen.workers.dev' }}
           D1_API_KEY: ${{ secrets.D1_API_KEY }}
           API_KEY: ${{ secrets.D1_API_KEY }}
           CAPSOLVER_API_KEY: ${{ secrets.CAPSOLVER_API_KEY }}

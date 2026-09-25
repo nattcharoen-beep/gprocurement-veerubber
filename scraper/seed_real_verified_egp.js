@@ -5,8 +5,7 @@ import CryptoJS from 'crypto-js';
 
 function getDirectProcurementUrl(projectId) {
   if (!projectId) return '';
-  const encrypted = CryptoJS.AES.encrypt(JSON.stringify({ projectId: String(projectId) }), 'RDCrypto').toString();
-  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement/procurement/${encodeURIComponent(encrypted)}`;
+  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projectId)}`;
 }
 
 const realProjects = [

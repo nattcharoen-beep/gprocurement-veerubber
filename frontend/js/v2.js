@@ -962,9 +962,7 @@ function calculateConfidenceScore(item) {
 // ============================================================================
 function generateV2CardHTML(item, index) {
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
-    ? item.url 
-    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
   
   // Calculate Days Left & Countdown
   let daysLeft = null;
@@ -1158,7 +1156,7 @@ function generateV2CardHTML(item, index) {
         <button type="button" class="btn-card-action btn-action-copy" onclick="copyV2Text('${projId}', this)" title="คัดลอกเลข e-GP">
           📋 คัดลอกเลข: <strong style="font-family: monospace; color: #003366; margin-left: 3px;">${projId}</strong>
         </button>
-        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" title="เปิดใน e-GP">
+        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" title="คัดลอกเลขโครงการและเปิดค้นหาใน e-GP">
           🔗 เปิดใน e-GP
         </a>
         <button type="button" class="btn-card-action btn-action-sim" onclick="openBiddingSimulator('${item.id}')" title="คำนวณราคาเคาะและกำไร">
@@ -1224,9 +1222,7 @@ function generateV2CardHTML(item, index) {
 // ============================================================================
 function generateV2TableRowHTML(item, index) {
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
-    ? item.url 
-    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
   const origin = getMatchOriginInfo(item);
   const normType = getNormalizedType(item.announce_type);
   const typeText = window.typeLabels[normType] || window.typeLabels[item.announce_type] || item.announce_type;
@@ -1294,7 +1290,7 @@ function generateV2TableRowHTML(item, index) {
         <button type="button" class="btn-card-action btn-action-sim" onclick="openBiddingSimulator('${item.id}')" style="height: 30px; padding: 0 8px; font-size: 0.78rem;" title="เคาะราคา">
           🧮
         </button>
-        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" style="height: 30px; padding: 0 8px; font-size: 0.78rem;" title="เปิด e-GP">
+        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" style="height: 30px; padding: 0 8px; font-size: 0.78rem;" title="คัดลอกเลขและเปิด e-GP">
           🔗
         </a>
         <button type="button" class="btn-ai-choice btn-ai-yes ${isMatched ? 'active' : ''}" onclick="submitV2Feedback('${item.id}', 1, this)" style="height: 30px; padding: 0 8px; font-size: 0.78rem;" title="ใช่งานเรา">
@@ -2408,9 +2404,7 @@ window.openV2Inspector = function(itemId) {
   if (nextBtn) nextBtn.disabled = currentIndex < 0 || currentIndex >= totalCount - 1;
 
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
-    ? item.url 
-    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
   const origin = getMatchOriginInfo(item);
   const normType = getNormalizedType(item.announce_type);
   const typeText = window.typeLabels[normType] || window.typeLabels[item.announce_type] || item.announce_type;
@@ -2573,7 +2567,7 @@ window.openV2Inspector = function(itemId) {
 
       <!-- Quick Document Links -->
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="flex: 1; min-width: 140px; text-align: center; padding: 9px 12px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+        <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" class="btn btn-secondary" style="flex: 1; min-width: 140px; text-align: center; padding: 9px 12px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
           <span>เปิดดูใน e-GP</span>
         </a>

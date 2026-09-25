@@ -6,8 +6,7 @@ import { classifyAnnouncement, EXCLUDE_KEYWORDS } from './src/keywords.js';
 import { extractProvince } from './src/province-extractor.js';
 
 function getEncryptedUrl(projectId) {
-  const enc = CryptoJS.AES.encrypt(JSON.stringify({ projectId: String(projectId) }), 'RDCrypto').toString();
-  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement/procurement/${encodeURIComponent(enc)}`;
+  return `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projectId)}`;
 }
 
 async function run() {

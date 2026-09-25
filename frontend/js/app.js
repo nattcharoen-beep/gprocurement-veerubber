@@ -1378,9 +1378,7 @@ async function loadAnnouncements(append = false) {
       const groupKey = item.product_group || '';
       const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
       const dept = item.department || '';
-      const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
-        ? item.url 
-        : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+      const egpWebUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
       // 1. Direct 100% Fit: Explicit tire procurement, radial, vehicle, truck, bus, patrol, OTR
       const titleLower = (item.project_name || '').toLowerCase();
       const coreTireKeywords = [
@@ -1566,7 +1564,7 @@ async function loadAnnouncements(append = false) {
             <button type="button" class="btn-card-action btn-action-copy" onclick="copyText('${projId}', this)" title="คัดลอกเลข e-GP เพื่อนำไปค้นหาใน e-GP">
               📋 คัดลอกเลข e-GP: <strong style="font-family: monospace; margin-left: 2px; color: #003366;">${projId}</strong>
             </button>
-            <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" title="กดคัดลอกเลขแล้วเปิด e-GP เพื่อวางค้นหาเอกสาร">
+            <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" title="กดคัดลอกเลขแล้วเปิด e-GP เพื่อวางค้นหาเอกสาร">
               🔗 เปิดใน e-GP
             </a>
             <button type="button" class="btn-card-action btn-action-sim" onclick="openBiddingSimulator('${item.id}')" title="คำนวณราคาเคาะและกำไร">
@@ -1829,9 +1827,7 @@ async function loadBoqAnnouncements(append = false) {
       if (['boq'].includes(displayTypeClass)) displayTypeClass = '15';
       const groupKey = item.product_group || '';
       const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-      const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
-        ? item.url 
-        : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+      const egpWebUrl = (window.getEgpPortalUrl ? window.getEgpPortalUrl(item) : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`);
       const dept = item.department || '';
 
       // Extract matched keyword
@@ -1995,7 +1991,7 @@ async function loadBoqAnnouncements(append = false) {
             <button type="button" class="btn-card-action btn-action-copy" onclick="copyText('${projId}', this)" title="คัดลอกเลข e-GP เพื่อนำไปค้นหาใน e-GP">
               📋 คัดลอกเลข e-GP: <strong style="font-family: monospace; margin-left: 2px; color: #003366;">${projId}</strong>
             </button>
-            <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" title="กดคัดลอกเลขแล้วเปิด e-GP เพื่อวางค้นหาเอกสาร">
+            <a href="${egpWebUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-action-egp" onclick="return window.openEgpWithCopy ? window.openEgpWithCopy('${projId}', event) : true" title="กดคัดลอกเลขแล้วเปิด e-GP เพื่อวางค้นหาเอกสาร">
               🔗 เปิดใน e-GP
             </a>
             <button type="button" class="btn-card-action btn-action-sim" onclick="openBiddingSimulator('${item.id}')" title="คำนวณราคาเคาะและกำไร">
