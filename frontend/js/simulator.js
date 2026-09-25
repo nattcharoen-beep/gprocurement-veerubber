@@ -89,11 +89,11 @@ function openBiddingSimulator(projectId) {
 
   // Estimate default tire quantity based on budget
   const estTires = Math.max(20, Math.round((budget * 0.70) / 3500));
-  const epdmAreaInput = document.getElementById('sim-input-epdm-area'); // Reused as tire quantity
-  if (epdmAreaInput) epdmAreaInput.value = estTires;
+  const tireQtyInput = document.getElementById('sim-input-tire-qty');
+  if (tireQtyInput) tireQtyInput.value = estTires;
 
-  const epdmUnitCostInput = document.getElementById('sim-input-epdm-unit-cost'); // Reused as unit cost
-  if (epdmUnitCostInput) epdmUnitCostInput.value = 1800;
+  const tireUnitCostInput = document.getElementById('sim-input-tire-unit-cost');
+  if (tireUnitCostInput) tireUnitCostInput.value = 1800;
 
   // Other costs (services, balancing, delivery)
   const otherCostInput = document.getElementById('sim-input-other-cost');
@@ -139,8 +139,10 @@ function onBidInputChange(val) {
 
 function recalculateSimulator() {
   const budget = Number(document.getElementById('sim-input-budget')?.value || 0);
-  const tireQty = Number(document.getElementById('sim-input-epdm-area')?.value || 0);
-  const tireUnitCost = Number(document.getElementById('sim-input-epdm-unit-cost')?.value || 0);
+  const tireQtyInput = document.getElementById('sim-input-tire-qty');
+  const tireQty = Number(tireQtyInput?.value || 0);
+  const tireUnitCostInput = document.getElementById('sim-input-tire-unit-cost');
+  const tireUnitCost = Number(tireUnitCostInput?.value || 0);
   const otherCost = Number(document.getElementById('sim-input-other-cost')?.value || 0);
   const buffer = Number(document.getElementById('sim-input-buffer')?.value || 0);
   let bidPrice = Number(document.getElementById('sim-input-bid-price')?.value || 0);

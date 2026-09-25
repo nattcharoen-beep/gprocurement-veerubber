@@ -1,7 +1,7 @@
 /**
  * GProcurement Finder - Main Orchestrator
  * Runs the Precision & Lifecycle 2-Pass Harvester for e-GP v5.
- * Delivers automated daily intelligence digest to natt.charoen@gmail.com.
+ * Delivers automated daily intelligence digest to admin@veerubber.co.th.
  */
 
 import { harvestEGP5 } from './harvest-egp5.js';

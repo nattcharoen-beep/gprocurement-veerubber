@@ -960,10 +960,12 @@
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;" id="v2-archive-group-filters">
                 <span style="font-size: 0.82rem; font-weight: 700; color: #475569; margin-right: 4px;">หมวดหมู่:</span>
                 <button class="badge badge-outline group-all active" onclick="filterV2ArchiveGroup('', this)">ทั้งหมด</button>
-                <button class="badge badge-outline group-sport_flooring" onclick="filterV2ArchiveGroup('sport_flooring', this)">🏟️ พื้นกีฬา</button>
-                <button class="badge badge-outline group-playground" onclick="filterV2ArchiveGroup('playground', this)">🧒 สนามเด็กเล่น</button>
-                <button class="badge badge-outline group-factory_flooring" onclick="filterV2ArchiveGroup('factory_flooring', this)">🏭 พื้นโรงงาน</button>
-                <button class="badge badge-outline group-waterproofing" onclick="filterV2ArchiveGroup('waterproofing', this)">🔧 กันซึม</button>
+                <button class="badge badge-outline group-passenger_car_tires" onclick="filterV2ArchiveGroup('passenger_car_tires', this)">🚗 ยางรถยนต์ & กระบะ</button>
+                <button class="badge badge-outline group-truck_bus_tires" onclick="filterV2ArchiveGroup('truck_bus_tires', this)">🚛 ยางรถบรรทุก & บัส</button>
+                <button class="badge badge-outline group-motorcycle_tires" onclick="filterV2ArchiveGroup('motorcycle_tires', this)">🏍️ ยางจักรยานยนต์</button>
+                <button class="badge badge-outline group-otr_heavy_machinery" onclick="filterV2ArchiveGroup('otr_heavy_machinery', this)">🚜 ยาง OTR & เครื่องจักร</button>
+                <button class="badge badge-outline group-bicycle_specialty_tires" onclick="filterV2ArchiveGroup('bicycle_specialty_tires', this)">🚲 ยางจักรยาน & วีลแชร์</button>
+                <button class="badge badge-outline group-tube_accessories" onclick="filterV2ArchiveGroup('tube_accessories', this)">🔘 ยางใน & อุปกรณ์</button>
               </div>
             </div>
           </div>
@@ -1292,11 +1294,11 @@
             </div>
             <div>
               <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">จำนวนยาง (เส้น):</label>
-              <input type="number" id="sim-input-epdm-area" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+              <input type="number" id="sim-input-tire-qty" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
             </div>
             <div>
               <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">ต้นทุนยางเฉลี่ย วีรับเบอร์ (บ./เส้น):</label>
-              <input type="number" id="sim-input-epdm-unit-cost" value="2500" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+              <input type="number" id="sim-input-tire-unit-cost" value="2500" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
             </div>
             <div>
               <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">ค่าบริการเปลี่ยน/ถ่วงล้อ & อุปกรณ์เสริม:</label>

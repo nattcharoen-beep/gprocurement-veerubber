@@ -70,7 +70,7 @@ router.post('/register', async (c) => {
 
   const userCount = await db.prepare('SELECT count(*) as count FROM users').first();
   const isFirstUser = !userCount || userCount.count === 0;
-  const isMasterAdmin = cleanUsername === 'admin' || cleanEmail === 'natt.charoen@gmail.com';
+  const isMasterAdmin = cleanUsername === 'admin' || cleanEmail === (c.env.ADMIN_EMAIL || 'admin@veerubber.co.th');
 
   let role = (isFirstUser || isMasterAdmin) ? 'admin' : 'viewer';
   let status = (isFirstUser || isMasterAdmin) ? 'approved' : 'pending';
@@ -87,7 +87,7 @@ router.post('/register', async (c) => {
     name: name ? name.trim() : cleanUsername
   };
 
-  // Dispatch background email alert to Admin (natt.charoen@gmail.com) if viewer
+  // Dispatch background email alert to Admin (${c.env.ADMIN_EMAIL || 'admin@veerubber.co.th'}) if viewer
   if (role !== 'admin') {
     if (c.executionCtx && typeof c.executionCtx.waitUntil === 'function') {
       c.executionCtx.waitUntil(sendAdminNotification(c.env, newUser));
@@ -108,7 +108,7 @@ router.post('/register', async (c) => {
 
   return c.json({ 
     data: { 
-      message: 'สมัครสมาชิกสำเร็จแล้ว! ระบบได้ส่งแจ้งเตือนไปยัง Admin (natt.charoen@gmail.com) เรียบร้อยแล้ว กรุณารอการอนุมัติก่อนเข้าใช้งาน',
+      message: 'สมัครสมาชิกสำเร็จแล้ว! ระบบได้ส่งแจ้งเตือนไปยัง Admin (admin@veerubber.co.th) เรียบร้อยแล้ว กรุณารอการอนุมัติก่อนเข้าใช้งาน',
       role: 'viewer',
       isApproved: false
     } 
@@ -134,8 +134,8 @@ router.post('/login', async (c) => {
 
   // Smart alias resolution for admin convenience
   if (!user) {
-    if (identifier === 'natt' || identifier === 'ณัฐ' || identifier === 'admin') {
-      user = await db.prepare('SELECT * FROM users WHERE username = "natt.charoen" OR email = "natt.charoen@gmail.com"').first();
+    if (identifier === 'admin' || identifier === 'veerubber-admin') {
+      user = await db.prepare('SELECT * FROM users WHERE role = "admin" LIMIT 1').first();
     }
   }
 
@@ -144,7 +144,7 @@ router.post('/login', async (c) => {
   }
 
   if (user.status === 'pending') {
-    return c.json({ error: 'บัญชีของคุณอยู่ระหว่างรอผู้ดูแลระบบ (natt.charoen@gmail.com) อนุมัติการใช้งาน' }, 403);
+    return c.json({ error: 'บัญชีของคุณอยู่ระหว่างรอผู้ดูแลระบบ อนุมัติการใช้งาน' }, 403);
   }
 
   if (user.status === 'rejected') {

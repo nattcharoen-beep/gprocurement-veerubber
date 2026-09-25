@@ -1,4 +1,4 @@
-﻿// frontend/js/v2.js — VEE RUBBER Procurement Tracker V2.0 Controller
+// frontend/js/v2.js — VEE RUBBER Procurement Tracker V2.0 Controller
 
 let currentV2View = 'overview';
 let v2Announcements = [];
@@ -938,17 +938,17 @@ function calculateConfidenceScore(item) {
     score = 95;
     reason = 'สแกนพบสเปกใน BOQ';
     badgeClass = 'high';
-  } else if (title.includes('epdm') || title.includes('ลู่วิ่ง') || title.includes('ยางสังเคราะห์')) {
+  } else if (title.includes('ยางรถยนต์') || title.includes('ยางรถบรรทุก') || title.includes('ยางรถจักรยานยนต์') || title.includes('ยางเรเดียล')) {
     score = 92;
     reason = 'คีย์เวิร์ดตรงสายเป้าหมายหลัก 100%';
     badgeClass = 'high';
-  } else if (title.includes('สนามกีฬา') || title.includes('สนามเด็กเล่น')) {
+  } else if (title.includes('ยาง otr') || title.includes('ยางรถแทรกเตอร์') || title.includes('ยางใน') || title.includes('ยางรถจักรยาน')) {
     score = 85;
-    reason = 'โครงการหมวดกีฬาและเครื่องเล่น';
+    reason = 'โครงการหมวดยางเฉพาะทางและอุปกรณ์';
     badgeClass = 'medium';
-  } else if (title.includes('กันซึม') || title.includes('อีพ็อกซี่')) {
+  } else if (title.includes('ยาง') || title.includes('เปลี่ยนยาง') || title.includes('จัดซื้อยาง')) {
     score = 80;
-    reason = 'งานระบบพื้นโรงงาน/กันซึม';
+    reason = 'งานจัดซื้อยางและบริการล้อยาง';
     badgeClass = 'medium';
   }
 
@@ -960,7 +960,9 @@ function calculateConfidenceScore(item) {
 // ============================================================================
 function generateV2CardHTML(item, index) {
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
+    ? item.url 
+    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
   
   // Calculate Days Left & Countdown
   let daysLeft = null;
@@ -1217,7 +1219,9 @@ function generateV2CardHTML(item, index) {
 // ============================================================================
 function generateV2TableRowHTML(item, index) {
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
+    ? item.url 
+    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
   const origin = getMatchOriginInfo(item);
   const normType = getNormalizedType(item.announce_type);
   const typeText = window.typeLabels[normType] || window.typeLabels[item.announce_type] || item.announce_type;
@@ -1793,7 +1797,7 @@ window.filterOpportunitiesAll = function() {
   v2BudgetMin = '';
   v2BudgetMax = '';
   v2SelectedTypes = ['D0', 'B0', '15', 'P0'];
-  v2SelectedGroups = ['sport_flooring', 'playground', 'factory_flooring', 'waterproofing'];
+  v2SelectedGroups = ['passenger_car_tires', 'truck_bus_tires', 'motorcycle_tires', 'otr_heavy_machinery', 'bicycle_specialty_tires', 'tube_accessories'];
 
   const s1 = document.getElementById('v2-search-input');
   if (s1) s1.value = '';
@@ -1876,10 +1880,12 @@ window.filterOpportunitiesGroup = function(groupKey) {
   renderOpportunitiesList(v2Announcements);
 
   const groupTitles = {
-    sport_flooring: 'พื้นสนามกีฬา',
-    playground: 'สนามเด็กเล่น',
-    waterproofing: 'ระบบกันซึม',
-    factory_flooring: 'พื้นโรงงาน'
+    passenger_car_tires: 'ยางรถยนต์ & กระบะ',
+    truck_bus_tires: 'ยางรถบรรทุก & บัส',
+    motorcycle_tires: 'ยางจักรยานยนต์ & สายตรวจ',
+    otr_heavy_machinery: 'ยาง OTR & เครื่องจักร',
+    bicycle_specialty_tires: 'ยางจักรยาน & วีลแชร์',
+    tube_accessories: 'ยางใน & อุปกรณ์'
   };
   if (typeof showToast === 'function') {
     showToast(`กรองหมวดหมู่: ${groupTitles[groupKey] || groupKey}`, 'info');
@@ -1994,7 +2000,7 @@ window.toggleV2GroupFilter = function(group, el) {
 window.resetV2Filters = function() {
   v2BoqOnly = false;
   v2SelectedTypes = ['D0', 'B0', '15', 'P0'];
-  v2SelectedGroups = ['sport_flooring', 'playground', 'factory_flooring', 'waterproofing'];
+  v2SelectedGroups = ['passenger_car_tires', 'truck_bus_tires', 'motorcycle_tires', 'otr_heavy_machinery', 'bicycle_specialty_tires', 'tube_accessories'];
   v2SearchKeyword = '';
   v2SelectedDays = -1;
   v2BudgetMin = '';
@@ -2374,7 +2380,9 @@ window.openV2Inspector = function(itemId) {
   if (nextBtn) nextBtn.disabled = currentIndex < 0 || currentIndex >= totalCount - 1;
 
   const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-  const egpWebUrl = `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+  const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
+    ? item.url 
+    : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
   const origin = getMatchOriginInfo(item);
   const normType = getNormalizedType(item.announce_type);
   const typeText = window.typeLabels[normType] || window.typeLabels[item.announce_type] || item.announce_type;

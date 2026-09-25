@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 import { scanPdfBuffer } from './in-memory-pdf-parser.js';
 import { getEgpSessionToken } from './capsolver.js';
 
-const D1_API_URL = process.env.D1_API_URL || 'https://gprocurement-finder.natt-charoen.workers.dev';
+const D1_API_URL = process.env.D1_API_URL || 'https://gprocurement-veerubber.natt-charoen.workers.dev';
 const D1_API_KEY = process.env.D1_API_KEY || process.env.API_KEY;
 const CAPSOLVER_API_KEY = process.env.CAPSOLVER_API_KEY;
 

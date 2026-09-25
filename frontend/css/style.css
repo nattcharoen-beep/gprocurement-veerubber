@@ -19,10 +19,12 @@
   --badge-w0: #0066cc; /* Blue */
 
   /* Product Badges */
-  --badge-sport: #0066cc; /* Blue */
-  --badge-playground: #e83e8c; /* Pink */
-  --badge-factory: #6c757d; /* Gray */
-  --badge-waterproofing: #20c997; /* Teal */
+  --badge-passenger-car: #0066cc;
+  --badge-truck-bus: #e83e8c;
+  --badge-motorcycle: #6c757d;
+  --badge-otr: #20c997;
+  --badge-bicycle: #fd7e14;
+  --badge-tube: #6f42c1;
 }
 
 * {
@@ -246,10 +248,12 @@ a:hover {
 .badge-outline.type-15,
 .badge-outline.type-p0,
 .badge-outline.type-w0,
-.badge-outline.group-sport_flooring,
-.badge-outline.group-playground,
-.badge-outline.group-factory_flooring,
-.badge-outline.group-waterproofing {
+.badge-outline.group-passenger_car_tires,
+.badge-outline.group-truck_bus_tires,
+.badge-outline.group-motorcycle_tires,
+.badge-outline.group-otr_heavy_machinery,
+.badge-outline.group-bicycle_specialty_tires,
+.badge-outline.group-tube_accessories {
   border: 1.5px solid #cbd5e1 !important;
   color: #475569 !important;
   background: #ffffff !important;
@@ -261,10 +265,12 @@ a:hover {
 .badge-outline.type-15.active,
 .badge-outline.type-p0.active,
 .badge-outline.type-w0.active,
-.badge-outline.group-sport_flooring.active,
-.badge-outline.group-playground.active,
-.badge-outline.group-factory_flooring.active,
-.badge-outline.group-waterproofing.active {
+.badge-outline.group-passenger_car_tires.active,
+.badge-outline.group-truck_bus_tires.active,
+.badge-outline.group-motorcycle_tires.active,
+.badge-outline.group-otr_heavy_machinery.active,
+.badge-outline.group-bicycle_specialty_tires.active,
+.badge-outline.group-tube_accessories.active {
   background: #003366 !important;
   color: #ffffff !important;
   border-color: #003366 !important;
@@ -277,10 +283,12 @@ a:hover {
 .badge.type-15,
 .badge.type-p0,
 .badge.type-w0,
-.badge.group-sport_flooring,
-.badge.group-playground,
-.badge.group-factory_flooring,
-.badge.group-waterproofing {
+.badge.group-passenger_car_tires,
+.badge.group-truck_bus_tires,
+.badge.group-motorcycle_tires,
+.badge.group-otr_heavy_machinery,
+.badge.group-bicycle_specialty_tires,
+.badge.group-tube_accessories {
   background-color: #f1f5f9;
   color: #475569;
   border: 1px solid #cbd5e1;

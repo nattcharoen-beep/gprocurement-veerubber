@@ -66,11 +66,13 @@ window.renderBoqKeywordBox = function(item) {
 
   // 3. Fallback from product_group
   if (!keyword) {
-    if (item.product_group === 'waterproofing') keyword = 'กันซึม';
-    else if (item.product_group === 'sport_flooring') keyword = 'พื้นสนามกีฬา/ลู่วิ่ง';
-    else if (item.product_group === 'playground') keyword = 'สนามเด็กเล่น';
-    else if (item.product_group === 'factory_flooring') keyword = 'พื้นอีพ็อกซี่/PU';
-    else keyword = 'สเปกตรงสาย';
+    if (item.product_group === 'passenger_car_tires') keyword = 'ยางรถยนต์ & กระบะ';
+    else if (item.product_group === 'truck_bus_tires') keyword = 'ยางรถบรรทุก & บัส';
+    else if (item.product_group === 'motorcycle_tires') keyword = 'ยางจักรยานยนต์ & สายตรวจ';
+    else if (item.product_group === 'otr_heavy_machinery') keyword = 'ยาง OTR & เครื่องจักร';
+    else if (item.product_group === 'bicycle_specialty_tires') keyword = 'ยางจักรยาน & วีลแชร์';
+    else if (item.product_group === 'tube_accessories') keyword = 'ยางใน & อุปกรณ์';
+    else keyword = 'จัดซื้อยางราชการ';
   }
 
   return `
@@ -282,7 +284,7 @@ const EXCLUDE_KEYWORDS = [
   "ถุงมือยาง", "ถุงมือตรวจโรค", "ถุงมือแพทย์", "ถุงมือผ่าตัด", "ถุงยางอนามัย", "ท่อสายยางการแพทย์",
   "น้ำยางพารา", "ยางพาราแผ่น", "ขี้ยาง", "กล้ายางพารา", "ต้นยางพารา", "กรีดยาง", "สวนยางพารา",
   "ยางมะตอย", "ยางมะตอยผสมเสร็จ", "แอสฟัลต์", "แอสฟัลท์", "ผิวทางแอสฟัลต์", "ยางหยอดรอยต่อ", "ยางมะตอยหยอดรอยต่อ",
-  "แผ่นยางปูพื้น", "พื้นยาง EPDM", "ยาง EPDM", "กระเบื้องยาง", "ยางกันชนเสา",
+  "แผ่นยางปูพื้น", "ยางปูพื้น", "กระเบื้องยาง", "ยางกันชนเสา",
   "ขอบยางกระจก", "ขอบยางประตู", "ขอบยางตู้เย็น", "ซีลยาง", "ปะเก็นยาง", "สายยางฉีดน้ำ", "สายยางรดน้ำ",
   "ปะยาง", "ค่าปะยาง", "จ้างปะยาง", "ซ่อมปะยาง",
   "จ้างออกแบบ", "จ้างที่ปรึกษา", "อาหารกลางวัน", "จัดเลี้ยง", "ชุดกีฬา", "ลูกฟุตบอล"
@@ -379,27 +381,20 @@ function isExcluded(title) {
   // 1. If explicitly cancelled, exclude
   if (lower.includes('ยกเลิก')) return true;
 
-  // 2. High-value sports / flooring / fitness / curated disguised exemption:
+  // 2. Core tire business terms for Vee Rubber
   const isTargetBusiness = [
-    'ฟิตเนส', 'fitness', 'ศูนย์ออกกำลังกาย', 'ห้องออกกำลังกาย', 'เครื่องออกกำลังกาย', 'พื้นฟิตเนส',
-    'สวนสาธารณะ', 'หลังคาโครงเหล็ก', 'อาคารโครงสร้างเหล็ก', 'ศูนย์นันทนาการ', 'ศูนย์เยาวชน', 'ซ่อมแซมพื้น', 'ปรับปรุงพื้น'
+    'ยางรถยนต์', 'ยางรถกระบะ', 'ยางรถปิกอัพ', 'ยางรถตู้', 'ยางรถบรรทุก', 'ยางรถจักรยานยนต์', 'ยางมอเตอร์ไซค์',
+    'ยางเรเดียล', 'ยาง radial', 'ยาง otr', 'ยางเครื่องจักรกล', 'ยางรถแทรกเตอร์', 'ยางรถไถ', 'ยางรถตัก',
+    'ยางรถเกลี่ยดิน', 'ยางรถบด', 'ยางรถยก', 'ยาง forklift', 'ยางตัน', 'ยางลมรถยก', 'ยางรถจักรยาน',
+    'ยางวีลแชร์', 'ยางใน', 'ยางในบิวทิล', 'ยางรองคอด', 'จุ๊บลมยาง', 'จัดซื้อยาง', 'ซื้อยาง'
   ].some(k => lower.includes(k));
+
   if (isTargetBusiness) {
-    const hardExcludes = ['ทางหลวง', 'ถนนสาย', 'ป้ายจราจร', 'โซลาร์', 'ห้องน้ำ', 'ทำความสะอาด', 'รักษาความปลอดภัย', 'อาหาร', 'เทศกาล', 'จ้างออกแบบ', 'จ้างควบคุมงาน'];
+    const hardExcludes = ['ยางมะตอย', 'แอสฟัลต์', 'ถุงมือยาง', 'ยางลบ', 'ตรายาง', 'ปะยาง', 'น้ำยางพารา'];
     return hardExcludes.some(kw => lower.includes(kw));
   }
 
   if (EXCLUDE_KEYWORDS.some(ex => lower.includes(ex.toLowerCase()))) return true;
-
-  // Clean the word 'พื้นที่' (area in sq.m.)
-  const cleanTitle = lower.replace(/พื้นที่(ใช้สอย)?/g, '');
-
-  // Exclude general civil building halls unless they match sports/flooring or human curated patterns
-  const isBuilding = ['อาคารอเนกประสงค์', 'ต่อเติมอาคาร'].some(b => lower.includes(b));
-  if (isBuilding) {
-    const hasSportsFlooring = ['กีฬา', 'สนาม', 'ลานกีฬา', 'ลู่วิ่ง', 'หญ้าเทียม', 'ฟุต', 'บาส', 'ยาง', 'เทพื้น', 'ปูพื้น', 'ปรับปรุงพื้น', 'อีพ็อกซี่', 'กันซึม', 'ฟิตเนส', 'fitness', 'โครงเหล็ก', 'ศูนย์นันทนาการ', 'สวนสาธารณะ'].some(s => cleanTitle.includes(s));
-    if (!hasSportsFlooring) return true;
-  }
   return false;
 }
 
@@ -547,13 +542,11 @@ function getDaysLeft(dateStr) {
 }
 
 const ALL_SYSTEM_KEYWORDS = [
-  'สนามกีฬา', 'สนามฟุตบอล', 'หญ้าเทียม', 'สนามฟุตซอล', 'สนามบาสเก็ตบอล', 'สนามบาส',
-  'สนามแบดมินตัน', 'สนามเทนนิส', 'สนามวอลเลย์บอล', 'ลู่วิ่ง', 'ลู่กรีฑา', 'พื้นยาง EPDM',
-  'พื้นยาง', 'EPDM', 'epdm', 'พื้นสังเคราะห์', 'พื้น PU', 'โพลียูรีเทน', 'อะคริลิค',
-  'Acrylic', 'Silicon PU', 'SPU', 'PP Interlock', 'PVC Sport', 'พื้นกีฬา', 'ลานกีฬา',
-  'สนามเด็กเล่น', 'เครื่องเล่นสนาม', 'พื้นยางนิรภัย', 'สนามเด็กเล่นสร้างปัญญา',
-  'พื้นอีพ็อกซี่', 'Epoxy', 'epoxy', 'อีพ็อกซี่', 'พื้นโรงงาน', 'PU Crete', 'Polished Concrete',
-  'พื้นอุตสาหกรรม', 'กันซึม', 'Waterproofing', 'waterproofing', 'กันรั่ว', 'ดาดฟ้า'
+  'ยางรถยนต์', 'จัดซื้อยางรถยนต์', 'ซื้อยางรถยนต์', 'ยางรถกระบะ', 'ยางรถตู้', 'ยางรถบรรทุก',
+  'ยางรถบัส', 'ยางรถจักรยานยนต์', 'ยางมอเตอร์ไซค์', 'ยางสายตรวจ', 'ยางเรเดียล', 'ยาง radial',
+  'ยาง OTR', 'ยางรถแทรกเตอร์', 'ยางรถไถ', 'ยางรถตัก', 'ยางรถยก', 'ยาง forklift',
+  'ยางรถจักรยาน', 'ยางวีลแชร์', 'ยางใน', 'ยางในบิวทิล', 'ยางรองคอด', 'จุ๊บลมยาง',
+  'เปลี่ยนยาง', 'ถ่วงล้อ', 'จัดซื้อยาง', 'ซื้อยาง'
 ];
 
 window.getMatchOriginInfo = function(item) {
@@ -593,11 +586,13 @@ window.getMatchOriginInfo = function(item) {
   }
 
   if (!keyword) {
-    if (item.product_group === 'waterproofing') keyword = 'กันซึม';
-    else if (item.product_group === 'sport_flooring') keyword = 'พื้นกีฬา/ลู่วิ่ง';
-    else if (item.product_group === 'playground') keyword = 'สนามเด็กเล่น';
-    else if (item.product_group === 'factory_flooring') keyword = 'พื้นโรงงาน';
-    else keyword = 'สเปกตรงสาย';
+    if (item.product_group === 'passenger_car_tires') keyword = 'ยางรถยนต์ & กระบะ';
+    else if (item.product_group === 'truck_bus_tires') keyword = 'ยางรถบรรทุก & บัส';
+    else if (item.product_group === 'motorcycle_tires') keyword = 'ยางจักรยานยนต์ & สายตรวจ';
+    else if (item.product_group === 'otr_heavy_machinery') keyword = 'ยาง OTR & เครื่องจักร';
+    else if (item.product_group === 'bicycle_specialty_tires') keyword = 'ยางจักรยาน & วีลแชร์';
+    else if (item.product_group === 'tube_accessories') keyword = 'ยางใน & อุปกรณ์';
+    else keyword = 'จัดซื้อยางราชการ';
   }
 
   return {
@@ -1382,7 +1377,9 @@ async function loadAnnouncements(append = false) {
       const groupKey = item.product_group || '';
       const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
       const dept = item.department || '';
-      const egpWebUrl = `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+      const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
+        ? item.url 
+        : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
       // 1. Direct 100% Fit: Explicit tire procurement, radial, vehicle, truck, bus, patrol, OTR
       const titleLower = (item.project_name || '').toLowerCase();
       const coreTireKeywords = [
@@ -1417,14 +1414,14 @@ async function loadAnnouncements(append = false) {
       }
       if (!matchedKw && item.project_name) {
         const t = item.project_name;
-        if (t.includes('กันซึม')) matchedKw = 'กันซึม';
-        else if (t.includes('ลู่วิ่ง') || t.includes('ลู่กรีฑา')) matchedKw = 'ลู่วิ่ง/ลู่กรีฑา';
-        else if (t.includes('ฟุตซอล') || t.includes('สนามฟุตซอล')) matchedKw = 'สนามฟุตซอล';
-        else if (t.includes('หญ้าเทียม')) matchedKw = 'หญ้าเทียม';
-        else if (t.includes('สนามเด็กเล่น') || t.includes('เครื่องเล่นสนาม')) matchedKw = 'สนามเด็กเล่น';
-        else if (t.includes('พื้นยาง') || t.includes('epdm') || t.includes('EPDM')) matchedKw = 'พื้นยาง EPDM';
-        else if (t.includes('อีพ็อกซี่') || t.includes('epoxy')) matchedKw = 'พื้นอีพ็อกซี่';
-        else if (t.includes('บาส')) matchedKw = 'บาสเกตบอล';
+        if (t.includes('ยางรถยนต์') || t.includes('ยางรถเก๋ง') || t.includes('ยางรถกระบะ') || t.includes('ยางรถตู้')) matchedKw = 'ยางรถยนต์ & กระบะ';
+        else if (t.includes('ยางรถบรรทุก') || t.includes('ยางรถบัส') || t.includes('ยางรถขยะ') || t.includes('ยางรถน้ำ')) matchedKw = 'ยางรถบรรทุก & บัส';
+        else if (t.includes('ยางรถจักรยานยนต์') || t.includes('ยางมอเตอร์ไซค์') || t.includes('ยางสายตรวจ')) matchedKw = 'ยางจักรยานยนต์ & สายตรวจ';
+        else if (t.includes('ยาง otr') || t.includes('ยาง OTR') || t.includes('ยางรถแทรกเตอร์') || t.includes('ยางรถไถ') || t.includes('ยางรถตัก') || t.includes('ยางรถยก')) matchedKw = 'ยาง OTR & เครื่องจักร';
+        else if (t.includes('ยางรถจักรยาน') || t.includes('ยางวีลแชร์')) matchedKw = 'ยางจักรยาน & วีลแชร์';
+        else if (t.includes('ยางใน') || t.includes('ยางรองคอด') || t.includes('จุ๊บลม')) matchedKw = 'ยางใน & อุปกรณ์';
+        else if (t.includes('ยางเรเดียล') || t.includes('ยาง radial')) matchedKw = 'ยางเรเดียล';
+        else if (t.includes('เปลี่ยนยาง') || t.includes('จัดซื้อยาง') || t.includes('ซื้อยาง')) matchedKw = 'จัดซื้อยางราชการ';
       }
 
       // Calculate days left to bid
@@ -1830,7 +1827,9 @@ async function loadBoqAnnouncements(append = false) {
       if (['boq'].includes(displayTypeClass)) displayTypeClass = '15';
       const groupKey = item.product_group || '';
       const projId = (item.project_id || item.id || '').replace(/-[A-Za-z0-9]+$/, '');
-      const egpWebUrl = `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
+      const egpWebUrl = (item.url && item.url.startsWith('http') && !item.url.endsWith('process.gprocurement.go.th'))
+        ? item.url 
+        : `https://process5.gprocurement.go.th/egp-agpc01-web/announcement?keywordSearch=${encodeURIComponent(projId)}`;
       const dept = item.department || '';
 
       // Extract matched keyword
@@ -1849,14 +1848,14 @@ async function loadBoqAnnouncements(append = false) {
       }
       if (!matchedKw && item.project_name) {
         const t = item.project_name;
-        if (t.includes('กันซึม')) matchedKw = 'กันซึม';
-        else if (t.includes('ลู่วิ่ง') || t.includes('ลู่กรีฑา')) matchedKw = 'ลู่วิ่ง/ลู่กรีฑา';
-        else if (t.includes('ฟุตซอล') || t.includes('สนามฟุตซอล')) matchedKw = 'สนามฟุตซอล';
-        else if (t.includes('หญ้าเทียม')) matchedKw = 'หญ้าเทียม';
-        else if (t.includes('สนามเด็กเล่น') || t.includes('เครื่องเล่นสนาม')) matchedKw = 'สนามเด็กเล่น';
-        else if (t.includes('พื้นยาง') || t.includes('epdm') || t.includes('EPDM')) matchedKw = 'พื้นยาง EPDM';
-        else if (t.includes('อีพ็อกซี่') || t.includes('epoxy')) matchedKw = 'พื้นอีพ็อกซี่';
-        else if (t.includes('บาส')) matchedKw = 'บาสเกตบอล';
+        if (t.includes('ยางรถยนต์') || t.includes('ยางรถเก๋ง') || t.includes('ยางรถกระบะ') || t.includes('ยางรถตู้')) matchedKw = 'ยางรถยนต์ & กระบะ';
+        else if (t.includes('ยางรถบรรทุก') || t.includes('ยางรถบัส') || t.includes('ยางรถขยะ') || t.includes('ยางรถน้ำ')) matchedKw = 'ยางรถบรรทุก & บัส';
+        else if (t.includes('ยางรถจักรยานยนต์') || t.includes('ยางมอเตอร์ไซค์') || t.includes('ยางสายตรวจ')) matchedKw = 'ยางจักรยานยนต์ & สายตรวจ';
+        else if (t.includes('ยาง otr') || t.includes('ยาง OTR') || t.includes('ยางรถแทรกเตอร์') || t.includes('ยางรถไถ') || t.includes('ยางรถตัก') || t.includes('ยางรถยก')) matchedKw = 'ยาง OTR & เครื่องจักร';
+        else if (t.includes('ยางรถจักรยาน') || t.includes('ยางวีลแชร์')) matchedKw = 'ยางจักรยาน & วีลแชร์';
+        else if (t.includes('ยางใน') || t.includes('ยางรองคอด') || t.includes('จุ๊บลม')) matchedKw = 'ยางใน & อุปกรณ์';
+        else if (t.includes('ยางเรเดียล') || t.includes('ยาง radial')) matchedKw = 'ยางเรเดียล';
+        else if (t.includes('เปลี่ยนยาง') || t.includes('จัดซื้อยาง') || t.includes('ซื้อยาง')) matchedKw = 'จัดซื้อยางราชการ';
       }
 
       // Calculate days left to bid

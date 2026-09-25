@@ -96,11 +96,13 @@
             if (m && m[1]) kw = m[1];
           }
           if (!kw) {
-            if (item.product_group === 'waterproofing') kw = 'กันซึม';
-            else if (item.product_group === 'sport_flooring') kw = 'พื้นสนามกีฬา/ลู่วิ่ง';
-            else if (item.product_group === 'playground') kw = 'สนามเด็กเล่น';
-            else if (item.product_group === 'factory_flooring') kw = 'พื้นอีพ็อกซี่/PU';
-            else kw = 'สเปกตรงสาย';
+            if (item.product_group === 'passenger_car_tires') kw = 'ยางรถยนต์ & กระบะ';
+            else if (item.product_group === 'truck_bus_tires') kw = 'ยางรถบรรทุก & บัส';
+            else if (item.product_group === 'motorcycle_tires') kw = 'ยางจักรยานยนต์ & สายตรวจ';
+            else if (item.product_group === 'otr_heavy_machinery') kw = 'ยาง OTR & เครื่องจักร';
+            else if (item.product_group === 'bicycle_specialty_tires') kw = 'ยางจักรยาน & วีลแชร์';
+            else if (item.product_group === 'tube_accessories') kw = 'ยางใน & อุปกรณ์';
+            else kw = 'จัดซื้อยางราชการ';
           }
 
           html += `

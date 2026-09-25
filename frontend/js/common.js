@@ -195,23 +195,20 @@ window.isExcluded = function(title) {
 
   if (lower.includes('ยกเลิก')) return true;
 
+  // 2. Core tire business terms for Vee Rubber
   const isTargetBusiness = [
-    'ฟิตเนส', 'fitness', 'ศูนย์ออกกำลังกาย', 'ห้องออกกำลังกาย', 'เครื่องออกกำลังกาย', 'พื้นฟิตเนส',
-    'สวนสาธารณะ', 'หลังคาโครงเหล็ก', 'อาคารโครงสร้างเหล็ก', 'ศูนย์นันทนาการ', 'ศูนย์เยาวชน', 'ซ่อมแซมพื้น', 'ปรับปรุงพื้น'
+    'ยางรถยนต์', 'ยางรถกระบะ', 'ยางรถปิกอัพ', 'ยางรถตู้', 'ยางรถบรรทุก', 'ยางรถจักรยานยนต์', 'ยางมอเตอร์ไซค์',
+    'ยางเรเดียล', 'ยาง radial', 'ยาง otr', 'ยางเครื่องจักรกล', 'ยางรถแทรกเตอร์', 'ยางรถไถ', 'ยางรถตัก',
+    'ยางรถเกลี่ยดิน', 'ยางรถบด', 'ยางรถยก', 'ยาง forklift', 'ยางตัน', 'ยางลมรถยก', 'ยางรถจักรยาน',
+    'ยางวีลแชร์', 'ยางใน', 'ยางในบิวทิล', 'ยางรองคอด', 'จุ๊บลมยาง', 'จัดซื้อยาง', 'ซื้อยาง'
   ].some(k => lower.includes(k));
+
   if (isTargetBusiness) {
-    const hardExcludes = ['ทางหลวง', 'ถนนสาย', 'ป้ายจราจร', 'โซลาร์', 'ห้องน้ำ', 'ทำความสะอาด', 'รักษาความปลอดภัย', 'อาหาร', 'เทศกาล', 'จ้างออกแบบ', 'จ้างควบคุมงาน'];
+    const hardExcludes = ['ยางมะตอย', 'แอสฟัลต์', 'ถุงมือยาง', 'ยางลบ', 'ตรายาง', 'ปะยาง', 'น้ำยางพารา'];
     return hardExcludes.some(kw => lower.includes(kw));
   }
 
-  if (window.EXCLUDE_KEYWORDS.some(ex => lower.includes(ex.toLowerCase()))) return true;
-
-  const cleanTitle = lower.replace(/พื้นที่(ใช้สอย)?/g, '');
-  const isBuilding = ['อาคารอเนกประสงค์', 'ต่อเติมอาคาร'].some(b => lower.includes(b));
-  if (isBuilding) {
-    const hasSportsFlooring = ['กีฬา', 'สนาม', 'ลานกีฬา', 'ลู่วิ่ง', 'หญ้าเทียม', 'ฟุต', 'บาส', 'ยาง', 'เทพื้น', 'ปูพื้น', 'ปรับปรุงพื้น', 'อีพ็อกซี่', 'กันซึม', 'ฟิตเนส', 'fitness', 'โครงเหล็ก', 'ศูนย์นันทนาการ', 'สวนสาธารณะ'].some(s => cleanTitle.includes(s));
-    if (!hasSportsFlooring) return true;
-  }
+  if (Array.isArray(window.EXCLUDE_KEYWORDS) && window.EXCLUDE_KEYWORDS.some(ex => lower.includes(ex.toLowerCase()))) return true;
   return false;
 };
 

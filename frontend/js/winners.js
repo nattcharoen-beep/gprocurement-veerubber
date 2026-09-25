@@ -295,7 +295,6 @@ function filterVeeRubberOnly(btn) {
   }
 }
 
-// Backwards compatibility alias
-window.filterBlucherOnly = filterVeeRubberOnly;
+
 
 

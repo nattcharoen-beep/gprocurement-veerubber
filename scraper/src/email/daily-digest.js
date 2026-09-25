@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Daily Digest Email Builder - Vee Rubber G-Procurement Tracker
  * Builds an executive, high-conversion HTML email summarizing daily procurement opportunities.
  * Features:
@@ -120,38 +120,30 @@ export function scoreAndTagProject(item) {
     tags.unshift({ label: '🎯 ตรวจเจอเนื้องานใน BOQ', color: '#ffffff', bg: '#16a34a' });
   }
 
-  // 2. Core Business Specialty Tags
-  if (lowerTitle.includes('ลู่วิ่ง') || lowerTitle.includes('ลู่กรีฑา')) {
+  // 2. Core Business Specialty Tags for Vee Rubber
+  if (lowerTitle.includes('ยางรถยนต์') || lowerTitle.includes('ยางรถเก๋ง') || lowerTitle.includes('ยางรถกระบะ') || lowerTitle.includes('ยางรถตู้')) {
     score += 35;
-    tags.push({ label: '🏃 ลู่วิ่ง/ลู่กรีฑา', color: '#b91c1c', bg: '#fee2e2' });
+    tags.push({ label: '🚗 ยางรถยนต์/กระบะ', color: '#1d4ed8', bg: '#dbeafe' });
   }
-  if (lowerTitle.includes('epdm') || lowerTitle.includes('พื้นยาง')) {
+  if (lowerTitle.includes('ยางรถบรรทุก') || lowerTitle.includes('ยางรถบัส') || lowerTitle.includes('ยางรถขยะ') || lowerTitle.includes('ยางรถน้ำ')) {
     score += 35;
-    tags.push({ label: '🎯 ยาง EPDM/ยางสังเคราะห์', color: '#b91c1c', bg: '#fee2e2' });
+    tags.push({ label: '🚛 ยางรถบรรทุก/บัส', color: '#0369a1', bg: '#e0f2fe' });
   }
-  if (lowerTitle.includes('หญ้าเทียม') || lowerTitle.includes('สนามฟุตบอล') || lowerTitle.includes('สนามฟุตซอล')) {
+  if (lowerTitle.includes('ยางรถจักรยานยนต์') || lowerTitle.includes('ยางมอเตอร์ไซค์') || lowerTitle.includes('ยางสายตรวจ')) {
     score += 30;
-    tags.push({ label: '⚽ สนามฟุตบอล/หญ้าเทียม', color: '#047857', bg: '#d1fae5' });
+    tags.push({ label: '🏍️ ยางมอเตอร์ไซค์/สายตรวจ', color: '#6d28d9', bg: '#ede9fe' });
   }
-  if (lowerTitle.includes('สนามเด็กเล่น') || lowerTitle.includes('เครื่องเล่นสนาม') || lowerTitle.includes('สร้างปัญญา')) {
-    score += 30;
-    tags.push({ label: '🧒 สนามเด็กเล่น/เครื่องเล่น', color: '#d97706', bg: '#fef3c7' });
+  if (lowerTitle.includes('ยาง otr') || lowerTitle.includes('ยาง OTR') || lowerTitle.includes('ยางรถแทรกเตอร์') || lowerTitle.includes('ยางรถไถ') || lowerTitle.includes('ยางรถตัก') || lowerTitle.includes('ยางรถยก')) {
+    score += 35;
+    tags.push({ label: '🚜 ยาง OTR/เครื่องจักร', color: '#15803d', bg: '#dcfce7' });
   }
-  if (lowerTitle.includes('โดมอเนกประสงค์') || lowerTitle.includes('อาคารโดม') || lowerTitle.includes('หลังคาคลุม')) {
+  if (lowerTitle.includes('ยางใน') || lowerTitle.includes('ยางรองคอด') || lowerTitle.includes('จุ๊บลม')) {
     score += 25;
-    tags.push({ label: '🏟️ โดมอเนกประสงค์', color: '#0369a1', bg: '#e0f2fe' });
+    tags.push({ label: '🔘 ยางใน/อุปกรณ์ล้อ', color: '#4338ca', bg: '#e0e7ff' });
   }
-  if (lowerTitle.includes('สระว่ายน้ำ') || lowerTitle.includes('สระว่ายนำ')) {
-    score += 25;
-    tags.push({ label: '🏊 สระว่ายน้ำ', color: '#0891b2', bg: '#cffafe' });
-  }
-  if (lowerTitle.includes('ออกกำลังกาย') || lowerTitle.includes('ฟิตเนส')) {
+  if (lowerTitle.includes('ยางเรเดียล') || lowerTitle.includes('ยาง radial') || lowerTitle.includes('เปลี่ยนยาง') || lowerTitle.includes('จัดซื้อยาง')) {
     score += 20;
-    tags.push({ label: '💪 ฟิตเนส/ออกกำลังกาย', color: '#4338ca', bg: '#e0e7ff' });
-  }
-  if (lowerTitle.includes('กันซึม') || lowerTitle.includes('ดาดฟ้า') || lowerTitle.includes('อีพ็อกซี่') || lowerTitle.includes('epoxy')) {
-    score += 20;
-    tags.push({ label: '🔧 กันซึม/อีพ็อกซี่', color: '#4b5563', bg: '#f3f4f6' });
+    tags.push({ label: '🔧 จัดซื้อยางราชการ', color: '#0f766e', bg: '#ccfbf1' });
   }
 
   // 2.1 Disguised High-Yield Curated Patterns (Learned from employee's daily sent emails)
@@ -200,7 +192,7 @@ export function scoreAndTagProject(item) {
 }
 
 export function buildDigestHTML(announcements, options = {}) {
-  const recipientEmail = options.recipient || 'natt.charoen@gmail.com';
+  const recipientEmail = options.recipient || process.env.GMAIL_RECIPIENTS || process.env.ADMIN_EMAIL || 'admin@veerubber.co.th';
   const today = formatThaiDate(new Date().toISOString());
   const portalUrl = 'https://veerubber-finder.pages.dev';
 
@@ -555,11 +547,13 @@ export function buildDigestHTML(announcements, options = {}) {
               if (m && m[1]) kw = m[1];
             }
             if (!kw) {
-              if (item.product_group === 'waterproofing') kw = 'กันซึม';
-              else if (item.product_group === 'sport_flooring') kw = 'พื้นกีฬา/ลู่วิ่ง';
-              else if (item.product_group === 'playground') kw = 'สนามเด็กเล่น';
-              else if (item.product_group === 'factory_flooring') kw = 'พื้นอีพ็อกซี่/PU';
-              else kw = 'สเปกตรงสาย';
+              if (item.product_group === 'passenger_car_tires') kw = 'ยางรถยนต์ & กระบะ';
+              else if (item.product_group === 'truck_bus_tires') kw = 'ยางรถบรรทุก & บัส';
+              else if (item.product_group === 'motorcycle_tires') kw = 'ยางจักรยานยนต์ & สายตรวจ';
+              else if (item.product_group === 'otr_heavy_machinery') kw = 'ยาง OTR & เครื่องจักร';
+              else if (item.product_group === 'bicycle_specialty_tires') kw = 'ยางจักรยาน & วีลแชร์';
+              else if (item.product_group === 'tube_accessories') kw = 'ยางใน & อุปกรณ์';
+              else kw = 'จัดซื้อยางราชการ';
             }
             return `
               <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-left: 5px solid #16a34a; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 14px; color: #14532d;">

@@ -5,7 +5,7 @@ const fs = require('fs');
 
 async function run() {
   console.log('Fetching active projects from Worker API...');
-  const res = await fetch('https://gprocurement-finder.natt-charoen.workers.dev/api/announcements?limit=200', {
+  const res = await fetch('https://gprocurement-veerubber.natt-charoen.workers.dev/api/announcements?limit=200', {
     headers: { 'User-Agent': 'Mozilla/5.0' }
   });
   const json = await res.json();
