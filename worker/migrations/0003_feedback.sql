@@ -1,5 +1,5 @@
 -- Migration: 0003_feedback.sql
--- Stores user feedback on whether announcements match Blucher business (ใช่งาน / ไม่ใช่งาน)
+-- Stores user feedback on whether announcements match Vee Rubber business (ใช่งาน / ไม่ใช่งาน)
 
 CREATE TABLE IF NOT EXISTS project_feedback (
     id TEXT PRIMARY KEY,
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS project_feedback (
     announcement_id TEXT NOT NULL,
     project_id TEXT,
     is_match INTEGER NOT NULL, -- 1 = ใช่งานตรงสาย, 0 = ไม่ใช่งาน
-    reason TEXT,               -- e.g. 'road_works', 'not_flooring', 'services', 'supplies', 'other'
+    reason TEXT,               -- e.g. 'not_tires', 'asphalt_road', 'services', 'supplies', 'other'
     note TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,

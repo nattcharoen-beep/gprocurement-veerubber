@@ -19,7 +19,7 @@ chrome/
 
 .dev.vars*
 !.dev.vars.example
-worker/seed_remote_blucher.sql
+worker/seed_*.sql
 credentials*
 *.credentials
 
