@@ -123,6 +123,7 @@ async function hashPassword(password) {
     const tempSql = path.join(__dirname, 'worker', 'temp_sync.sql');
     fs.writeFileSync(tempSql, sqlStatements.join('\n'), 'utf8');
 
+    try {
       const wranglerCmd = fs.existsSync(path.join(__dirname, 'worker', 'node_modules', '.bin', 'wrangler.cmd'))
         ? '.\\node_modules\\.bin\\wrangler.cmd'
         : 'npx wrangler';
