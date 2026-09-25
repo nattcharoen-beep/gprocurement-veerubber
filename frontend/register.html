@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สมัครสมาชิก | Vee Rubber GProcurement Tracker</title>
+  <meta name="description" content="สมัครสมาชิก Vee Rubber GProcurement Tracker - ติดตามโอกาสงานจัดซื้อจัดจ้างยางภาครัฐ">
+  <meta property="og:title" content="สมัครสมาชิก | Vee Rubber GProcurement Tracker">
+  <meta property="og:description" content="ระบบติดตามโอกาสงานจัดซื้อจัดจ้างภาครัฐ สำหรับ วีรับเบอร์ (VEE RUBBER)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veerubber.co.th/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛞</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card centered-card">
+      <h2 style="color: var(--primary-color); margin-bottom: 8px; font-weight: 700;">สมัครสมาชิกใหม่</h2>
+      <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">กรอกข้อมูลเพื่อขอสิทธิ์เข้าใช้งานระบบ Vee Rubber GProcurement Tracker</p>
+      
+      <div id="msg" class="hidden"></div>
+      
+      <form id="register-form">
+        <div class="form-group">
+          <label for="username" style="font-weight: 600;">ชื่อผู้ใช้ (Username)</label>
+          <input type="text" id="username" class="form-control" placeholder="เช่น somchai99, veerubber_user" required pattern="[A-Za-z0-9_.-]{3,30}" title="ภาษาอังกฤษ ตัวเลข หรือ _ ขั้นต่ำ 3 ตัวอักษร" autocomplete="username">
+          <small style="color: #64748b; font-size: 0.78rem;">สำหรับใช้เข้าสู่ระบบ (ภาษาอังกฤษหรือตัวเลข ขั้นต่ำ 3 ตัวอักษร)</small>
+        </div>
+        <div class="form-group">
+          <label for="name" style="font-weight: 600;">ชื่อ-นามสกุล</label>
+          <input type="text" id="name" class="form-control" placeholder="เช่น สมชาย ใจดี" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="email" style="font-weight: 600;">อีเมล</label>
+          <input type="email" id="email" class="form-control" placeholder="name@company.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password" style="font-weight: 600;">รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="confirm-password" style="font-weight: 600;">ยืนยันรหัสผ่านอีกครั้ง</label>
+          <input type="password" id="confirm-password" class="form-control" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+        <div style="margin-top: 10px; font-size: 0.82rem; color: #64748b; text-align: center;">
+          การสมัครสมาชิกถือว่าท่านยอมรับ <a href="privacy.html" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">นโยบายความเป็นส่วนตัว (PDPA)</a>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px; font-weight: 600; padding: 10px;">ยืนยันการสมัครสมาชิก</button>
+      </form>
+      <div style="margin-top: 20px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+        <a href="login.html" class="link-sub">⬅️ กลับไปหน้าเข้าสู่ระบบ</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('msg');
+      msg.classList.add('hidden');
+
+      const username = document.getElementById('username').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'กำลังส่งข้อมูลสมัคร...';
+
+      if (password !== confirmPassword) {
+        msg.innerHTML = '<div class="alert-box alert-error" style="padding: 10px 14px; background: #fee2e2; color: #991b1b; border: 1px solid #f87171; border-radius: 6px; margin-bottom: 15px;">รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน</div>';
+        msg.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ยืนยันการสมัครสมาชิก';
+        return;
+      }
+
+      try {
+        const res = await api.register({ username, name, email, password });
+        msg.innerHTML = `
+          <div style="padding: 14px 16px; background: #ecfdf5; border: 1.5px solid #34d399; border-radius: 8px; color: #065f46; margin-bottom: 20px; text-align: left;">
+            <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">🎉 สมัครสมาชิกสำเร็จ!</div>
+            <div style="font-size: 0.92rem; line-height: 1.6;">
+              ระบบได้บันทึกข้อมูลและส่งอีเมลแจ้งเตือนไปยังผู้ดูแลระบบ <strong>(Admin: natt.charoen@gmail.com)</strong> เรียบร้อยแล้ว
+            </div>
+            <div style="font-size: 0.88rem; margin-top: 10px; color: #047857; background: rgba(255,255,255,0.7); padding: 8px 12px; border-radius: 6px;">
+              เมื่อ Admin ตรวจสอบและกดอนุมัติแล้ว คุณจะสามารถเข้าใช้งานด้วย Username: <strong>${username}</strong> ได้ทันที
+            </div>
+            <div style="margin-top: 12px; text-align: center;">
+              <a href="login.html" class="btn btn-primary" style="display: inline-block; padding: 6px 18px; font-size: 0.9rem; text-decoration: none;">เข้าสู่หน้า Login</a>
+            </div>
+          </div>
+        `;
+        msg.classList.remove('hidden');
+        document.getElementById('register-form').reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ยืนยันการสมัครสมาชิก';
+      } catch (err) {
+        msg.innerHTML = `<div style="padding: 10px 14px; background: #fee2e2; color: #991b1b; border: 1px solid #f87171; border-radius: 6px; margin-bottom: 15px;">${err.message || 'เกิดข้อผิดพลาดในการสมัครสมาชิก'}</div>`;
+        msg.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ยืนยันการสมัครสมาชิก';
+      }
+    });
+  </script>
+</body>
+</html>

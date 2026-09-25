@@ -1,0 +1,21 @@
+{
+  "name": "gprocurement-scraper",
+  "version": "1.0.0",
+  "description": "Thai government procurement job finder scraper",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "backfill:boq": "node src/backfill-boq-scan.js"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.3.0",
+    "iconv-lite": "^0.6.3",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^6.9.7",
+    "pdf-parse": "^2.4.5",
+    "puppeteer": "^25.10.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

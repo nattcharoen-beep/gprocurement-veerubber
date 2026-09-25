@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>วีรับเบอร์ B2G Command Center V2.0 | ระบบติดตามงานจัดซื้อจัดจ้างยางภาครัฐ</title>
+  <meta name="description" content="ระบบ B2G Command Center สำหรับ วีรับเบอร์ (VEE RUBBER) - ค้นหาโอกาสงานจัดซื้อยางภาครัฐ สแกน BOQ และวิเคราะห์คู่แข่ง">
+  <meta property="og:title" content="วีรับเบอร์ B2G Command Center V2.0">
+  <meta property="og:description" content="ศูนย์บัญชาการจัดซื้อจัดจ้างยางภาครัฐสำหรับ วีรับเบอร์ - สแกน BOQ และวิเคราะห์ราคาประมูล">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veerubber.co.th/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Base Style and V2 Command Center Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=5.1">
+  <link rel="stylesheet" href="css/v2.css?v=2.5">
+  <!-- Embedded Overview Box Styles (Impeccable Refined Depth) -->
+  <style>
+    .ov-region-box {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease !important;
+    }
+    .ov-region-box:hover {
+      transform: translateY(-2px) !important;
+      border-color: #94a3b8 !important;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+    }
+    .ov-region-box:hover .ov-btn-pill {
+      background: #003366 !important;
+      color: #ffffff !important;
+      border-color: #003366 !important;
+    }
+    .ov-group-box {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease !important;
+    }
+    .ov-group-box:hover {
+      transform: translateY(-2px) !important;
+      border-color: #94a3b8 !important;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+    }
+    .ov-group-box:hover .ov-btn-pill {
+      background: #003366 !important;
+      color: #ffffff !important;
+      border-color: #003366 !important;
+    }
+  </style>
+</head>
+<body class="v2-body">
+
+  <div class="v2-app-container">
+    
+    <!-- Mobile Backdrop -->
+    <div class="v2-sidebar-backdrop" id="v2-backdrop" onclick="toggleMobileSidebar()"></div>
+
+    <!-- ======================================================================
+         1. Modern Sidebar Navigation (Dark Navy Executive Style)
+         ====================================================================== -->
+    <aside class="v2-sidebar" id="v2-sidebar">
+      <div class="v2-sidebar-brand">
+        <a href="#" class="v2-brand-title" onclick="switchV2View('overview'); return false;">
+          <div class="v2-brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="v2-brand-name">วีรับเบอร์ <span class="v2-brand-tag">V2.0</span></div>
+            <div style="font-size: 0.80rem; color: #64748b; font-weight: 500;">B2G Command Center</div>
+          </div>
+        </a>
+      </div>
+
+      <nav class="v2-sidebar-nav">
+        <div class="v2-nav-section-title">ศูนย์ปฏิบัติการ</div>
+        <a class="v2-nav-item active" data-view="overview" onclick="switchV2View('overview'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          </span>
+          <span>ภาพรวมระบบ</span>
+        </a>
+        <a class="v2-nav-item" data-view="opportunities" onclick="switchV2View('opportunities'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+          <span>โอกาสงานค้นพบใหม่</span>
+          <span class="v2-nav-badge" id="v2-badge-opp-count">0</span>
+        </a>
+        <a class="v2-nav-item" data-view="boq" onclick="switchV2View('boq'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><circle cx="11" cy="15" r="2.5"/><path d="m13 17 2.5 2.5"/></svg>
+          </span>
+          <span>สแกนพบใน BOQ</span>
+          <span class="v2-nav-badge" id="v2-badge-boq-count" style="background: #15803d; color: #ffffff;">0</span>
+        </a>
+        <a class="v2-nav-item" data-view="watchlist" onclick="switchV2View('watchlist'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+          </span>
+          <span>งานที่ติดตาม</span>
+          <span class="v2-nav-badge" id="v2-badge-watch-count">0</span>
+        </a>
+        <a class="v2-nav-item" data-view="archive" onclick="switchV2View('archive'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span>คลังเคาะแล้ว (Archive)</span>
+          <span class="v2-nav-badge" id="v2-badge-archive-count" style="background: #475569; color: white;">0</span>
+        </a>
+
+        <div class="v2-nav-section-title" style="margin-top: 10px;">ข่าวกรอง & ยุทธศาสตร์</div>
+        <a class="v2-nav-item" data-view="competitor" onclick="switchV2View('competitor'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4z"/></svg>
+          </span>
+          <span>ข่าวกรองคู่แข่ง</span>
+        </a>
+        <a class="v2-nav-item" data-view="keywords" onclick="switchV2View('keywords'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><circle cx="7" cy="7" r=".5" fill="currentColor"/></svg>
+          </span>
+          <span>จัดการคีย์เวิร์ด</span>
+          <span class="v2-nav-badge" id="v2-badge-kw-count">113</span>
+        </a>
+        <a class="v2-nav-item" data-view="profile" onclick="switchV2View('profile'); return false;">
+          <span class="v2-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+          </span>
+          <span>โปรไฟล์วีรับเบอร์</span>
+        </a>
+        <a class="v2-nav-item" id="v2-admin-nav-item" href="admin.html" style="display: none;">
+          <span class="v2-nav-icon" style="color: #0369a1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span>จัดการผู้ใช้งาน (Admin)</span>
+          <span class="v2-nav-badge" id="v2-pending-user-badge" style="display: none; background: #dc2626; color: #ffffff; font-weight: 700;">0</span>
+        </a>
+      </nav>
+
+      <div class="v2-sidebar-footer">
+        <div class="v2-user-badge-row">
+          <div class="v2-user-avatar" id="v2-user-avatar">V</div>
+          <div class="v2-user-info-text">
+            <div class="v2-user-name" id="v2-user-name">วีรับเบอร์ แอดมิน</div>
+            <div class="v2-user-role" id="v2-user-role">ผู้ใช้งานระบบ</div>
+          </div>
+          <a href="admin.html" id="v2-user-admin-btn" title="หน้าจัดการระบบ Admin" style="display: none; color: #0369a1; align-items: center; justify-content: center; padding: 6px; border-radius: 4px; border: 1px solid #bae6fd; background: #f0f9ff; margin-right: 4px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          </a>
+          <a href="#" onclick="logout(); return false;" title="ออกจากระบบ" style="color: #dc2626; display: inline-flex; align-items: center; justify-content: center; padding: 6px; border-radius: 4px; border: 1px solid #fee2e2; background: #fff;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================================================================
+         2. Main Application Wrapper
+         ====================================================================== -->
+    <div class="v2-main-wrapper">
+      
+      <!-- Top Sticky Header -->
+      <header class="v2-top-bar">
+        <div class="v2-top-bar-left">
+          <button class="v2-mobile-toggle" onclick="toggleMobileSidebar()" aria-label="เมนู">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <div class="v2-page-title-group">
+            <h1 id="v2-view-title">ภาพรวมระบบ</h1>
+            <p id="v2-view-desc">สรุปความเคลื่อนไหวประกาศจัดซื้อจัดจ้างยางภาครัฐที่ตรงกับ วีรับเบอร์ ประจำวัน</p>
+          </div>
+        </div>
+
+        <div class="v2-top-bar-right">
+          <div class="v2-top-search">
+            <span class="v2-top-search-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="text" id="v2-global-search" placeholder="ค้นชื่อโครงการ, หน่วยงาน, หรือคำค้น..." oninput="handleGlobalSearch(event)">
+            <div class="v2-top-search-shortcut">
+              <kbd class="v2-search-shortcut-badge">Ctrl K</kbd>
+            </div>
+          </div>
+
+          <button onclick="openBiddingSimulator('custom')" class="v2-btn-quick-calc" title="เปิดเครื่องคิดเลขคำนวณราคาประมูล Factor F">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+            <span>เคาะราคา</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Dynamic Content Views -->
+      <main class="v2-content-body">
+
+        <!-- ==================================================================
+             VIEW 1: ภาพรวมระบบ (Overview / KPI Dashboard)
+             ================================================================== -->
+        <section id="view-overview" class="v2-view-section active">
+          
+          <h2 class="sr-only">สรุปตัวชี้วัดสำคัญ (Key Performance Indicators)</h2>
+
+          <!-- Executive KPI Grid (Clickable Direct Filters) -->
+          <div class="v2-kpi-grid">
+            <!-- KPI 1: โครงการทั้งหมด -->
+            <div class="v2-kpi-card kpi-active" onclick="filterOpportunitiesAll()" style="cursor: pointer;" title="คลิกเพื่อดูรายการงานที่เปิดแข่งขันทั้งหมด">
+              <div class="v2-kpi-info">
+                <h3 style="font-size: 0.85rem; font-weight: 700; color: #475569; margin: 0 0 6px 0; letter-spacing: 0.2px;">โครงการเปิดรับทั้งหมด</h3>
+                <div class="v2-kpi-value" id="kpi-val-active">0 โครงการ</div>
+                <div class="v2-kpi-sub"><span style="color: #dc2626;">●</span> ประกาศเชิญชวน & ร่าง TOR</div>
+                <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                  👉 คลิกดูงานทั้งหมดในระบบ
+                </div>
+              </div>
+              <div class="v2-kpi-icon-box" style="background: #eff6ff; color: #0369a1;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              </div>
+            </div>
+
+            <!-- KPI 2: มุดเจอกี่อัน (สแกนพบใน BOQ) -->
+            <div class="v2-kpi-card kpi-boq" onclick="filterOpportunitiesBoq()" style="cursor: pointer;" title="คลิกเพื่อกรองเฉพาะงานที่มุดสแกนพบสเปกในไฟล์ BOQ">
+              <div class="v2-kpi-info">
+                <h3 style="font-size: 0.85rem; font-weight: 700; color: #475569; margin: 0 0 6px 0; letter-spacing: 0.2px;">มุดสแกนพบใน BOQ / ปร.4</h3>
+                <div class="v2-kpi-value" id="kpi-val-boq">0 รายการ</div>
+                <div class="v2-kpi-sub"><span style="color: #15803d;">●</span> มุดสแกนไฟล์ PDF ปร.4 สำเร็จ</div>
+                <div style="font-size: 0.82rem; color: #15803d; font-weight: 700; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                  👉 คลิกกรองเฉพาะงานที่มุดเจอสเปก
+                </div>
+              </div>
+              <div class="v2-kpi-icon-box" style="background: #ecfdf5; color: #15803d;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><circle cx="11" cy="15" r="2.5"/><path d="m13 17 2.5 2.5"/></svg>
+              </div>
+            </div>
+
+            <!-- KPI 3: มูลค่างานที่เฝ้าติดตาม -->
+            <div class="v2-kpi-card kpi-budget" onclick="filterOpportunitiesAll()" style="cursor: pointer;" title="คลิกเพื่อดูรายการงานทั้งหมด">
+              <div class="v2-kpi-info">
+                <h3 style="font-size: 0.85rem; font-weight: 700; color: #475569; margin: 0 0 6px 0; letter-spacing: 0.2px;">มูลค่างานที่เฝ้าติดตาม</h3>
+                <div class="v2-kpi-value" id="kpi-val-budget">฿0</div>
+                <div class="v2-kpi-sub">งบประมาณรวมโครงการที่ตรวจพบ</div>
+                <div style="font-size: 0.82rem; color: #b45309; font-weight: 700; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                  💰 ไม่เกิน 200 ล้านบาท/โครงการ
+                </div>
+              </div>
+              <div class="v2-kpi-icon-box" style="background: #fefce8; color: #ca8a04;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+              </div>
+            </div>
+
+            <!-- KPI 4: คลังเคาะแล้ว -->
+            <div class="v2-kpi-card" onclick="switchV2View('archive')" style="cursor: pointer; position: relative;" title="คลิกเพื่อเปิดดูคลังประวัติโครงการที่เคาะราคาแล้ว">
+              <div class="v2-kpi-info">
+                <h3 style="font-size: 0.85rem; font-weight: 700; color: #475569; margin: 0 0 6px 0; letter-spacing: 0.2px;">คลังเคาะแล้ว (Archive)</h3>
+                <div class="v2-kpi-value" id="kpi-val-archive" style="color: #475569;">0 โครงการ</div>
+                <div class="v2-kpi-sub"><span style="color: #475569;">●</span> ประวัติยื่นซอง/เซ็นสัญญาแล้ว</div>
+                <div style="font-size: 0.82rem; color: #475569; font-weight: 700; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                  📁 เปิดคลังประวัติการเคาะ
+                </div>
+              </div>
+              <div class="v2-kpi-icon-box" style="background: #f1f5f9; color: #475569;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================================================================
+               REGIONAL BREAKDOWN DASHBOARD (งานแยกเป็นแต่ละภาค ภาคละกี่งาน)
+               ================================================================ -->
+          <!-- ================================================================
+               REGIONAL BREAKDOWN DASHBOARD (งานแยกเป็นแต่ละภาค ภาคละกี่งาน)
+               ================================================================ -->
+          <section class="ov-section" style="margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+              <div>
+                <h2 style="color: #0f172a; margin: 0 0 6px 0; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.35rem;">🗺️</span> การกระจายตัวของโอกาสงานแยกตามภูมิภาค (7 โซนทั่วประเทศ)
+                </h2>
+                <p style="margin: 0; color: #64748b; font-size: 0.88rem; line-height: 1.5;">
+                  คลิกที่กล่องของแต่ละภาคเพื่อเข้าไปดูรายการโครงการในภาคนั้นทันที (ระบบจะกรองให้อัตโนมัติ)
+                </p>
+              </div>
+              <button type="button" onclick="filterOpportunitiesZone('')" style="background: #003366; border: none; color: #ffffff; padding: 9px 18px; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: 'Anuphan', sans-serif; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); transition: all 0.2s ease;">
+                <span>🌐 ดูทุกภาค (ทั่วประเทศ)</span>
+              </button>
+            </div>
+
+            <!-- Regional Interactive Boxes Grid (Auto-responsive boxes) -->
+            <div class="ov-region-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
+              
+              <!-- Zone 1: Northeast (ภาคอีสาน) -->
+              <div class="ov-region-box zone-northeast" onclick="filterOpportunitiesZone('northeast')" title="คลิกเพื่อดูโครงการในภาคอีสาน" style="background: #ffffff; border: 1.5px solid #fed7aa; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #ea580c;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #fff7ed; border: 1px solid #ffedd5; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🌾
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคอีสาน</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">20 จังหวัด</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-northeast" style="background: #fff7ed; color: #c2410c; border: 1.5px solid #fed7aa; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-northeast" style="height: 100%; width: 0%; border-radius: 999px; background: #ea580c;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-northeast" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-northeast" style="font-weight: 800; color: #c2410c; background: #fff7ed; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #c2410c; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 2: South (ภาคใต้) -->
+              <div class="ov-region-box zone-south" onclick="filterOpportunitiesZone('south')" title="คลิกเพื่อดูโครงการในภาคใต้" style="background: #ffffff; border: 1.5px solid #99f6e4; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #0d9488;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdfa; border: 1px solid #ccfbf1; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🌴
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคใต้</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">14 จังหวัด</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-south" style="background: #f0fdfa; color: #0f766e; border: 1.5px solid #99f6e4; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-south" style="height: 100%; width: 0%; border-radius: 999px; background: #0d9488;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-south" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-south" style="font-weight: 800; color: #0f766e; background: #f0fdfa; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #0f766e; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 3: BKK (กทม.และปริมณฑล) -->
+              <div class="ov-region-box zone-bkk" onclick="filterOpportunitiesZone('bkk')" title="คลิกเพื่อดูโครงการใน กทม.และปริมณฑล" style="background: #ffffff; border: 1.5px solid #bae6fd; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #0284c7;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #f0f9ff; border: 1px solid #e0f2fe; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🏙️
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">กทม.และปริมณฑล</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">กรุงเทพฯ และ 5 ปริมณฑล</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-bkk" style="background: #f0f9ff; color: #0369a1; border: 1.5px solid #bae6fd; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-bkk" style="height: 100%; width: 0%; border-radius: 999px; background: #0284c7;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-bkk" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-bkk" style="font-weight: 800; color: #0369a1; background: #f0f9ff; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #0369a1; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 4: East (ภาคตะวันออก) -->
+              <div class="ov-region-box zone-east" onclick="filterOpportunitiesZone('east')" title="คลิกเพื่อดูโครงการในภาคตะวันออก" style="background: #ffffff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #2563eb;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; border: 1px solid #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🌊
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคตะวันออก</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">8 จังหวัด (EEC)</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-east" style="background: #eff6ff; color: #1d4ed8; border: 1.5px solid #bfdbfe; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-east" style="height: 100%; width: 0%; border-radius: 999px; background: #2563eb;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-east" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-east" style="font-weight: 800; color: #2563eb; background: #eff6ff; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #1d4ed8; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 5: North (ภาคเหนือ) -->
+              <div class="ov-region-box zone-north" onclick="filterOpportunitiesZone('north')" title="คลิกเพื่อดูโครงการในภาคเหนือ" style="background: #ffffff; border: 1.5px solid #bbf7d0; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #16a34a;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdf4; border: 1px solid #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        ⛰️
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคเหนือ</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">17 จังหวัด</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-north" style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-north" style="height: 100%; width: 0%; border-radius: 999px; background: #16a34a;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-north" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-north" style="font-weight: 800; color: #15803d; background: #f0fdf4; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #15803d; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 6: Central (ภาคกลาง) -->
+              <div class="ov-region-box zone-central" onclick="filterOpportunitiesZone('central')" title="คลิกเพื่อดูโครงการในภาคกลาง" style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #334155;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🏛️
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคกลาง</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">12 จังหวัด</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-central" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-central" style="height: 100%; width: 0%; border-radius: 999px; background: #334155;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-central" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-central" style="font-weight: 800; color: #334155; background: #f1f5f9; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #334155; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- Zone 7: West (ภาคตะวันตก) -->
+              <div class="ov-region-box zone-west" onclick="filterOpportunitiesZone('west')" title="คลิกเพื่อดูโครงการในภาคตะวันตก" style="background: #ffffff; border: 1.5px solid #a7f3d0; border-radius: 14px; padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 165px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #059669;"></div>
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 42px; height: 42px; border-radius: 10px; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        🌲
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ภาคตะวันตก</div>
+                        <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">5 จังหวัด</div>
+                      </div>
+                    </div>
+                    <span class="ov-badge" id="ov-zcount-west" style="background: #ecfdf5; color: #047857; border: 1.5px solid #a7f3d0; font-weight: 800; font-size: 0.95rem; padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);">0 งาน</span>
+                  </div>
+
+                  <div style="width: 100%; height: 7px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+                    <div id="ov-zbar-west" style="height: 100%; width: 0%; border-radius: 999px; background: #059669;"></div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: #64748b; margin-bottom: 14px;">
+                    <span>งบรวม: <strong id="ov-zbudget-west" style="color: #0f172a; font-weight: 800;">฿0</strong></span>
+                    <span id="ov-zpct-west" style="font-weight: 800; color: #047857; background: #ecfdf5; padding: 1px 6px; border-radius: 6px;">0%</span>
+                  </div>
+                </div>
+
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: #047857; transition: all 0.2s ease;">
+                  <span>👉 คลิกดูงานภาคนี้</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Product Group Breakdown (กล่องหมวดหมู่สินค้ายางวีรับเบอร์) -->
+          <section class="ov-section" style="margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+              <div>
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.35rem;">🛞</span> สัดส่วนโอกาสงานตามกลุ่มสินค้ายาง วีรับเบอร์ (VEE RUBBER)
+                </h2>
+                <p style="margin: 0; color: #64748b; font-size: 0.88rem; line-height: 1.5;">
+                  คลิกที่กล่องเพื่อกรองดูเฉพาะงานจัดซื้อยางแต่ละประเภททันที
+                </p>
+              </div>
+              <span style="font-size: 0.82rem; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 14px; border-radius: 8px; font-weight: 600;">
+                👆 เลือกหมวดยางที่ต้องการเจาะลึก
+              </span>
+            </div>
+
+            <!-- Product Group Grid (6 boxed cards) -->
+            <div class="ov-group-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
+              
+              <!-- 1. ยางรถยนต์ & รถกระบะ -->
+              <div class="ov-group-box group-passenger" onclick="filterOpportunitiesGroup('passenger_car_tires')" title="คลิกเพื่อกรองหมวดยางรถยนต์และกระบะ" style="background: #ffffff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #2563eb;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #eff6ff; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🚗
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยางรถยนต์ & กระบะ</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">เก๋ง, ปิกอัพ, ตู้, รถพยาบาล</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-passenger" style="font-weight: 800; font-size: 1.05rem; color: #2563eb; background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #2563eb; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวดยางรถยนต์</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- 2. ยางรถบรรทุก & บัส -->
+              <div class="ov-group-box group-truck" onclick="filterOpportunitiesGroup('truck_bus_tires')" title="คลิกเพื่อกรองหมวดยางรถบรรทุกและบัส" style="background: #ffffff; border: 1.5px solid #fecaca; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #dc2626;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #fef2f2; border: 1px solid #fecaca; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🚛
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยางรถบรรทุก & บัส</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">6 ล้อ, 10 ล้อ, ดับเพลิง, ขยะ</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-truck" style="font-weight: 800; font-size: 1.05rem; color: #dc2626; background: #fef2f2; border: 1.5px solid #fecaca; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #dc2626; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวดยางรถบรรทุก</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- 3. ยางจักรยานยนต์ & สายตรวจ -->
+              <div class="ov-group-box group-motorcycle" onclick="filterOpportunitiesGroup('motorcycle_tires')" title="คลิกเพื่อกรองหมวดยางรถจักรยานยนต์" style="background: #ffffff; border: 1.5px solid #bae6fd; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #0284c7;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #f0f9ff; border: 1px solid #bae6fd; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🏍️
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยางจักรยานยนต์</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">สายตรวจ, สภ., เทศกิจ, VRM</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-motorcycle" style="font-weight: 800; font-size: 1.05rem; color: #0284c7; background: #f0f9ff; border: 1.5px solid #bae6fd; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #0284c7; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวดจักรยานยนต์</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- 4. ยาง OTR & เครื่องจักรกลหนัก -->
+              <div class="ov-group-box group-otr" onclick="filterOpportunitiesGroup('otr_heavy_machinery')" title="คลิกเพื่อกรองหมวดยาง OTR และเครื่องจักร" style="background: #ffffff; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #d97706;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #fffbeb; border: 1px solid #fde68a; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🚜
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยาง OTR & เครื่องจักร</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">แทรกเตอร์, ตัก, เกลี่ย, รถยก</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-otr" style="font-weight: 800; font-size: 1.05rem; color: #b45309; background: #fffbeb; border: 1.5px solid #fde68a; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #b45309; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวด OTR</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- 5. ยางจักรยาน & วีลแชร์ -->
+              <div class="ov-group-box group-bicycle" onclick="filterOpportunitiesGroup('bicycle_specialty_tires')" title="คลิกเพื่อกรองหมวดยางจักรยานและวีลแชร์" style="background: #ffffff; border: 1.5px solid #bbf7d0; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #16a34a;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🚲
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยางจักรยาน & วีลแชร์</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">จักรยานยืมเรียน, รถเข็น, ATV</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-bicycle" style="font-weight: 800; font-size: 1.05rem; color: #15803d; background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #15803d; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวดจักรยาน</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+              <!-- 6. ยางใน & อุปกรณ์ล้อยาง -->
+              <div class="ov-group-box group-tube" onclick="filterOpportunitiesGroup('tube_accessories')" title="คลิกเพื่อกรองหมวดยางในและอุปกรณ์" style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04); min-height: 130px; transition: all 0.22s ease;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #475569;"></div>
+                <div>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 4px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.45rem;">
+                        🔘
+                      </div>
+                      <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #1e293b; line-height: 1.35;">ยางใน & อุปกรณ์</div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">ยางในบิวทิล, ยางรองคอด, จุ๊บ</div>
+                      </div>
+                    </div>
+                    <span id="ov-gcount-tube" style="font-weight: 800; font-size: 1.05rem; color: #334155; background: #f1f5f9; border: 1.5px solid #cbd5e1; padding: 4px 12px; border-radius: 20px; white-space: nowrap;">0 งาน</span>
+                  </div>
+                </div>
+                <div class="ov-btn-pill" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #334155; transition: all 0.2s ease;">
+                  <span>👉 คลิกกรองหมวดยางใน</span>
+                  <span>➔</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Highlight Discoveries Section in Overview -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0;">
+            <h2 style="font-size: 1.22rem; color: #0f172a; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.35rem;">⭐</span> โครงการตรงสายเป้าหมายสูงสุดล่าสุด
+            </h2>
+            <a href="#" onclick="filterOpportunitiesAll(); return false;" style="font-size: 0.88rem; font-weight: 700; color: #0369a1; text-decoration: none;">ดูทั้งหมด (<span id="v2-top-fit-count">0</span> โครงการ) →</a>
+          </div>
+
+          <div id="v2-overview-top-fit-list" style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="text-center" style="padding: 40px; color: #64748b;">กำลังโหลดข้อมูลโครงการเป้าหมาย...</div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================================
+             VIEW 2: 🎯 โอกาสงานค้นพบใหม่ (All Active Announcements)
+             ================================================================== -->
+        <section id="view-opportunities" class="v2-view-section">
+          
+          <!-- Quick Filter Bar (Single Row, High Impact) -->
+          <div class="quick-filter-bar" style="margin-bottom: 16px;">
+            <div class="quick-search-box">
+              <input type="text" id="v2-search-input" class="form-control quick-search-input" placeholder="🔍 ค้นหาชื่อโครงการ, เลขที่ e-GP, หรือจังหวัด..." oninput="onV2SearchInput(event)">
+            </div>
+            <button id="btn-v2-quick-boq" type="button" onclick="toggleV2BoqOnly(this)" class="btn-quick-pill btn-quick-boq" title="คลิกเพื่อกรองเฉพาะโครงการที่มุดพบสเปกใน BOQ">
+              <span>🔬 มุดพบใน BOQ</span>
+            </button>
+            <button id="btn-v2-quick-urgent" type="button" onclick="toggleV2Urgent(this)" class="btn-quick-pill btn-quick-urgent" title="กรองโครงการที่ใกล้วันเคาะราคาภายใน 7 วัน">
+              <span>🔥 ใกล้เคาะราคา (&lt; 7 วัน)</span>
+            </button>
+            <button id="btn-v2-toggle-drawer" type="button" onclick="toggleV2FilterDrawer()" class="btn-quick-pill btn-quick-drawer active" title="เปิด/ปิด ตัวกรองโซนจังหวัดและช่วงงบประมาณ">
+              <span>⚙️ ตัวกรองละเอียด <span id="v2-drawer-arrow">▲</span></span>
+            </button>
+            <button onclick="resetV2Filters()" class="btn btn-secondary" style="height: 44px; padding: 0 16px; font-size: 0.88rem; font-weight: 700; border-radius: 8px;" title="ล้างตัวกรองทั้งหมด">
+              ↺ รีเซ็ต
+            </button>
+          </div>
+
+          <!-- Collapsible Detailed Filter Drawer -->
+          <div id="v2-filter-drawer" class="filter-drawer" style="margin-bottom: 20px;">
+            
+            <!-- Row 0: Geographic Zone Filter (7 โซนทั่วประเทศ) -->
+            <div class="drawer-section">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: gap: 6px;">
+                <span style="font-size: 0.9rem; font-weight: 700; color: #003366; display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 1.1rem;">🗺️</span> โซนจังหวัด (7 โซนทั่วประเทศ):
+                </span>
+                <span id="v2-zone-active-label" style="font-size: 0.8rem; font-weight: 600; color: #0369a1; background: #e0f2fe; padding: 2px 8px; border-radius: 6px;">แสดงทุกโซน</span>
+              </div>
+              <div class="zone-filters-container">
+                <button class="btn-zone-filter active" data-v2-zone="" onclick="selectV2Zone('', this)">🌐 ทั้งหมด (<span class="z-count" id="v2-zcount-all">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="bkk" onclick="selectV2Zone('bkk', this)">🏙️ กทม. (<span class="z-count" id="v2-zcount-bkk">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="central" onclick="selectV2Zone('central', this)">🏛️ ภาคกลาง (<span class="z-count" id="v2-zcount-central">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="east" onclick="selectV2Zone('east', this)">🌊 ภาคตะวันออก (<span class="z-count" id="v2-zcount-east">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="north" onclick="selectV2Zone('north', this)">⛰️ ภาคเหนือ (<span class="z-count" id="v2-zcount-north">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="northeast" onclick="selectV2Zone('northeast', this)">🌾 ภาคอีสาน (<span class="z-count" id="v2-zcount-northeast">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="west" onclick="selectV2Zone('west', this)">🌲 ภาคตะวันตก (<span class="z-count" id="v2-zcount-west">0</span>)</button>
+                <button class="btn-zone-filter" data-v2-zone="south" onclick="selectV2Zone('south', this)">🌴 ภาคใต้ (<span class="z-count" id="v2-zcount-south">0</span>)</button>
+              </div>
+            </div>
+
+            <!-- Row 1: Date Filter (ช่วงเวลาประกาศ) -->
+            <div class="drawer-section">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+                <span style="font-size: 0.88rem; font-weight: 700; color: #003366; margin-right: 4px;">📅 ช่วงเวลาประกาศ:</span>
+                <div class="date-filters-container">
+                  <button class="btn-date-filter active" data-v2-days="-1" onclick="selectV2Days(-1, this)">🌟 งานที่ยังไม่เคาะทั้งหมด</button>
+                  <button class="btn-date-filter" data-v2-days="0" onclick="selectV2Days(0, this)">วันนี้</button>
+                  <button class="btn-date-filter" data-v2-days="7" onclick="selectV2Days(7, this)">7 วันหลังสุด</button>
+                  <button class="btn-date-filter" data-v2-days="30" onclick="selectV2Days(30, this)">30 วันหลังสุด</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Budget Range Filter (มูลค่าโครงการ) -->
+            <div class="drawer-section">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+                <span style="font-size: 0.88rem; font-weight: 700; color: #003366; margin-right: 4px;">💰 มูลค่าโครงการ:</span>
+                <div class="budget-filters-container">
+                  <button class="btn-budget-filter active" data-v2-bmin="" data-v2-bmax="" onclick="selectV2Budget('', '', this)">ทั้งหมด (ไม่เกิน 200 ล้าน)</button>
+                  <button class="btn-budget-filter" data-v2-bmin="500000" data-v2-bmax="2000000" onclick="selectV2Budget('500000', '2000000', this)">5 แสน – 2 ล้าน</button>
+                  <button class="btn-budget-filter" data-v2-bmin="2000000" data-v2-bmax="5000000" onclick="selectV2Budget('2000000', '5000000', this)">2 – 5 ล้าน</button>
+                  <button class="btn-budget-filter" data-v2-bmin="5000000" data-v2-bmax="10000000" onclick="selectV2Budget('5000000', '10000000', this)">5 – 10 ล้าน</button>
+                  <button class="btn-budget-filter" data-v2-bmin="10000000" data-v2-bmax="50000000" onclick="selectV2Budget('10000000', '50000000', this)">10 – 50 ล้าน</button>
+                  <button class="btn-budget-filter" data-v2-bmin="50000000" data-v2-bmax="200000000" onclick="selectV2Budget('50000000', '200000000', this)">50 – 200 ล้าน</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 3: Announce Types & Product Groups -->
+            <div class="drawer-section" style="display: flex; flex-wrap: wrap; gap: 15px;">
+              <div>
+                <span style="font-size: 0.85rem; font-weight: 700; margin-right: 6px; color: #003366;">ประเภทประกาศ:</span>
+                <button class="badge badge-outline type-d0 active" data-v2-type="D0" onclick="toggleV2TypeFilter('D0', this)">เชิญชวน</button>
+                <button class="badge badge-outline type-b0 active" data-v2-type="B0" onclick="toggleV2TypeFilter('B0', this)">ร่าง TOR</button>
+                <button class="badge badge-outline type-15 active" data-v2-type="15" onclick="toggleV2TypeFilter('15', this)">ราคากลาง</button>
+                <button class="badge badge-outline type-p0 active" data-v2-type="P0" onclick="toggleV2TypeFilter('P0', this)">แผนจัดซื้อ</button>
+              </div>
+              <div>
+                <span style="font-size: 0.85rem; font-weight: 700; margin-right: 6px; color: #003366;">กลุ่มสินค้ายางวีรับเบอร์:</span>
+                <button class="badge badge-outline group-passenger_car_tires active" data-v2-group="passenger_car_tires" onclick="toggleV2GroupFilter('passenger_car_tires', this)">🚗 ยางรถยนต์ & กระบะ</button>
+                <button class="badge badge-outline group-truck_bus_tires active" data-v2-group="truck_bus_tires" onclick="toggleV2GroupFilter('truck_bus_tires', this)">🚛 ยางรถบรรทุก & บัส</button>
+                <button class="badge badge-outline group-motorcycle_tires active" data-v2-group="motorcycle_tires" onclick="toggleV2GroupFilter('motorcycle_tires', this)">🏍️ ยาง จยย. & สายตรวจ</button>
+                <button class="badge badge-outline group-otr_heavy_machinery active" data-v2-group="otr_heavy_machinery" onclick="toggleV2GroupFilter('otr_heavy_machinery', this)">🚜 ยาง OTR & เครื่องจักร</button>
+                <button class="badge badge-outline group-bicycle_specialty_tires active" data-v2-group="bicycle_specialty_tires" onclick="toggleV2GroupFilter('bicycle_specialty_tires', this)">🚲 ยางจักรยาน & วีลแชร์</button>
+                <button class="badge badge-outline group-tube_accessories active" data-v2-group="tube_accessories" onclick="toggleV2GroupFilter('tube_accessories', this)">🔘 ยางใน & อุปกรณ์</button>
+              </div>
+            </div>
+
+            <!-- Row 4: Status filter & Auto-hide toggle -->
+            <div class="drawer-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: #003366; margin-right: 2px;">🎯 สถานะตรวจสอบ:</span>
+                <div class="status-filters-container">
+                  <button class="btn-status-filter active" data-v2-status="all" onclick="selectV2Status('all', this)">ทั้งหมด</button>
+                  <button class="btn-status-filter" data-v2-status="matched" onclick="selectV2Status('matched', this)">⭐ ตรงสายแล้ว</button>
+                  <button class="btn-status-filter" data-v2-status="maybe" onclick="selectV2Status('maybe', this)">🤔 อาจจะใช่</button>
+                  <button class="btn-status-filter" data-v2-status="unreviewed" onclick="selectV2Status('unreviewed', this)">⏳ รอตรวจ</button>
+                  <button class="btn-status-filter" data-v2-status="rejected" onclick="selectV2Status('rejected', this)">🚫 ไม่ใช่งาน</button>
+                </div>
+                <span id="v2-ai-training-badge" style="font-size: 0.78rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 12px; font-weight: 700; border: 1px solid #bae6fd; display: inline-flex; align-items: center; gap: 4px;">
+                  🧠 คลัง AI บันทึกแล้ว: <span id="v2-feedback-total-count">0</span> งาน
+                </span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; font-weight: 600; color: #475569; cursor: pointer; background: #f8fafc; padding: 5px 12px; border-radius: 18px; border: 1px solid #cbd5e1;">
+                  <input type="checkbox" id="v2-toggle-hide-rejected" onchange="toggleV2HideRejected(this.checked)" style="cursor: pointer; accent-color: #003366;">
+                  <span>👁️ ซ่อนงานที่ระบุว่า "ไม่ใช่งาน" อัตโนมัติ</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Guidance Box -->
+          <div style="background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: #0050b3;">
+            <span style="font-size: 1.25rem;">💡</span>
+            <div>
+              <strong>วิธีดูเอกสาร TOR / ราคากลางใน e-GP:</strong> 
+              กดปุ่ม <strong>"📋 คัดลอกเลขที่"</strong> ที่การ์ดโครงการ แล้วกด <strong>"เปิดค้นหาใน e-GP 🔗"</strong> นำเลขที่ไปวาง (Ctrl+V) ในช่องค้นหาของระบบจัดซื้อจัดจ้างภาครัฐเพื่อดาวน์โหลดเอกสารได้ทันที
+            </div>
+          </div>
+
+          <!-- View Toolbar: Result Count & Mode Switcher (HP Design System) -->
+          <div class="v2-view-toolbar">
+            <div class="v2-toolbar-left">
+              <span class="v2-toolbar-count">รายการโครงการที่ค้นพบ:</span>
+              <span class="v2-toolbar-count-badge" id="v2-visible-count-badge">0 โครงการ</span>
+            </div>
+            <div class="v2-view-switcher">
+              <button type="button" id="v2-view-btn-card" class="v2-view-btn active" onclick="setV2ViewMode('card')">
+                🗂️ การ์ด (Cards)
+              </button>
+              <button type="button" id="v2-view-btn-table" class="v2-view-btn" onclick="setV2ViewMode('table')">
+                📋 ตาราง (Table)
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. Card View Container -->
+          <div id="v2-opportunities-list" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Rendered via v2.js -->
+          </div>
+
+          <!-- 2. High-Density Data Table View Container -->
+          <div id="v2-opportunities-table-wrap" class="v2-data-table-wrapper" style="display: none;">
+            <table class="v2-data-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;"># / วันที่ประกาศ</th>
+                  <th>ชื่อโครงการ & เอกสารแนบ BOQ</th>
+                  <th style="width: 220px;">หน่วยงาน / จังหวัด</th>
+                  <th style="width: 140px;">งบประมาณ</th>
+                  <th style="width: 160px;">ประเภท / หมวด</th>
+                  <th style="width: 150px; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="v2-opportunities-tbody">
+                <!-- Rendered via v2.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Load More / Pagination -->
+          <div style="text-align: center; margin-top: 24px;">
+            <button id="btn-v2-load-more" onclick="loadMoreV2Announcements()" class="btn btn-secondary" style="padding: 10px 30px; font-weight: 700; border-radius: 8px;">
+              ⬇ โหลดโครงการเพิ่มเติม
+            </button>
+          </div>
+
+        </section>
+
+        <!-- ==================================================================
+             VIEW 3: 🔬 สแกนพบใน BOQ (BOQ Matches Only)
+             ================================================================== -->
+        <section id="view-boq" class="v2-view-section">
+          <!-- Hero Banner for BOQ Verified -->
+          <div style="background: #0f291e; border: 1px solid #1e4a36; color: #ffffff; padding: 20px 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2 style="font-size: 1.35rem; font-weight: 800; line-height: 1.4; display: flex; align-items: center; gap: 10px; color: #ffffff; margin: 0;">
+                  <span>🎯</span> งานที่ตรวจพบเนื้องานใน BOQ / ปร.4 (สเปกตรงสาย 100%)
+                </h2>
+                <div style="color: #cbd5e1; font-size: 0.92rem; margin-top: 6px; line-height: 1.5;">
+                  ระบบ AI In-Memory Scanner สแกนเจาะลึกไฟล์ PDF เอกสารราคากลางและ ตาราง ปร.4 / สเปกยาง พบรายการเนื้องานของ วีรับเบอร์ โดยตรง<br>
+                  (ไม่ต้องเดาจากชื่อโครงการ — สเปกขนาดยาง, ยางรถยนต์, ยางรถบรรทุก, ยางเครื่องจักร, มอก. 2718/2719/2720 อยู่ในเอกสารแนบจริง)
+                </div>
+              </div>
+              <div style="background: #143826; border: 1.5px solid #22c55e; border-radius: 10px; padding: 10px 20px; text-align: center;">
+                <div style="font-size: 0.82rem; color: #4ade80; font-weight: 700;">พบเนื้องานจริงใน BOQ</div>
+                <div style="font-size: 1.7rem; font-weight: 900; color: #ffffff;" id="v2-boq-verified-count-badge">0 งาน</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search & Filter Bar for BOQ Tab -->
+          <div class="card" style="margin-bottom: 20px; padding: 16px; border-radius: 12px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+              <div style="flex: 1; min-width: 260px;">
+                <input type="text" id="v2-boq-search-input" placeholder="🔍 ค้นหาในงาน BOQ (ชื่องาน, หน่วยงาน, หรือข้อความที่เจอใน ปร.4)..." class="form-control" style="width: 100%;" oninput="onV2BoqSearchInput(event)">
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="v2-boq-group-filters">
+                <button class="badge badge-outline group-all active" onclick="filterV2BoqGroup('', this)">ทั้งหมด</button>
+                <button class="badge badge-outline group-passenger_car_tires" onclick="filterV2BoqGroup('passenger_car_tires', this)">🚗 ยางรถยนต์</button>
+                <button class="badge badge-outline group-truck_bus_tires" onclick="filterV2BoqGroup('truck_bus_tires', this)">🚛 ยางรถบรรทุก</button>
+                <button class="badge badge-outline group-motorcycle_tires" onclick="filterV2BoqGroup('motorcycle_tires', this)">🏍️ ยาง จยย.</button>
+                <button class="badge badge-outline group-otr_heavy_machinery" onclick="filterV2BoqGroup('otr_heavy_machinery', this)">🚜 ยาง OTR</button>
+                <button class="badge badge-outline group-bicycle_specialty_tires" onclick="filterV2BoqGroup('bicycle_specialty_tires', this)">🚲 ยางจักรยาน</button>
+                <button class="badge badge-outline group-tube_accessories" onclick="filterV2BoqGroup('tube_accessories', this)">🔘 ยางใน & อุปกรณ์</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="v2-boq-list" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Rendered via v2.js -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 4: 📌 งานที่ติดตาม (Watchlist / Bookmarks)
+             ================================================================== -->
+        <section id="view-watchlist" class="v2-view-section">
+          <div class="card" style="border: 1px solid #fde68a; margin-bottom: 20px; padding: 18px 24px; border-radius: 12px; background: #fffbeb;">
+            <h3 style="color: #b45309; margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 800;">📌 รายการงานที่วีรับเบอร์ปักหมุดติดตาม</h3>
+            <p style="margin: 0; color: #475569; font-size: 0.88rem;">รวบรวมโครงการที่คุณสนใจ หรือกดเลือก "ใช่งานเรา" เพื่อเตรียมความพร้อมและคำนวณราคาประมูล</p>
+          </div>
+
+          <div id="v2-watchlist-container" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Rendered via v2.js -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 4.5: 📁 คลังเคาะแล้ว (Archive / Completed Projects)
+             ================================================================== -->
+        <section id="view-archive" class="v2-view-section">
+          <div class="card" style="border: 1px solid #cbd5e1; margin-bottom: 20px; padding: 18px 24px; border-radius: 12px; background: #f8fafc;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h3 style="color: #334155; margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 800;">📁 คลังโครงการที่เคาะราคาแล้ว (Archive)</h3>
+                <p style="margin: 0; color: #64748b; font-size: 0.88rem;">รวบรวมประวัติโครงการที่ผ่านการยื่นซอง สรุปผลเสนอราคา หรือจัดทำสัญญาแล้วทั้งหมด</p>
+              </div>
+              <div style="font-size: 0.88rem; background: #f1f5f9; padding: 6px 14px; border-radius: 20px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1;">
+                รวมในคลัง <span id="v2-archive-total-badge">0</span> โครงการ
+              </div>
+            </div>
+          </div>
+
+          <!-- Archive Filter Toolbar -->
+          <div class="card" style="background: #ffffff; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 260px; position: relative;">
+                  <input type="text" id="v2-archive-search-input" oninput="onV2ArchiveSearchInput(event)" placeholder="🔍 ค้นหาชื่อโครงการ, หน่วยงาน, เลข e-GP, จังหวัด หรือผู้ชนะ..." style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-family: 'Anuphan', sans-serif; font-size: 0.9rem;">
+                </div>
+                <div style="font-size: 0.84rem; color: #64748b; font-weight: 600;" id="v2-archive-visible-badge">
+                  แสดง 0 โครงการ
+                </div>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;" id="v2-archive-group-filters">
+                <span style="font-size: 0.82rem; font-weight: 700; color: #475569; margin-right: 4px;">หมวดหมู่:</span>
+                <button class="badge badge-outline group-all active" onclick="filterV2ArchiveGroup('', this)">ทั้งหมด</button>
+                <button class="badge badge-outline group-sport_flooring" onclick="filterV2ArchiveGroup('sport_flooring', this)">🏟️ พื้นกีฬา</button>
+                <button class="badge badge-outline group-playground" onclick="filterV2ArchiveGroup('playground', this)">🧒 สนามเด็กเล่น</button>
+                <button class="badge badge-outline group-factory_flooring" onclick="filterV2ArchiveGroup('factory_flooring', this)">🏭 พื้นโรงงาน</button>
+                <button class="badge badge-outline group-waterproofing" onclick="filterV2ArchiveGroup('waterproofing', this)">🔧 กันซึม</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="v2-archive-list" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Rendered via v2.js -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 5: 🏆 ข่าวกรองคู่แข่ง (Competitor Intel)
+             ================================================================== -->
+        <section id="view-competitor" class="v2-view-section">
+          <!-- Historical Intelligence Banner -->
+          <div style="background: #0b1f36; border: 1px solid #1e3a5f; color: #ffffff; padding: 20px 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h2 style="font-size: 1.25rem; font-weight: 800; line-height: 1.4; display: flex; align-items: center; gap: 8px; color: #ffffff; margin: 0;" id="historical-banner-title">
+                  📊 ข่าวกรองคู่แข่งย้อนหลัง 1 ปี (ปีงบประมาณ 2568 - 2569)
+                </h2>
+                <div style="color: #cbd5e1; font-size: 0.9rem; margin-top: 4px;">
+                  รวบรวมประวัติโครงการที่เซ็นสัญญาและได้ผู้ชนะแล้วจริง เพื่อวิเคราะห์คู่แข่ง ราคาชนะประมูล และแนวโน้มส่วนลด
+                </div>
+              </div>
+              <div style="background: #0f172a; border: 1.5px solid #0369a1; border-radius: 8px; padding: 8px 18px; text-align: center;">
+                <div style="font-size: 0.82rem; color: #e2e8f0; font-weight: 600;">รวมฐานข้อมูลคู่แข่งย้อนหลัง</div>
+                <div style="font-size: 1.45rem; font-weight: 800; color: #7dd3fc;" id="total-historical-winners-count">0 โครงการ</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Year Range Selection Tabs -->
+          <div class="card" style="margin-bottom: 20px; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span style="font-weight: 700; color: #1e293b; font-size: 0.95rem; margin-right: 4px; display: inline-flex; align-items: center; gap: 4px;">
+                ⏱️ เลือกช่วงเวลาย้อนหลัง:
+              </span>
+              <button class="year-filter-btn active" data-years="1" onclick="selectWinnerYears('1', this)">1 ปีย้อนหลัง (ปี 68-69)</button>
+              <button class="year-filter-btn" data-years="2" onclick="selectWinnerYears('2', this)">2 ปีย้อนหลัง (ปี 67-69)</button>
+              <button class="year-filter-btn" data-years="5" onclick="selectWinnerYears('5', this)">5 ปีย้อนหลัง (ปี 63-69)</button>
+              <button class="year-filter-btn" data-years="10" onclick="selectWinnerYears('10', this)">10 ปีย้อนหลัง (ปี 58-69)</button>
+              <button class="year-filter-btn" data-years="all" onclick="selectWinnerYears('all', this)">🌐 ทั้งหมด (All)</button>
+            </div>
+            <div style="font-size: 0.85rem; color: #64748b;" id="active-period-indicator">
+              แสดงข้อมูล: <strong style="color: #003366;">1 ปีย้อนหลัง (ปีงบ 2568 - 2569)</strong>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px; padding: 20px; border-radius: 12px;">
+            <h3 id="top-winners-card-title" style="margin-top: 0; color: #003366; font-size: 1.15rem; font-weight: 800;">🏆 10 อันดับคู่แข่งที่ชนะงานบ่อยที่สุด</h3>
+            <table id="top-winners-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <thead>
+                <tr style="border-bottom: 2px solid #e2e8f0; text-align: left;">
+                  <th style="padding: 10px 12px;">ชื่อบริษัทคู่แข่ง</th>
+                  <th style="padding: 10px 12px;">จำนวนโครงการที่ชนะ</th>
+                  <th style="padding: 10px 12px;">มูลค่ารวมที่ชนะ (บาท)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Injected via winners.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px; padding: 20px; border-radius: 12px;">
+            <h3 style="margin-top: 0; color: #003366; font-size: 1.15rem; font-weight: 800;">📉 สถิติส่วนลดเฉลี่ยแยกตามหมวดสินค้า (เทียบราคากลาง/งบประมาณ)</h3>
+            <div id="group-discount-stats" style="margin-top: 10px;">
+              <!-- Injected via winners.js -->
+            </div>
+          </div>
+
+          <!-- Filter bar for Winners -->
+          <div class="card" style="margin-bottom: 20px; padding: 15px; border-radius: 12px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+              <div style="flex: 1; min-width: 260px; display: flex; gap: 8px;">
+                <input type="text" id="winner-search-input" placeholder="🔍 ค้นหาชื่อบริษัทคู่แข่ง, วีรับเบอร์ หรือชื่องาน..." style="width: 100%; padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.92rem;" onkeyup="onWinnerSearch(event)">
+                <button onclick="filterVeeRubberOnly(this)" style="background: #fef08a; color: #854d0e; border: 1px solid #facc15; font-weight: 800; font-size: 0.88rem; padding: 0 14px; border-radius: 6px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" title="แสดงเฉพาะผลงานที่ บริษัท วีรับเบอร์ จำกัด ชนะการประมูล">⭐ งานวีรับเบอร์</button>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="winner-group-filters">
+                <button class="badge badge-outline group-all active" onclick="filterWinnerGroup('', this)">ทั้งหมด</button>
+                <button class="badge badge-outline group-passenger_car_tires" onclick="filterWinnerGroup('passenger_car_tires', this)">🚗 ยางรถยนต์</button>
+                <button class="badge badge-outline group-truck_bus_tires" onclick="filterWinnerGroup('truck_bus_tires', this)">🚛 ยางรถบรรทุก</button>
+                <button class="badge badge-outline group-motorcycle_tires" onclick="filterWinnerGroup('motorcycle_tires', this)">🏍️ ยาง จยย.</button>
+                <button class="badge badge-outline group-otr_heavy_machinery" onclick="filterWinnerGroup('otr_heavy_machinery', this)">🚜 ยาง OTR</button>
+                <button class="badge badge-outline group-bicycle_specialty_tires" onclick="filterWinnerGroup('bicycle_specialty_tires', this)">🚲 ยางจักรยาน</button>
+                <button class="badge badge-outline group-tube_accessories" onclick="filterWinnerGroup('tube_accessories', this)">🔘 ยางใน & อุปกรณ์</button>
+              </div>
+            </div>
+          </div>
+          
+          <h3 style="margin-top: 20px; color: #003366; font-size: 1.15rem; font-weight: 800;">📜 ประวัติโครงการที่ได้ผู้ชนะแล้ว (W0)</h3>
+          <div class="announcement-list" id="winners-list">
+            <!-- Injected via winners.js -->
+          </div>
+          
+          <div style="text-align: center; margin-top: 24px;">
+            <button id="btn-load-more-winners" class="btn btn-secondary hidden" style="padding: 10px 30px; font-weight: 700; border-radius: 8px;">โหลดเพิ่มเติม</button>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 6: 🏷️ จัดการคีย์เวิร์ด (Keyword Sync Manager)
+             ================================================================== -->
+        <section id="view-keywords" class="v2-view-section">
+          <div class="v2-keyword-table-card">
+            <div class="v2-table-header-row">
+              <div>
+                <h3>🏷️ คลังคำค้นหาที่ระบบเฝ้าจับตาใน e-GP (คลังคำหลักตามหมวดสินค้ายาง วีรับเบอร์)</h3>
+                <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.85rem;">สามารถเปิด/ปิดคำค้นหา หรือเพิ่มคำค้นเฉพาะของ วีรับเบอร์ เข้าสู่ระบบได้ทันที</p>
+              </div>
+
+              <!-- Add keyword inline form -->
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <select id="v2-new-kw-group" class="form-control" style="width: auto; padding: 7px 12px; font-size: 0.88rem; border-radius: 6px;">
+                  <option value="passenger_car_tires">🚗 ยางรถยนต์นั่ง & กระบะ</option>
+                  <option value="truck_bus_tires">🚛 ยางรถบรรทุก & รถโดยสาร</option>
+                  <option value="motorcycle_tires">🏍️ ยางมอเตอร์ไซค์ & สายตรวจ</option>
+                  <option value="otr_heavy_machinery">🚜 ยาง OTR & เครื่องจักรกลหนัก</option>
+                  <option value="bicycle_specialty_tires">🚲 ยางจักรยาน & วีลแชร์</option>
+                  <option value="tube_accessories">🔘 ยางใน ยางรอง & อุปกรณ์</option>
+                </select>
+                <input type="text" id="v2-new-kw-input" class="form-control" placeholder="พิมพ์คีย์เวิร์ดใหม่..." style="width: 180px; padding: 7px 12px; font-size: 0.88rem; border-radius: 6px;">
+                <button onclick="addV2CustomKeyword()" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.88rem; border-radius: 6px;">+ เพิ่มคำค้น</button>
+              </div>
+            </div>
+
+            <table class="v2-keyword-table">
+              <thead>
+                <tr>
+                  <th style="width: 60px;">สถานะ</th>
+                  <th>คีย์เวิร์ด</th>
+                  <th>หมวดสินค้า</th>
+                  <th>ความถี่ตรวจพบ</th>
+                  <th style="text-align: right;">การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="v2-keywords-tbody">
+                <!-- Dynamically populated via v2.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 7: 🏢 โปรไฟล์วีรับเบอร์ (Digital Readiness & Qualifications)
+             ================================================================== -->
+        <section id="view-profile" class="v2-view-section">
+          
+          <div class="v2-profile-grid">
+            
+            <!-- Left: Profile Configuration Form -->
+            <div class="v2-profile-card">
+              <h3>🏢 ข้อมูลความพร้อมทางธุรกิจ (Company Digital Readiness)</h3>
+              <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 20px;">
+                ระบบ AI ใช้ข้อมูลโปรไฟล์บริษัทนี้ในการคำนวณ Match Confidence Score และตรวจสอบว่าโครงการใดที่ วีรับเบอร์ มีคุณสมบัติยื่นประมูลได้ทันที
+              </p>
+
+              <form id="v2-profile-form" onsubmit="saveCompanyProfile(event)">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                  <div>
+                    <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">ชื่อนิติบุคคล:</label>
+                    <input type="text" id="v2-prof-company-name" class="form-control" value="บริษัท วีรับเบอร์ คอร์ปอเรชั่น จำกัด" required>
+                  </div>
+                  <div>
+                    <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">ทุนจดทะเบียน (บาท):</label>
+                    <input type="number" id="v2-prof-capital" class="form-control" value="3000000000" required>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                  <div>
+                    <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">สัดส่วนผู้ถือหุ้นสัญชาติไทย:</label>
+                    <input type="text" id="v2-prof-thai-equity" class="form-control" value="100% สัญชาติไทย" readonly style="background: #f1f5f9;">
+                  </div>
+                  <div>
+                    <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">วงเงินรับงานจัดซื้อรัฐสูงสุด:</label>
+                    <input type="number" id="v2-prof-max-budget" class="form-control" value="500000000">
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                  <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">ความเชี่ยวชาญและประเภทงานหลัก:</label>
+                  <textarea id="v2-prof-expertise" class="form-control" rows="3">ผลิตและจัดจำหน่ายยางรถยนต์นั่ง ยางรถกระบะ ยางรถบรรทุกเรเดียล ยางรถจักรยานยนต์ ยาง OTR เครื่องจักรกลหนัก ยางใน ยางยานพาหนะราชการ ทหาร และตำรวจ ทุกประเภท</textarea>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #334155; margin-bottom: 6px;">ใบรับรองมาตรฐานสากล & ผลการทดสอบ (Certificates):</label>
+                  <input type="text" id="v2-prof-certs" class="form-control" value="มอก. 2718-2560, มอก. 2719-2560, มอก. 2720-2560, มอก. 1042-2541, ISO 9001:2015, IATF 16949, DOT, E-Mark (ECE)">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                  <button type="submit" class="btn btn-primary" style="padding: 9px 24px; font-weight: 700; border-radius: 6px;">
+                    💾 บันทึกข้อมูลโปรไฟล์
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right: Vee Rubber Digital Passport Widget -->
+            <div>
+              <div class="v2-profile-passport">
+                <div class="v2-passport-badge">🛡️ VERIFIED CONTRACTOR</div>
+                <div class="v2-passport-name" id="passport-display-name">วีรับเบอร์ (VEE RUBBER)</div>
+                <div style="font-size: 0.82rem; color: #7dd3fc; font-weight: 600;">ผู้ผลิตและจัดจำหน่ายยางยานพาหนะภาครัฐครบวงจร</div>
+
+                <div class="v2-passport-details">
+                  <div class="v2-passport-item">
+                    <div class="v2-passport-label">ทุนจดทะเบียน</div>
+                    <div class="v2-passport-val" id="passport-display-capital">฿3,000,000,000</div>
+                  </div>
+                  <div class="v2-passport-item">
+                    <div class="v2-passport-label">สัดส่วนสัญชาติไทย</div>
+                    <div class="v2-passport-val">100% (เข้าเกณฑ์ พ.ร.บ.)</div>
+                  </div>
+                  <div class="v2-passport-item">
+                    <div class="v2-passport-label">สิทธิ์ยื่นประมูล e-Bidding</div>
+                    <div class="v2-passport-val" style="color: #4ade80;">✔ ผ่านคุณสมบัติ</div>
+                  </div>
+                  <div class="v2-passport-item">
+                    <div class="v2-passport-label">ความเชี่ยวชาญพิเศษ</div>
+                    <div class="v2-passport-val">Tires / OTR / Radial / MC</div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.2); font-size: 0.78rem; color: #cbd5e1;">
+                  🔒 ระบบ AI จับคู่คุณสมบัติแบบอัตโนมัติ (Explainable AI Matching Engine)
+                </div>
+              </div>
+
+              <!-- Quick Verification Checklist -->
+              <div class="card" style="margin-top: 16px; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h4 style="margin: 0 0 10px 0; color: #003366; font-size: 0.95rem; font-weight: 700;">✅ จุดแข็งของวีรับเบอร์ใน e-GP:</h4>
+                <ul style="margin: 0; padding-left: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6;">
+                  <li>ผู้ผลิตยางสัญชาติไทยรายใหญ่ที่สุด มาตรฐาน มอก. และสากลครบถ้วน</li>
+                  <li>โรงงานผลิตในประเทศ รองรับเกณฑ์นโยบาย Made in Thailand (MiT)</li>
+                  <li>ระบบมุดไฟล์ BOQ/ปร.4 ตรวจเจอโครงการจัดซื้อยางก่อนคู่แข่ง</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================================
+       Modals: Bidding Simulator Modal (Preserved & Fully Functional)
+       ====================================================================== -->
+  <div id="bidding-simulator-modal" class="hidden" style="position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.75); display: flex; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px);" onclick="if(event.target===this) closeBiddingSimulator()">
+    <div style="background: #ffffff; width: 100%; max-width: 900px; max-height: 92vh; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); overflow-y: auto; display: flex; flex-direction: column;">
+      
+      <!-- Modal Header -->
+      <div style="background: linear-gradient(135deg, #002244 0%, #003366 100%); color: #ffffff; padding: 18px 24px; border-top-left-radius: 12px; border-top-right-radius: 12px; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.5rem;">🧮</span>
+            <h2 style="font-size: 1.3rem; margin: 0; color: #ffffff;">เครื่องคิดเลขจำลองราคาเคาะประมูล (Smart Bidding Simulator)</h2>
+          </div>
+          <div id="sim-project-title" style="font-size: 1.05rem; font-weight: 600; color: #7dd3fc; margin-top: 6px;">วีรับเบอร์ — การจำลองต้นทุนและกลยุทธ์เคาะราคาชนะงานจัดซื้อยาง</div>
+          <div id="sim-project-dept" style="font-size: 0.86rem; color: #cbd5e1; margin-top: 2px;">หน่วยงาน</div>
+        </div>
+        <button onclick="closeBiddingSimulator()" style="background: none; border: none; color: #ffffff; font-size: 1.8rem; cursor: pointer; line-height: 1.35; padding: 0 6px;" title="ปิดหน้าต่าง">&times;</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div style="padding: 20px 24px; flex: 1;">
+        
+        <!-- Market Benchmark Info Box -->
+        <div id="sim-benchmark-info" style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px;">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- 3 Quick Strategy Cards -->
+        <div style="margin-bottom: 20px;">
+          <div style="font-size: 0.95rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">🎯 3 กลยุทธ์ราคาแนะนำ (คลิกเพื่อเลือกทันที):</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+            
+            <!-- Strategy 1 -->
+            <div onclick="applyStrategy(1)" style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.2s ease; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="background: #e0e7ff; color: #3730a3; font-weight: 700; font-size: 0.80rem; padding: 2px 8px; border-radius: 4px;">กลยุทธ์ 1: กำไรสูงสุด</span>
+                <span style="font-size: 0.80rem; color: #475569; font-weight: 600;">ลด 1.0%</span>
+              </div>
+              <div id="strat1-bid" style="font-size: 1.25rem; font-weight: 800; color: #003366; margin: 6px 0;">฿0</div>
+              <div id="strat1-profit" style="font-size: 0.88rem; color: #15803d; font-weight: 700;">กำไร ฿0</div>
+              <div style="font-size: 0.80rem; color: #475569; margin-top: 4px;">เหมาะสำหรับงานเฉพาะเจาะจง หรือสเปกนำ</div>
+            </div>
+
+            <!-- Strategy 2 -->
+            <div onclick="applyStrategy(2)" style="border: 2px solid #2563eb; border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.2s ease; background: #eff6ff; position: relative;">
+              <div style="position: absolute; top: -10px; right: 12px; background: #c2410c; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; box-shadow: 0 1px 3px rgba(194, 65, 12, 0.2);">⭐ แนะนำชนะชัวร์</div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="background: #dbeafe; color: #1e40af; font-weight: 700; font-size: 0.80rem; padding: 2px 8px; border-radius: 4px;">กลยุทธ์ 2: ชนะสถิติตลาด</span>
+              </div>
+              <div id="strat2-bid" style="font-size: 1.25rem; font-weight: 800; color: #003366; margin: 6px 0;">฿0</div>
+              <div id="strat2-profit" style="font-size: 0.88rem; color: #15803d; font-weight: 700;">กำไร ฿0</div>
+              <div style="font-size: 0.80rem; color: #334155; margin-top: 4px;">ตัดหน้าคู่แข่งทั่วไปที่ลดแค่ 2-4% แต่เรายังกำไรดี</div>
+            </div>
+
+            <!-- Strategy 3 -->
+            <div onclick="applyStrategy(3)" style="border: 2px solid #e2e8f0; border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.2s ease; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="background: #fee2e2; color: #991b1b; font-weight: 700; font-size: 0.80rem; padding: 2px 8px; border-radius: 4px;">กลยุทธ์ 3: สกัดคู่แข่งใหญ่</span>
+              </div>
+              <div id="strat3-bid" style="font-size: 1.25rem; font-weight: 800; color: #003366; margin: 6px 0;">฿0</div>
+              <div id="strat3-profit" style="font-size: 0.88rem; color: #b45309; font-weight: 700;">กำไร ฿0</div>
+              <div style="font-size: 0.80rem; color: #475569; margin-top: 4px;">ใช้สกัดคู่แข่งใหญ่ หรือเน้นกวาดสัญญางานราชการ</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Cost Breakdown Inputs Section -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="font-weight: 700; color: #003366; margin-bottom: 12px; font-size: 0.95rem;">⚙️ ต้นทุนโครงการจริงของวีรับเบอร์ (ปรับแต่งได้):</div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">ราคากลางรัฐ (รวม VAT 7%):</label>
+              <input type="number" id="sim-input-budget" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">จำนวนยาง (เส้น):</label>
+              <input type="number" id="sim-input-epdm-area" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">ต้นทุนยางเฉลี่ย วีรับเบอร์ (บ./เส้น):</label>
+              <input type="number" id="sim-input-epdm-unit-cost" value="2500" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">ค่าบริการเปลี่ยน/ถ่วงล้อ & อุปกรณ์เสริม:</label>
+              <input type="number" id="sim-input-other-cost" value="0" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 4px;">เงินสำรองเผื่อต้นทุน (Buffer):</label>
+              <input type="number" id="sim-input-buffer" value="50000" oninput="recalculateSimulator()" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Bid Slider & Results -->
+        <div style="background: #ffffff; border: 2px solid #003366; border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+            <div>
+              <span style="font-size: 1.1rem; font-weight: 800; color: #003366;">🎯 ปรับราคาเคาะเสนอประมูล:</span>
+              <span id="res-discount-info" style="margin-left: 8px; font-weight: 700; color: #c2410c; font-size: 0.9rem;">ลดจากราคากลาง 0%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-weight: bold; color: #475569;">฿</span>
+              <input type="number" id="sim-input-bid-price" oninput="onBidInputChange(this.value)" style="font-size: 1.3rem; font-weight: 800; color: #003366; padding: 4px 10px; border: 2px solid #0284c7; border-radius: 6px; width: 170px; text-align: right;">
+            </div>
+          </div>
+
+          <input type="range" id="sim-bid-slider" oninput="onBidSliderChange(this.value)" style="width: 100%; height: 8px; border-radius: 5px; cursor: pointer; accent-color: #003366;">
+          
+          <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #64748b; margin-top: 4px;">
+            <span>จุดคุ้มทุน (Floor Price): <strong id="res-breakeven" style="color: #dc2626;">฿0</strong></span>
+            <span>ราคากลางเต็ม: <strong id="sim-project-budget-display" style="color: #003366;">฿0</strong></span>
+          </div>
+
+          <!-- Status Indicator Box -->
+          <div id="sim-status-box" style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px 16px; margin-top: 14px;">
+            <!-- Injected via JS -->
+          </div>
+
+          <!-- Real-time Financial Breakdown Table -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px dashed #cbd5e1;">
+            <div>
+              <div style="font-size: 0.78rem; color: #64748b;">รายรับสุทธิ (ก่อน VAT):</div>
+              <div id="res-rev-ex-vat" style="font-size: 1.05rem; font-weight: 700; color: #0f172a;">฿0</div>
+            </div>
+            <div>
+              <div style="font-size: 0.78rem; color: #64748b;">ต้นทุนรวม (ก่อน VAT):</div>
+              <div id="res-cost-ex-vat" style="font-size: 1.05rem; font-weight: 700; color: #0f172a;">฿0</div>
+            </div>
+            <div>
+              <div style="font-size: 0.78rem; color: #64748b;">ภาษีมูลค่าเพิ่มส่งสรรพากร:</div>
+              <div id="res-vat-net" style="font-size: 1.05rem; font-weight: 700; color: #0f172a;">฿0</div>
+            </div>
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 10px;">
+              <div style="font-size: 0.78rem; color: #15803d; font-weight: 700;">กำไรแท้จริง (True Profit):</div>
+              <div id="res-gross-profit" style="font-size: 1.25rem; font-weight: 800; color: #15803d;">฿0</div>
+              <div id="res-margin-percent" style="font-size: 0.78rem; font-weight: 700; color: #15803d;">0% Margin</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons Footer -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <button onclick="copySimulationSummary()" class="btn btn-secondary" style="display: flex; align-items: center; gap: 6px; padding: 9px 18px; font-size: 0.92rem;">
+            <span>📋 คัดลอกสรุปผลเคาะราคา (ส่ง LINE)</span>
+          </button>
+          <button onclick="closeBiddingSimulator()" class="btn btn-outline" style="padding: 9px 20px; font-size: 0.92rem;">
+            ปิดหน้าต่าง
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       Slide-over Inspector Drawer (Right Sheet - Inspo Spec)
+       ====================================================================== -->
+  <div class="v2-inspector-backdrop" id="v2-inspector-backdrop" onclick="closeV2Inspector()"></div>
+  <aside class="v2-inspector-drawer" id="v2-inspector-drawer" aria-label="แถบตรวจสอบสเปกโครงการ">
+    <div class="v2-inspector-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: #0369a1; background: #e0f2fe; padding: 3px 8px; border-radius: 4px; border: 1px solid #bae6fd;" id="inspector-index-badge">
+          โครงการ
+        </span>
+        <span style="font-size: 0.8rem; color: #64748b; font-weight: 500;" id="inspector-date-display">-</span>
+      </div>
+      <div class="v2-inspector-nav-group">
+        <button type="button" class="v2-inspector-btn" id="inspector-prev-btn" onclick="navigateV2Inspector(-1)" title="โครงการก่อนหน้า (คีย์บอร์ด ↑)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <button type="button" class="v2-inspector-btn" id="inspector-next-btn" onclick="navigateV2Inspector(1)" title="โครงการถัดไป (คีย์บอร์ด ↓)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <button type="button" class="v2-inspector-close-btn" onclick="closeV2Inspector()" title="ปิดแถบตรวจสอบ (Esc)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="v2-inspector-body" id="v2-inspector-content">
+      <!-- Injected via v2.js -->
+    </div>
+
+    <div class="v2-inspector-footer" id="v2-inspector-footer">
+      <!-- Injected via v2.js -->
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Required Scripts -->
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=7.0"></script>
+  <script src="js/common.js?v=6.0"></script>
+  <script src="js/simulator.js?v=7.0"></script>
+  <script src="js/winners.js?v=9.0"></script>
+  <script src="js/v2.js?v=2.8"></script>
+</body>
+</html>

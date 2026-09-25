@@ -1,0 +1,6 @@
+JWT_SECRET=your-jwt-secret-key
+ADMIN_PASSWORD=your-secure-admin-password
+API_KEY=your-scraper-internal-api-key
+ADMIN_EMAIL=admin@veerubber.co.th
+GMAIL_USER=
+GMAIL_APP_PASSWORD=

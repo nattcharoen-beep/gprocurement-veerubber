@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เข้าสู่ระบบ | Vee Rubber GProcurement Tracker</title>
+  <meta name="description" content="เข้าสู่ระบบ Vee Rubber GProcurement Tracker - ติดตามโอกาสงานจัดซื้อจัดจ้างยางภาครัฐ">
+  <meta property="og:title" content="เข้าสู่ระบบ | Vee Rubber GProcurement Tracker">
+  <meta property="og:description" content="ระบบติดตามโอกาสงานจัดซื้อจัดจ้างภาครัฐ สำหรับ วีรับเบอร์ (VEE RUBBER)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veerubber.co.th/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛞</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .link-sub {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .link-sub:hover {
+      text-decoration: underline;
+      color: #003366;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .alert-box {
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+    .alert-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #f87171;
+    }
+    .alert-success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #34d399;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Card -->
+    <div class="card centered-card" id="login-card">
+      <h2 style="color: var(--primary-color); margin-bottom: 20px; font-weight: 700;">วีรับเบอร์ | GProcurement Tracker</h2>
+      
+      <div id="login-error" class="alert-box alert-error hidden"></div>
+      <div id="login-success" class="alert-box alert-success hidden"></div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email" style="font-weight: 600;">ชื่อผู้ใช้ หรือ อีเมล</label>
+          <input type="text" id="email" class="form-control" placeholder="username หรือ name@company.com" required autocomplete="username">
+          <small style="display: block; margin-top: 4px; color: #64748b; font-size: 0.8rem;">
+            💡 บัญชีเข้าใช้งาน: <code>admin</code> หรืออีเมลบริษัท
+          </small>
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label for="password" style="font-weight: 600;">รหัสผ่าน</label>
+            <a href="#" id="btn-show-forgot" class="link-sub" style="font-size: 0.82rem;">ลืมรหัสผ่าน?</a>
+          </div>
+          <div style="position: relative;">
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 42px;">
+            <button type="button" id="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #64748b; padding: 4px; line-height: 1;" title="แสดง/ซ่อนรหัสผ่าน">
+              👁️
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; font-weight: 600; padding: 10px;">เข้าสู่ระบบ</button>
+      </form>
+      
+      <div style="margin-top: 24px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 18px;">
+        <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 10px;">ยังไม่มีบัญชีสำหรับเข้าใช้งานระบบ?</p>
+        <a href="register.html" class="btn" style="display: block; width: 100%; text-decoration: none; padding: 11px; font-weight: 700; text-align: center; box-sizing: border-box; background: #ecfdf5; color: #065f46; border: 1.5px solid #34d399; border-radius: 6px; font-size: 0.95rem; transition: all 0.2s;">
+          ✨ สมัครสมาชิกใหม่ (Sign Up)
+        </a>
+      </div>
+    </div>
+
+    <!-- Forgot Password / Recovery Card -->
+    <div class="card centered-card hidden" id="forgot-card">
+      <h2 style="color: var(--primary-color); margin-bottom: 10px; font-weight: 700;">🔑 รีเซ็ตรหัสผ่าน</h2>
+      <p style="color: #64748b; font-size: 0.88rem; margin-bottom: 18px;">กรอกอีเมลและรหัสกู้คืน (Recovery Key) เพื่อตั้งรหัสผ่านใหม่</p>
+
+      <div id="forgot-error" class="alert-box alert-error hidden"></div>
+      <div id="forgot-success" class="alert-box alert-success hidden"></div>
+
+      <form id="forgot-form">
+        <div class="form-group">
+          <label for="forgot-email" style="font-weight: 600;">อีเมลบัญชีของคุณ</label>
+          <input type="email" id="forgot-email" class="form-control" placeholder="admin@veerubber.co.th" required>
+        </div>
+        <div class="form-group">
+          <label for="recovery-key" style="font-weight: 600;">รหัสกู้คืน (Master Recovery Key)</label>
+          <input type="text" id="recovery-key" class="form-control" placeholder="กรอกรหัสกู้คืนลับ" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="new-password" style="font-weight: 600;">รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</label>
+          <input type="password" id="new-password" class="form-control" placeholder="ตั้งรหัสผ่านใหม่" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="confirm-new-password" style="font-weight: 600;">ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="confirm-new-password" class="form-control" placeholder="พิมพ์รหัสผ่านใหม่อีกครั้ง" required minlength="6">
+        </div>
+        <button type="submit" id="btn-submit-reset" class="btn btn-primary" style="width: 100%; margin-top: 10px; font-weight: 600; padding: 10px;">ยืนยันการตั้งรหัสผ่านใหม่</button>
+      </form>
+
+      <div style="margin-top: 20px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+        <a href="#" id="btn-back-to-login" class="link-sub">⬅️ กลับไปหน้าเข้าสู่ระบบ</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script>
+    const existingToken = localStorage.getItem('token');
+    if (existingToken) {
+      try {
+        const parts = existingToken.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          if (payload.exp && payload.exp * 1000 > Date.now()) {
+            window.location.href = 'dashboard.html';
+          } else {
+            localStorage.removeItem('token');
+          }
+        } else {
+          localStorage.removeItem('token');
+        }
+      } catch (e) {
+        localStorage.removeItem('token');
+      }
+    }
+
+    const loginCard = document.getElementById('login-card');
+    const forgotCard = document.getElementById('forgot-card');
+    const btnShowForgot = document.getElementById('btn-show-forgot');
+    const btnBackToLogin = document.getElementById('btn-back-to-login');
+
+    const loginError = document.getElementById('login-error');
+    const loginSuccess = document.getElementById('login-success');
+    const forgotError = document.getElementById('forgot-error');
+    const forgotSuccess = document.getElementById('forgot-success');
+
+    // Toggle password visibility
+    const togglePasswordBtn = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+    if (togglePasswordBtn && passwordInput) {
+      togglePasswordBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        togglePasswordBtn.textContent = isPassword ? '🙈' : '👁️';
+      });
+    }
+
+    // Toggle forms
+    btnShowForgot.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginCard.classList.add('hidden');
+      forgotCard.classList.remove('hidden');
+      forgotError.classList.add('hidden');
+      forgotSuccess.classList.add('hidden');
+    });
+
+    btnBackToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotCard.classList.add('hidden');
+      loginCard.classList.remove('hidden');
+      loginError.classList.add('hidden');
+    });
+
+    // Login submit
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.add('hidden');
+      loginSuccess.classList.add('hidden');
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const loginBtn = e.target.querySelector('button[type="submit"]');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'กำลังเข้าสู่ระบบ...';
+
+      try {
+        const res = await api.login(email, password);
+        const token = res.data?.token || res.token;
+        const sessionId = res.data?.sessionId;
+        if (token) {
+          localStorage.setItem('token', token);
+          if (sessionId) sessionStorage.setItem('active_session_id', sessionId);
+          window.location.href = 'dashboard.html';
+        } else {
+          throw new Error('ไม่ได้รับ Token จากระบบ');
+        }
+      } catch (err) {
+        loginError.textContent = (err.message.includes('Invalid') || err.message.includes('credentials')) ? 'ชื่อผู้ใช้/อีเมล หรือรหัสผ่านไม่ถูกต้อง' : err.message;
+        loginError.classList.remove('hidden');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'เข้าสู่ระบบ';
+      }
+    });
+
+    // Forgot Password submit
+    document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      forgotError.classList.add('hidden');
+      forgotSuccess.classList.add('hidden');
+
+      const email = document.getElementById('forgot-email').value.trim();
+      const recoveryKey = document.getElementById('recovery-key').value.trim();
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-new-password').value;
+
+      if (newPassword !== confirmPassword) {
+        forgotError.textContent = 'รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      const submitBtn = document.getElementById('btn-submit-reset');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'กำลังดำเนินการ...';
+
+      try {
+        const res = await api.resetPassword(email, recoveryKey, newPassword);
+        forgotSuccess.textContent = res.data?.message || 'เปลี่ยนรหัสผ่านสำเร็จแล้ว!';
+        forgotSuccess.classList.remove('hidden');
+
+        setTimeout(() => {
+          forgotCard.classList.add('hidden');
+          loginCard.classList.remove('hidden');
+          loginSuccess.textContent = 'เปลี่ยนรหัสผ่านใหม่สำเร็จแล้ว สามารถเข้าสู่ระบบได้ทันที';
+          loginSuccess.classList.remove('hidden');
+          document.getElementById('email').value = email;
+          document.getElementById('password').value = '';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'ยืนยันการตั้งรหัสผ่านใหม่';
+        }, 2000);
+      } catch (err) {
+        forgotError.textContent = err.message || 'เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน';
+        forgotError.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ยืนยันการตั้งรหัสผ่านใหม่';
+      }
+    });
+  </script>
+</body>
+</html>

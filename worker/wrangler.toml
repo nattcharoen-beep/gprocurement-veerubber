@@ -1,0 +1,13 @@
+name = "gprocurement-veerubber"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gprocurement-veerubber-db"
+database_id = "your-d1-database-id-here"
+
+[vars]
+ADMIN_EMAIL = "admin@veerubber.co.th"
+# Set JWT_SECRET, ADMIN_PASSWORD, and API_KEY via `wrangler secret put`
