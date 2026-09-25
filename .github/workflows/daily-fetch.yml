@@ -2,9 +2,9 @@ name: Daily GProcurement Fetch
 
 on:
   schedule:
-    # Runs at 07:15 AM Bangkok (00:15 UTC) and 01:15 PM Bangkok (06:15 UTC)
+    # Runs 3 times daily: 07:15 AM (00:15 UTC), 12:15 PM (05:15 UTC), 17:15 PM (10:15 UTC) Bangkok
     # 15 minutes past the hour avoids the midnight UTC queue delays on GitHub free runners
-    - cron: '15 0,6 * * *'
+    - cron: '15 0,5,10 * * *'
   workflow_dispatch:
 
 jobs:

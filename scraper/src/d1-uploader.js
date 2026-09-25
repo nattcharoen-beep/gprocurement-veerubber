@@ -55,8 +55,7 @@ export async function uploadToD1(announcements, apiUrl, apiKey) {
         bid_date: item.bid_date || null,
         doc_start_date: item.doc_start_date || null,
         doc_end_date: item.doc_end_date || null,
-        bid_time: item.bid_time || null,
-        flow_name: item.flow_name || item.flowName || null
+        bid_time: item.bid_time || null
       };
     });
 

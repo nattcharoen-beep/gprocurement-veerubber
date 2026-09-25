@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     budget REAL,
     department TEXT,
     province TEXT,
-    product_group TEXT, -- sport_flooring, playground, factory_flooring, waterproofing
+    product_group TEXT, -- passenger_car_tires, truck_bus_tires, motorcycle_tires, otr_heavy_machinery, bicycle_specialty_tires, tube_accessories
     url TEXT,
     -- Winner fields (W0)
     winner_name TEXT,

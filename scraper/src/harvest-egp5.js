@@ -173,9 +173,12 @@ async function fetchWithAuth(url, tokenManager, options = {}) {
     res = await fetch(url, { ...options, headers });
   }
 
-  if (res.status === 429) {
-    console.warn(`[e-GP RateLimit] HTTP 429 on ${url}. Backing off 5s and renewing session...`);
-    await new Promise(r => setTimeout(r, 5000));
+  let retries = 0;
+  while (res.status === 429 && retries < 3) {
+    retries++;
+    const waitSec = retries * 12; // 12s, 24s, 36s
+    console.warn(`[e-GP RateLimit] HTTP 429 on ${url}. Backing off ${waitSec}s (retry ${retries}/3)...`);
+    await new Promise(r => setTimeout(r, waitSec * 1000));
     session = await tokenManager.getSession(true);
     headers = { ...COMMON_HEADERS(session.token, null, session.cookies), ...(options.headers || {}) };
     res = await fetch(url, { ...options, headers });
@@ -308,7 +311,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
     } catch (e) {
       console.warn(`  [Pass 2] History error for ${pid}:`, e.message);
     }
-    await new Promise(r => setTimeout(r, 450));
+    await new Promise(r => setTimeout(r, 1000));
 
     if (history.length === 0) continue;
 
@@ -684,7 +687,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
     }, pid, pidYear, token, xsrf);
 
     history = Array.isArray(historyRes?.data) ? historyRes.data : (historyRes?.data?.data || []);
-    await new Promise(r => setTimeout(r, 450));
+    await new Promise(r => setTimeout(r, 1000));
 
     if (history.length === 0) continue;
 
