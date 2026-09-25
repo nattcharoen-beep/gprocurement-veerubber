@@ -198,6 +198,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
   console.log(`======================================================`);
 
   const candidates = new Map();
+  const archiveCandidates = new Map();
 
   // PASS 1: Candidate Harvest
   for (const bYear of budgetYears) {
@@ -253,10 +254,9 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
 
           const aType = it.announceType || '';
           const title = (it.projectName || '').toLowerCase();
+          const flow = (it.flowName || '').toLowerCase();
 
           if (
-            aType === 'W0' ||
-            aType === 'W1' ||
             aType === 'W2' ||
             title.includes('ยกเลิก')
           ) {
@@ -265,12 +265,38 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
 
           if (EXCLUDE_TERMS.some(ex => title.includes(ex.toLowerCase()))) continue;
 
+          // If already awarded/signed (W0, W1, IM, สัญญา), save directly to archive (NO redundant Pass 2 API calls)
+          if (
+            aType === 'W0' ||
+            aType === 'W1' ||
+            aType === 'IM' ||
+            flow.includes('สัญญา') ||
+            flow.includes('ผู้ชนะ') ||
+            flow.includes('สิ้นสุด')
+          ) {
+            if (!archiveCandidates.has(pid)) {
+              archiveCandidates.set(pid, {
+                projectId: pid,
+                title: it.projectName,
+                announceDate: annDate || todayStr,
+                announceType: aType || 'IM',
+                flowName: it.flowName || 'จัดทำสัญญาแล้ว',
+                stepId: it.stepId || 'P01',
+                budget: budget,
+                deptName: it.deptName || 'หน่วยงานภาครัฐ',
+                province: extractProvince(it.deptName, it.projectName, it.rdbProvinceMoiName)
+              });
+            }
+            continue;
+          }
+
+          // Active open bidding candidates (D0, D1, B0, 15, BOQ, P0) -> Pass 2 Audit
           if (!candidates.has(pid)) {
             candidates.set(pid, {
               projectId: pid,
               title: it.projectName,
               announceDate: annDate || todayStr,
-              announceType: aType,
+              announceType: aType || 'D0',
               flowName: it.flowName || 'หนังสือเชิญชวน/ประกาศ',
               stepId: it.stepId || 'P01',
               budget: budget,
@@ -482,7 +508,33 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
     await new Promise(r => setTimeout(r, 350));
   }
 
-  console.log(`✅ [${batchName}] Finished: Verified ${verified.length} unbid projects from ${candidates.size} candidates`);
+  // Add archive candidates (already awarded/contracted) to verified list directly without Pass 2 overhead
+  for (const [pid, cand] of archiveCandidates.entries()) {
+    const classification = classifyAnnouncement(cand.title);
+    const resolvedProv = extractProvince(cand.deptName, cand.title, cand.province);
+    verified.push({
+      id: `${pid}-${cand.announceType}`,
+      project_id: pid,
+      title: cand.title,
+      department: cand.deptName,
+      province: resolvedProv || 'ไม่ระบุ',
+      announce_type: cand.announceType,
+      flow_name: cand.flowName,
+      product_group: classification.productGroup,
+      budget: cand.budget,
+      announce_date: cand.announceDate,
+      deadline: null,
+      bid_date: null,
+      doc_start_date: null,
+      doc_end_date: null,
+      bid_time: null,
+      winner_name: cand.announceType === 'W0' ? 'ประกาศผู้ชนะแล้ว (เคาะแล้ว)' : 'จัดทำสัญญาแล้ว (เคาะแล้ว)',
+      url: getDirectProcurementUrl(pid),
+      doc_verified: 0
+    });
+  }
+
+  console.log(`✅ [${batchName}] Finished: ${verified.length} total projects (${candidates.size} audited active tenders, ${archiveCandidates.size} archive contracts)`);
   return verified;
 }
 
@@ -583,6 +635,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
   console.log(`[${batchName}] Session established! Running Pass 1...`);
 
   const candidates = new Map();
+  const archiveCandidates = new Map();
   for (const bYear of budgetYears) {
     for (const kw of keywords) {
       let kwAdded = 0;
@@ -625,10 +678,9 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
 
           const aType = it.announceType || '';
           const title = (it.projectName || '').toLowerCase();
+          const flow = (it.flowName || '').toLowerCase();
 
           if (
-            aType === 'W0' ||
-            aType === 'W1' ||
             aType === 'W2' ||
             title.includes('ยกเลิก')
           ) {
@@ -637,12 +689,38 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
 
           if (EXCLUDE_TERMS.some(ex => title.includes(ex.toLowerCase()))) continue;
 
+          // If already awarded/signed (W0, W1, IM, สัญญา), save directly to archive (NO Pass 2 calls)
+          if (
+            aType === 'W0' ||
+            aType === 'W1' ||
+            aType === 'IM' ||
+            flow.includes('สัญญา') ||
+            flow.includes('ผู้ชนะ') ||
+            flow.includes('สิ้นสุด')
+          ) {
+            if (!archiveCandidates.has(pid)) {
+              archiveCandidates.set(pid, {
+                projectId: pid,
+                title: it.projectName,
+                announceDate: annDate || todayStr,
+                announceType: aType || 'IM',
+                flowName: it.flowName || 'จัดทำสัญญาแล้ว',
+                stepId: it.stepId || 'P01',
+                budget: budget,
+                deptName: it.deptName || 'หน่วยงานภาครัฐ',
+                province: extractProvince(it.deptName, it.projectName, it.rdbProvinceMoiName)
+              });
+            }
+            continue;
+          }
+
+          // Active open bidding candidates (D0, D1, B0, 15, BOQ, P0) -> Pass 2 Audit
           if (!candidates.has(pid)) {
             candidates.set(pid, {
               projectId: pid,
               title: it.projectName,
               announceDate: annDate || todayStr,
-              announceType: aType,
+              announceType: aType || 'D0',
               flowName: it.flowName || 'หนังสือเชิญชวน/ประกาศ',
               stepId: it.stepId || 'P01',
               budget: budget,
@@ -863,8 +941,34 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
     await new Promise(r => setTimeout(r, 250));
   }
 
+  // Add archive candidates (already awarded/contracted) to verified list directly without Pass 2 overhead
+  for (const [pid, cand] of archiveCandidates.entries()) {
+    const classification = classifyAnnouncement(cand.title);
+    const resolvedProv = extractProvince(cand.deptName, cand.title, cand.province);
+    verified.push({
+      id: `${pid}-${cand.announceType}`,
+      project_id: pid,
+      title: cand.title,
+      department: cand.deptName,
+      province: resolvedProv || 'ไม่ระบุ',
+      announce_type: cand.announceType,
+      flow_name: cand.flowName,
+      product_group: classification.productGroup,
+      budget: cand.budget,
+      announce_date: cand.announceDate,
+      deadline: null,
+      bid_date: null,
+      doc_start_date: null,
+      doc_end_date: null,
+      bid_time: null,
+      winner_name: cand.announceType === 'W0' ? 'ประกาศผู้ชนะแล้ว (เคาะแล้ว)' : 'จัดทำสัญญาแล้ว (เคาะแล้ว)',
+      url: getDirectProcurementUrl(pid),
+      doc_verified: 0
+    });
+  }
+
   await browser.close();
-  console.log(`✅ [${batchName}] Finished: Verified ${verified.length} unbid projects from ${candidates.size} candidates`);
+  console.log(`✅ [${batchName}] Finished: ${verified.length} total projects (${candidates.size} audited active tenders, ${archiveCandidates.size} archive contracts)`);
   return verified;
 }
 
