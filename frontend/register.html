@@ -81,20 +81,38 @@
 
       try {
         const res = await api.register({ username, name, email, password });
-        msg.innerHTML = `
-          <div style="padding: 14px 16px; background: #ecfdf5; border: 1.5px solid #34d399; border-radius: 8px; color: #065f46; margin-bottom: 20px; text-align: left;">
-            <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">🎉 สมัครสมาชิกสำเร็จ!</div>
-            <div style="font-size: 0.92rem; line-height: 1.6;">
-              ระบบได้บันทึกข้อมูลและส่งอีเมลแจ้งเตือนไปยังผู้ดูแลระบบ <strong>(Admin: natt.charoen@gmail.com)</strong> เรียบร้อยแล้ว
+        const isApproved = res.data?.isApproved || res.data?.role === 'admin';
+        if (isApproved) {
+          msg.innerHTML = `
+            <div style="padding: 16px 18px; background: #ecfdf5; border: 1.5px solid #34d399; border-radius: 8px; color: #065f46; margin-bottom: 20px; text-align: left;">
+              <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 8px;">👑 เปิดใช้งานบัญชีผู้ดูแลระบบ (Admin) สำเร็จ!</div>
+              <div style="font-size: 0.95rem; line-height: 1.6;">
+                ยินดีต้อนรับผู้ดูแลระบบ! บัญชีของคุณได้รับการแต่งตั้งเป็น <strong>Admin สูงสุด</strong> และเปิดใช้งานเรียบร้อยแล้ว
+              </div>
+              <div style="font-size: 0.9rem; margin-top: 10px; color: #047857; background: rgba(255,255,255,0.7); padding: 8px 12px; border-radius: 6px;">
+                ชื่อผู้ใช้สำหรับเข้าใช้งาน: <strong>${username}</strong>
+              </div>
+              <div style="margin-top: 16px; text-align: center;">
+                <a href="login.html" class="btn btn-primary" style="display: inline-block; padding: 10px 24px; font-size: 0.95rem; text-decoration: none; font-weight: 600;">เข้าสู่หน้า Login ทันที ➡️</a>
+              </div>
             </div>
-            <div style="font-size: 0.88rem; margin-top: 10px; color: #047857; background: rgba(255,255,255,0.7); padding: 8px 12px; border-radius: 6px;">
-              เมื่อ Admin ตรวจสอบและกดอนุมัติแล้ว คุณจะสามารถเข้าใช้งานด้วย Username: <strong>${username}</strong> ได้ทันที
+          `;
+        } else {
+          msg.innerHTML = `
+            <div style="padding: 14px 16px; background: #ecfdf5; border: 1.5px solid #34d399; border-radius: 8px; color: #065f46; margin-bottom: 20px; text-align: left;">
+              <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">🎉 สมัครสมาชิกสำเร็จ!</div>
+              <div style="font-size: 0.92rem; line-height: 1.6;">
+                ระบบได้บันทึกข้อมูลและส่งอีเมลแจ้งเตือนไปยังผู้ดูแลระบบเรียบร้อยแล้ว
+              </div>
+              <div style="font-size: 0.88rem; margin-top: 10px; color: #047857; background: rgba(255,255,255,0.7); padding: 8px 12px; border-radius: 6px;">
+                เมื่อ Admin ตรวจสอบและกดอนุมัติแล้ว คุณจะสามารถเข้าใช้งานด้วย Username: <strong>${username}</strong> ได้ทันที
+              </div>
+              <div style="margin-top: 12px; text-align: center;">
+                <a href="login.html" class="btn btn-primary" style="display: inline-block; padding: 6px 18px; font-size: 0.9rem; text-decoration: none;">เข้าสู่หน้า Login</a>
+              </div>
             </div>
-            <div style="margin-top: 12px; text-align: center;">
-              <a href="login.html" class="btn btn-primary" style="display: inline-block; padding: 6px 18px; font-size: 0.9rem; text-decoration: none;">เข้าสู่หน้า Login</a>
-            </div>
-          </div>
-        `;
+          `;
+        }
         msg.classList.remove('hidden');
         document.getElementById('register-form').reset();
         submitBtn.disabled = false;

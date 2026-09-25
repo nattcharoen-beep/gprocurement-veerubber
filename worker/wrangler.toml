@@ -6,7 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "gprocurement-veerubber-db"
-database_id = "your-d1-database-id-here"
+database_id = "9b24a74a-dbad-4bb0-8942-c43cc5d364e0"
 
 [vars]
 ADMIN_EMAIL = "admin@veerubber.co.th"

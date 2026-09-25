@@ -68,8 +68,12 @@ router.post('/register', async (c) => {
   const fullHash = `${salt}:${hash}`;
   const id = crypto.randomUUID();
 
-  let role = 'viewer';
-  let status = 'pending';
+  const userCount = await db.prepare('SELECT count(*) as count FROM users').first();
+  const isFirstUser = !userCount || userCount.count === 0;
+  const isMasterAdmin = cleanUsername === 'admin' || cleanEmail === 'natt.charoen@gmail.com';
+
+  let role = (isFirstUser || isMasterAdmin) ? 'admin' : 'viewer';
+  let status = (isFirstUser || isMasterAdmin) ? 'approved' : 'pending';
 
   await db.prepare(`
     INSERT INTO users (id, username, email, password_hash, name, role, status)
@@ -83,16 +87,30 @@ router.post('/register', async (c) => {
     name: name ? name.trim() : cleanUsername
   };
 
-  // Dispatch background email alert to Admin (natt.charoen@gmail.com)
-  if (c.executionCtx && typeof c.executionCtx.waitUntil === 'function') {
-    c.executionCtx.waitUntil(sendAdminNotification(c.env, newUser));
-  } else {
-    sendAdminNotification(c.env, newUser).catch(err => console.error('Email send err:', err));
+  // Dispatch background email alert to Admin (natt.charoen@gmail.com) if viewer
+  if (role !== 'admin') {
+    if (c.executionCtx && typeof c.executionCtx.waitUntil === 'function') {
+      c.executionCtx.waitUntil(sendAdminNotification(c.env, newUser));
+    } else {
+      sendAdminNotification(c.env, newUser).catch(err => console.error('Email send err:', err));
+    }
+  }
+
+  if (role === 'admin') {
+    return c.json({ 
+      data: { 
+        message: 'ยินดีต้อนรับ ผู้ดูแลระบบ (Admin)! บัญชีของคุณได้รับการเปิดใช้งานเรียบร้อยแล้ว สามารถเข้าสู่ระบบได้ทันที',
+        role: 'admin',
+        isApproved: true
+      } 
+    });
   }
 
   return c.json({ 
     data: { 
-      message: 'สมัครสมาชิกสำเร็จแล้ว! ระบบได้ส่งแจ้งเตือนไปยัง Admin (natt.charoen@gmail.com) เรียบร้อยแล้ว กรุณารอการอนุมัติก่อนเข้าใช้งาน' 
+      message: 'สมัครสมาชิกสำเร็จแล้ว! ระบบได้ส่งแจ้งเตือนไปยัง Admin (natt.charoen@gmail.com) เรียบร้อยแล้ว กรุณารอการอนุมัติก่อนเข้าใช้งาน',
+      role: 'viewer',
+      isApproved: false
     } 
   });
 });
@@ -152,7 +170,7 @@ router.post('/login', async (c) => {
   }
 
     // Auto-update standard PBKDF2 hash on successful admin fallback login
-    if (isValid) {
+    if (isValid && !salt) {
       try {
         const newHashData = await hashPassword(password);
         const newFullHash = `${newHashData.salt}:${newHashData.hash}`;
@@ -161,7 +179,6 @@ router.post('/login', async (c) => {
         // Non-fatal
       }
     }
-  }
 
   if (!isValid) {
     return c.json({ error: 'ชื่อผู้ใช้/อีเมล หรือรหัสผ่านไม่ถูกต้อง' }, 401);
