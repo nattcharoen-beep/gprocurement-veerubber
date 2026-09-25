@@ -1512,7 +1512,7 @@ async function loadAnnouncements(append = false) {
               ${hasBoqVerified ? `
                 <div class="card-keyword-pill" style="font-size: 0.82rem; padding: 2px 8px;">
                   <span>🎯 Keyword =</span>
-                  <span class="kw-value">${matchedKw || (origin?.keyword) || 'สเปกตรงสาย'}</span>
+                  <span class="kw-value">${matchedKw || (origin?.keyword) || 'ยางและอุปกรณ์'}</span>
                 </div>
               ` : `
                 <span class="badge type-${displayTypeClass}">${typeLabels[typeKey] || typeKey}</span>
@@ -1941,7 +1941,7 @@ async function loadBoqAnnouncements(append = false) {
               ${announceDateBadge}
               <div class="card-keyword-pill" style="font-size: 0.82rem; padding: 2px 8px;">
                 <span>🎯 Keyword =</span>
-                <span class="kw-value">${matchedKw || (origin?.keyword) || 'สเปกตรงสาย'}</span>
+                <span class="kw-value">${matchedKw || (origin?.keyword) || 'ยางและอุปกรณ์'}</span>
               </div>
               <span class="badge type-${displayTypeClass}">${typeLabels[typeKey] || typeKey}</span>
               ${groupKey ? `<span class="badge group-${groupKey}">${groupLabels[groupKey] || groupKey}</span>` : ''}

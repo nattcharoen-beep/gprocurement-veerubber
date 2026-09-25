@@ -96,13 +96,19 @@ export const EXCLUDE_KEYWORDS = [
   "ถุงมือยาง", "ถุงมือตรวจโรค", "ถุงมือแพทย์", "ถุงมือผ่าตัด", "ถุงยางอนามัย", "ท่อสายยางการแพทย์",
   // 3. Raw Agricultural Rubber & Plantation
   "น้ำยางพารา", "ยางพาราแผ่น", "ขี้ยาง", "กล้ายางพารา", "ต้นยางพารา", "กรีดยาง", "สวนยางพารา",
-  // 4. Civil Asphalt & Construction Rubber Sheets
-  "ยางมะตอย", "ยางมะตอยผสมเสร็จ", "แอสฟัลต์", "แอสฟัลท์", "ผิวทางแอสฟัลต์", "ยางหยอดรอยต่อ", "ยางมะตอยหยอดรอยต่อ",
+  // 4. Civil Asphalt, Road Construction & Vegetation
+  "ยางมะตอย", "ยางมะตอยผสมเสร็จ", "แอสฟัลต์", "แอสฟัลท์", "asphalt", "ผิวทางแอสฟัลต์", "ยางหยอดรอยต่อ", "ยางมะตอยหยอดรอยต่อ",
   "แผ่นยางปูพื้น", "ยางปูพื้น", "กระเบื้องยาง", "ยางกันชนเสา",
+  "ตัดแต่งกิ่งไม้", "ตัดกิ่ง", "ตัดแต่ง", "ตัดหญ้า", "วัชพืช", "ต้นไม้", "จัดสวน", "ทำไม้หวงห้าม",
+  "ซ่อมแซมถนน", "ก่อสร้างถนน", "ปรับปรุงถนน", "บำรุงถนน", "ผิวจราจร", "หินคลุก", "ลูกรัง", "ลาดยาง", "กากยาง",
+  "สเลอรี่ซีล", "css-1", "ac 60", "ทางหลวง", "สะพาน", "บ่อพัก", "คอนกรีต", "คูร่องยาง",
   // 5. Architectural Glazing & Seal Rubber
   "ขอบยางกระจก", "ขอบยางประตู", "ขอบยางตู้เย็น", "ซีลยาง", "ปะเก็นยาง", "สายยางฉีดน้ำ", "สายยางรดน้ำ",
-  // 6. Minor repair services (e.g. 50-100 THB puncture patches)
-  "ปะยาง", "ค่าปะยาง", "จ้างปะยาง", "ซ่อมปะยาง",
+  // 6. Minor repair services & Non-tire supplies from municipalities named Yang
+  "ปะยาง", "ค่าปะยาง", "จ้างปะยาง", "ซ่อมปะยาง", "เปลี่ยนถ่ายน้ำมันเครื่อง", "โช๊คแก๊ส", "เซ็นเซอร์เตือนแรงดันลมยาง",
+  "วัสดุสำนักงาน", "หมึกเครื่องถ่าย", "เครื่องสูบน้ำ", "คลอรีน", "อาหารเสริม", "คอมพิวเตอร์",
+  "บังเกอร์", "หลุมหลบภัย", "แผงกั้นจราจร", "กรวยยาง", "ขายางกันลื่น", "เก้าอี้พลาสติก", "โต๊ะทำงาน",
+  "ถังดับเพลิง", "ถับดับเพลิง", "จัดเก็บ ขน และกำจัดขยะ", "ดูแลสนามฟุตบอล", "ซ่อมแซมประตูในอาคาร", "ป้ายอบรม",
   // 7. General non-tire consultancy / catering / entertainment
   "จ้างออกแบบ", "จ้างที่ปรึกษา", "อาหารกลางวัน", "จัดเลี้ยง", "ชุดกีฬา", "ลูกฟุตบอล"
 ];
@@ -111,22 +117,46 @@ export const EXCLUDE_KEYWORDS = [
 export const KEYWORDS = Object.values(PRODUCT_GROUPS).flat();
 
 /**
+ * Check if an announcement title is a genuine vehicle tire procurement
+ * Rejects whole vehicle purchases, road construction, tree trimming, and office supplies
+ * @param {string} title - The title of the announcement
+ * @returns {boolean} True if genuine tire project
+ */
+export function isGenuineTireAnnouncement(title) {
+  if (!title) return false;
+  const lower = title.toLowerCase();
+
+  // 1. Exclude list
+  for (const ex of EXCLUDE_KEYWORDS) {
+    if (lower.includes(ex.toLowerCase())) {
+      return false;
+    }
+  }
+
+  // 2. Reject whole vehicle purchases (e.g. buying 6-wheel crane truck, buying backhoe, buying roller)
+  // unless the title explicitly states it is purchasing/replacing TIRES for that vehicle
+  const wholeVehicleRegex = /^(?:ประกวดราคา)?(?:ซื้อ|จัดซื้อ|เช่า)\s*รถ(?:ยนต์)?(?:บรรทุก|ตัก|บด|ขุด|เกลี่ย|แทรกเตอร์|ยก|ฟอร์คลิฟท์|ดับเพลิง|ขยะ|พยาบาล|กู้ชีพ|กู้ภัย|กระเช้า|ดูด|สุขาภิบาล|ส่วนกลาง|ประจำตำแหน่ง|ตู้|กระบะ|ปิกอัพ|โดยสาร|บัส|มินิบัส)/;
+  if (wholeVehicleRegex.test(lower)) {
+    if (!/(?:ซื้อ|จัดซื้อ|เปลี่ยน)\s*ยาง/.test(lower) && !/ยางรถ/.test(lower) && !/ยางนอก/.test(lower) && !/ยางล้อ/.test(lower)) {
+      return false;
+    }
+  }
+
+  // 3. Must match at least one genuine vehicle tire pattern
+  const genuineTireRegex = /ยางรถ|ยางนอก|ยางล้อ|ยางเรเดียล|ยาง radial|ยาง tbr|ยาง otr|ยางตัน|ยางผ้าใบ|ซื้อยาง|จัดซื้อยาง|เปลี่ยนยาง|จ้างเปลี่ยนยาง|สลับยาง|ประเภทยางรถ|วัสดุยานพาหนะ.*ยาง|ยางใหม่.*สำหรับรถ|ยางพร้อมติดตั้ง|ยางใน\s*(?:รถ|บิวทิล|สำหรับ|จำนวน)|\b\d{3}\/\d{2}[rR]\d{2}\b|\b\d{1,2}\.\d{2}[rR]\d{2}\b|\b\d{1,2}\.\d{2}-\d{2}\b/;
+  return genuineTireRegex.test(lower);
+}
+
+/**
  * Classify announcement title into Vee Rubber product groups based on keywords
  * @param {string} title - The title of the announcement
  * @returns {Array<{group: string, matchedKeywords: string[]}>} Array of matched groups with keywords
  */
 export function classifyAnnouncement(title) {
   if (!title) return [];
-  
+  if (!isGenuineTireAnnouncement(title)) return [];
+
   const lowerTitle = title.toLowerCase();
-
-  // Check exclude list first
-  for (const ex of EXCLUDE_KEYWORDS) {
-    if (lowerTitle.includes(ex.toLowerCase())) {
-      return [];
-    }
-  }
-
   const matchedGroups = [];
 
   for (const [group, keywords] of Object.entries(PRODUCT_GROUPS)) {
@@ -140,5 +170,24 @@ export function classifyAnnouncement(title) {
     }
   }
 
+  // If passed genuine check but didn't match specific dimension from PRODUCT_GROUPS,
+  // classify based on vehicle type
+  if (matchedGroups.length === 0) {
+    if (/จักรยานยนต์|มอเตอร์ไซค์|สายตรวจ|สกู๊ตเตอร์|วิบาก/.test(lowerTitle)) {
+      matchedGroups.push({ group: 'motorcycle_tires', matchedKeywords: ['ยางรถจักรยานยนต์'] });
+    } else if (/รถบรรทุก|สิบล้อ|หกล้อ|6 ล้อ|10 ล้อ|รถบัส|โดยสาร|มินิบัส|รถพ่วง|เทรลเลอร์|รถดับเพลิง|รถขยะ|รถสุขาภิบาล|รถดัมพ์|รถดูด/.test(lowerTitle)) {
+      matchedGroups.push({ group: 'truck_bus_tires', matchedKeywords: ['ยางรถบรรทุก'] });
+    } else if (/otr|แทรกเตอร์|รถไถ|รถตัก|รถบด|รถยก|ฟอร์คลิฟท์|forklift|เครื่องจักรกล/.test(lowerTitle)) {
+      matchedGroups.push({ group: 'otr_heavy_machinery', matchedKeywords: ['ยาง OTR & เครื่องจักร'] });
+    } else if (/จักรยาน|วีลแชร์|รถเข็น|กอล์ฟ|atv|utv/.test(lowerTitle)) {
+      matchedGroups.push({ group: 'bicycle_specialty_tires', matchedKeywords: ['ยางจักรยาน & วีลแชร์'] });
+    } else if (/ยางใน|ยางรองคอด|จุ๊บลม|วาล์วยาง/.test(lowerTitle)) {
+      matchedGroups.push({ group: 'tube_accessories', matchedKeywords: ['ยางใน & อุปกรณ์'] });
+    } else {
+      matchedGroups.push({ group: 'passenger_car_tires', matchedKeywords: ['ยางรถยนต์ & กระบะ'] });
+    }
+  }
+
   return matchedGroups;
 }
+

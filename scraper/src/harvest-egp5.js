@@ -29,7 +29,7 @@ export function getThaiBudgetYear(date = new Date()) {
   return (month >= 10 ? year + 544 : year + 543).toString();
 }
 
-import { classifyAnnouncement } from './keywords.js';
+import { classifyAnnouncement, isGenuineTireAnnouncement } from './keywords.js';
 
 export const BATCHES = [
   {
@@ -54,7 +54,7 @@ export const BATCHES = [
   },
   {
     name: 'Batch 6: Inner Tubes & Wheel Accessories',
-    keywords: ['ยางใน', 'จัดซื้อยางใน', 'ยางในรถยนต์', 'ยางในรถบรรทุก', 'ยางรองคอด', 'จุ๊บลมยาง']
+    keywords: ['จัดซื้อยางใน', 'ซื้อยางใน', 'ยางในรถยนต์', 'ยางในรถบรรทุก', 'ยางรองคอด', 'จุ๊บลมยาง']
   }
 ];
 
@@ -264,6 +264,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
           }
 
           if (EXCLUDE_TERMS.some(ex => title.includes(ex.toLowerCase()))) continue;
+          if (!isGenuineTireAnnouncement(it.projectName)) continue;
 
           // If already awarded/signed (W0, W1, IM, สัญญา), save directly to archive (NO redundant Pass 2 API calls)
           if (
@@ -429,7 +430,11 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
     const annDateStr = latestRow.announceDate?.split('T')[0] || cand.announceDate;
 
     const matchedClass = classifyAnnouncement(cand.title);
-    let group = matchedClass.length > 0 ? matchedClass[0].group : 'passenger_car_tires';
+    if (matchedClass.length === 0) {
+      console.log(`  [Pass 2] Skipping non-tire project ${pid}: "${cand.title}"`);
+      continue;
+    }
+    let group = matchedClass[0].group;
 
     // In-Memory Document Inspection (Zero-Disk Footprint, 100% Scan Coverage)
     let boqSummary = null;
@@ -511,6 +516,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
   // Add archive candidates (already awarded/contracted) to verified list directly without Pass 2 overhead
   for (const [pid, cand] of archiveCandidates.entries()) {
     const classification = classifyAnnouncement(cand.title);
+    if (classification.length === 0) continue;
     const resolvedProv = extractProvince(cand.deptName, cand.title, cand.province);
     verified.push({
       id: `${pid}-${cand.announceType}`,
@@ -520,7 +526,7 @@ async function runBatchDirect(batchName, keywords, lookbackDateStr, todayStr, to
       province: resolvedProv || 'ไม่ระบุ',
       announce_type: cand.announceType,
       flow_name: cand.flowName,
-      product_group: classification.productGroup,
+      product_group: classification[0].group,
       budget: cand.budget,
       announce_date: cand.announceDate,
       deadline: null,

@@ -79,7 +79,7 @@ async function main() {
     let activeProjects = [];
     try {
       log('Running 2-Pass Precision Harvester on e-GP...');
-      activeProjects = await harvestEGP5(D1_API_URL, D1_API_KEY, { maxPages: 10, lookbackDays: 7 });
+      activeProjects = await harvestEGP5(D1_API_URL, D1_API_KEY, { maxPages: 10, lookbackDays: 30 });
       log(`Harvest completed: ${activeProjects.length} 100% active, unbid projects found.`);
     } catch (harvestErr) {
       logError(`Harvester encountered an issue: ${harvestErr.message}`);

@@ -332,6 +332,38 @@ window.toggleMobileSidebar = function() {
 };
 
 // ============================================================================
+// ============================================================================
+// Genuine Tire Procurement Validator (Zero Non-Tire Noise)
+// ============================================================================
+function isGenuineTireItem(it) {
+  if (!it) return false;
+  const title = (it.project_name || it.title || '').toLowerCase();
+  if (!title) return false;
+
+  // 1. Exclude non-tire civil works, vegetation, asphalt
+  if (/ตัดแต่งกิ่งไม้|ตัดกิ่ง|ตัดแต่ง|ตัดหญ้า|วัชพืช|ต้นไม้|จัดสวน|ทำไม้หวงห้าม|ซ่อมแซมถนน|ก่อสร้างถนน|ปรับปรุงถนน|บำรุงถนน|ผิวจราจร|หินคลุก|ลูกรัง|ลาดยาง|กากยาง|ยางมะตอย|แอสฟัลต์|แอสฟัลท์|asphalt|สเลอรี่ซีล|css-1|ac 60|ทางหลวง|สะพาน|บ่อพัก|คอนกรีต|คูร่องยาง/.test(title)) {
+    return false;
+  }
+
+  // 2. Exclude stationery, office supplies, domestic rubber, cleaning, general municipal goods
+  if (/น้ำยางพารา|ยางพาราแผ่น|ขี้ยาง|กล้ายางพารา|ต้นยางพารา|กรีดยาง|สวนยางพารา|ยางลบ|ตรายาง|หมึกตรายาง|ยางรัดของ|ยางรัด|ยางวง|ถุงมือยาง|ถุงยางอนามัย|แผ่นยางปูพื้น|กระเบื้องยาง|ยางกันชนเสา|ขอบยางกระจก|ขอบยางประตู|ซีลยาง|ปะเก็นยาง|สายยางฉีดน้ำ|สายยางรดน้ำ|ปะยาง|ค่าปะยาง|จ้างปะยาง|วัสดุสำนักงาน|หมึกเครื่องถ่าย|เครื่องสูบน้ำ|คลอรีน|อาหารเสริม|คอมพิวเตอร์|บังเกอร์|หลุมหลบภัย|แผงกั้นจราจร|กรวยยาง|ขายางกันลื่น|เก้าอี้พลาสติก|โต๊ะทำงาน|ถังดับเพลิง|ถับดับเพลิง|จัดเก็บ ขน และกำจัดขยะ|ดูแลสนามฟุตบอล|ซ่อมแซมประตูในอาคาร|ป้ายอบรม|เปลี่ยนถ่ายน้ำมันเครื่อง|โช๊คแก๊ส|เซ็นเซอร์เตือนแรงดันลมยาง/.test(title)) {
+    return false;
+  }
+
+  // 3. Exclude whole vehicle purchases (buying the truck/backhoe/car instead of tires)
+  const wholeVehicleRegex = /^(?:ประกวดราคา)?(?:ซื้อ|จัดซื้อ|เช่า)\s*รถ(?:ยนต์)?(?:บรรทุก|ตัก|บด|ขุด|เกลี่ย|แทรกเตอร์|ยก|ฟอร์คลิฟท์|ดับเพลิง|ขยะ|พยาบาล|กู้ชีพ|กู้ภัย|กระเช้า|ดูด|สุขาภิบาล|ส่วนกลาง|ประจำตำแหน่ง|ตู้|กระบะ|ปิกอัพ|โดยสาร|บัส|มินิบัส)/;
+  if (wholeVehicleRegex.test(title)) {
+    if (!/(?:ซื้อ|จัดซื้อ|เปลี่ยน)\s*ยาง/.test(title) && !/ยางรถ/.test(title) && !/ยางนอก/.test(title) && !/ยางล้อ/.test(title)) {
+      return false;
+    }
+  }
+
+  // 4. Must match genuine vehicle tire keywords:
+  const genuineTireRegex = /ยางรถ|ยางนอก|ยางล้อ|ยางเรเดียล|ยาง radial|ยาง tbr|ยาง otr|ยางตัน|ยางผ้าใบ|ซื้อยาง|จัดซื้อยาง|เปลี่ยนยาง|จ้างเปลี่ยนยาง|สลับยาง|ประเภทยางรถ|วัสดุยานพาหนะ.*ยาง|ยางใหม่.*สำหรับรถ|ยางพร้อมติดตั้ง|ยางใน\s*(?:รถ|บิวทิล|สำหรับ|จำนวน)|\b\d{3}\/\d{2}[rR]\d{2}\b|\b\d{1,2}\.\d{2}[rR]\d{2}\b|\b\d{1,2}\.\d{2}-\d{2}\b/;
+  return genuineTireRegex.test(title);
+}
+
+// ============================================================================
 // Detection Origin & Extraction Helper
 // ============================================================================
 function getMatchOriginInfo(item) {
@@ -373,9 +405,16 @@ function getMatchOriginInfo(item) {
   }
 
   if (!keyword) {
-    keyword = window.groupLabels[item.product_group] || 'สเปกตรงสายงาน';
+    if (item.product_group && window.groupLabels && window.groupLabels[item.product_group]) {
+      keyword = window.groupLabels[item.product_group];
+    } else if (item.product_group && typeof groupLabels !== 'undefined' && groupLabels[item.product_group]) {
+      keyword = groupLabels[item.product_group];
+    } else {
+      keyword = '';
+    }
   }
 
+  if (!keyword && !snippet) return null;
   return { isPdf, keyword, snippet };
 }
 
@@ -401,7 +440,7 @@ async function loadV2Data() {
     }
 
     if (annResult.status === 'fulfilled' && annResult.value?.data) {
-      v2Announcements = annResult.value.data;
+      v2Announcements = (annResult.value.data || []).filter(it => isGenuineTireItem(it));
       // Populate projectDataStore for simulator and detail lookup
       window.projectDataStore = window.projectDataStore || new Map();
       v2Announcements.forEach(it => {
@@ -1119,15 +1158,17 @@ function generateV2CardHTML(item, index) {
         </h3>
 
         <!-- Clear Detection Origin Box -->
-        ${origin ? `
+        ${origin && (origin.keyword || origin.snippet) ? `
           <div class="card-origin-box ${origin.isPdf ? 'origin-pdf' : 'origin-title'}" style="margin-bottom: 12px;">
             <div class="origin-header">
               <span class="${origin.isPdf ? 'origin-badge-pdf' : 'origin-badge-title'}">
                 ${origin.isPdf ? '📑 มุดสแกนพบในไฟล์ PDF (ปร.4/BOQ)' : '🏷️ ตรวจพบจากชื่อประกาศโครงการ'}
               </span>
-              <span class="origin-keyword-badge">
-                ตรวจพบ Keyword: <span class="kw-highlight">"${origin.keyword}"</span>
-              </span>
+              ${origin.keyword ? `
+                <span class="origin-keyword-badge">
+                  ตรวจพบ: <span class="kw-highlight">"${origin.keyword}"</span>
+                </span>
+              ` : ''}
             </div>
             ${origin.snippet ? `
               <div class="origin-snippet">
@@ -1627,7 +1668,7 @@ window.loadAndRenderArchiveView = async function() {
     try {
       const res = await api.getAnnouncements({ status: 'archive', limit: 500 });
       if (res && res.data) {
-        v2ArchivedAnnouncements = res.data;
+        v2ArchivedAnnouncements = (res.data || []).filter(it => isGenuineTireItem(it));
         v2ArchivedAnnouncements.forEach(it => {
           if (window.projectDataStore) {
             window.projectDataStore.set(it.id, it);
@@ -1948,7 +1989,7 @@ window.selectV2Status = async function(status, btn) {
       try {
         const res = await api.getAnnouncements({ status: 'archive', limit: 500 });
         if (res && res.data) {
-          v2ArchivedAnnouncements = res.data;
+          v2ArchivedAnnouncements = (res.data || []).filter(it => isGenuineTireItem(it));
           v2ArchivedAnnouncements.forEach(it => {
             if (window.projectDataStore) {
               window.projectDataStore.set(it.id, it);
