@@ -1595,6 +1595,8 @@ function renderWatchlistView() {
 // ============================================================================
 let v2ArchiveSearchKeyword = '';
 let v2ArchiveSelectedGroup = '';
+let v2ArchiveBudgetMin = '';
+let v2ArchiveBudgetMax = '';
 
 window.goToArchiveWithSearch = function(keyword) {
   const kw = keyword !== undefined ? keyword : v2SearchKeyword;
@@ -1675,6 +1677,15 @@ function renderArchiveList() {
     });
   }
 
+  if (v2ArchiveBudgetMin !== '' || v2ArchiveBudgetMax !== '') {
+    const minVal = v2ArchiveBudgetMin !== '' ? parseFloat(v2ArchiveBudgetMin) : -Infinity;
+    const maxVal = v2ArchiveBudgetMax !== '' ? parseFloat(v2ArchiveBudgetMax) : Infinity;
+    items = items.filter(it => {
+      const b = parseFloat(it.budget || 0);
+      return b >= minVal && (maxVal === Infinity || b < maxVal);
+    });
+  }
+
   if (visibleBadge) {
     visibleBadge.textContent = `แสดง ${items.length} โครงการ`;
   }
@@ -1707,6 +1718,17 @@ window.filterV2ArchiveGroup = function(group, btn) {
   const groupContainer = document.getElementById('v2-archive-group-filters');
   if (groupContainer) {
     groupContainer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  }
+  if (btn) btn.classList.add('active');
+  renderArchiveList();
+};
+
+window.filterV2ArchiveBudget = function(min, max, btn) {
+  v2ArchiveBudgetMin = min;
+  v2ArchiveBudgetMax = max;
+  const budgetContainer = document.getElementById('v2-archive-budget-filters');
+  if (budgetContainer) {
+    budgetContainer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
   }
   if (btn) btn.classList.add('active');
   renderArchiveList();

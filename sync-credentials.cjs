@@ -45,13 +45,16 @@ for (let i = 1; i <= 10; i++) {
   }
 }
 
-if (envMap.ADMIN_EMAIL && envMap.ADMIN_PASSWORD) {
-  if (!adminList.some(a => a.email.toLowerCase() === envMap.ADMIN_EMAIL.toLowerCase())) {
+if (envMap.ADMIN_PASSWORD) {
+  const username = envMap.ADMIN_USERNAME || (envMap.ADMIN_EMAIL ? envMap.ADMIN_EMAIL.split('@')[0] : 'admin');
+  const email = envMap.ADMIN_EMAIL || (username.includes('@') ? username : `${username}@veerubber.co.th`);
+  const name = envMap.ADMIN_NAME || username;
+  if (!adminList.some(a => a.username.toLowerCase() === username.toLowerCase() || a.email.toLowerCase() === email.toLowerCase())) {
     adminList.push({
-      email: envMap.ADMIN_EMAIL,
+      email,
       password: envMap.ADMIN_PASSWORD,
-      username: envMap.ADMIN_USERNAME || envMap.ADMIN_EMAIL.split('@')[0],
-      name: envMap.ADMIN_NAME || 'Admin'
+      username,
+      name
     });
   }
 }
@@ -120,8 +123,10 @@ async function hashPassword(password) {
     const tempSql = path.join(__dirname, 'worker', 'temp_sync.sql');
     fs.writeFileSync(tempSql, sqlStatements.join('\n'), 'utf8');
 
-    try {
-      execSync('npx wrangler d1 execute gprocurement-finder-db --remote --file="' + tempSql + '"', {
+      const wranglerCmd = fs.existsSync(path.join(__dirname, 'worker', 'node_modules', '.bin', 'wrangler.cmd'))
+        ? '.\\node_modules\\.bin\\wrangler.cmd'
+        : 'npx wrangler';
+      execSync(wranglerCmd + ' d1 execute gprocurement-veerubber-db --remote --file="' + tempSql + '"', {
         cwd: path.join(__dirname, 'worker'),
         stdio: 'pipe'
       });

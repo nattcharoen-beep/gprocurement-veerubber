@@ -967,6 +967,17 @@
                 <button class="badge badge-outline group-bicycle_specialty_tires" onclick="filterV2ArchiveGroup('bicycle_specialty_tires', this)">🚲 ยางจักรยาน & วีลแชร์</button>
                 <button class="badge badge-outline group-tube_accessories" onclick="filterV2ArchiveGroup('tube_accessories', this)">🔘 ยางใน & อุปกรณ์</button>
               </div>
+
+              <!-- Archive Budget Range Filters (แท็บราคางาน) -->
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;" id="v2-archive-budget-filters">
+                <span style="font-size: 0.82rem; font-weight: 700; color: #475569; margin-right: 4px;">💰 ราคางาน:</span>
+                <button class="badge badge-outline budget-all active" onclick="filterV2ArchiveBudget('', '', this)">ทั้งหมด</button>
+                <button class="badge badge-outline" onclick="filterV2ArchiveBudget('0', '100000', this)">ต่ำกว่า 1 แสน</button>
+                <button class="badge badge-outline" onclick="filterV2ArchiveBudget('100000', '500000', this)">1 แสน – 5 แสน</button>
+                <button class="badge badge-outline" onclick="filterV2ArchiveBudget('500000', '2000000', this)">5 แสน – 2 ล้าน</button>
+                <button class="badge badge-outline" onclick="filterV2ArchiveBudget('2000000', '10000000', this)">2 – 10 ล้าน</button>
+                <button class="badge badge-outline" onclick="filterV2ArchiveBudget('10000000', '', this)">10 ล้านขึ้นไป</button>
+              </div>
             </div>
           </div>
 
