@@ -92,8 +92,9 @@ async function main() {
       log(`Fetched ${activeProjects.length} verified projects from D1 database.`);
     }
 
-    // 5. Send daily digest email
-    if (activeProjects.length > 0) {
+    // 5. Send daily digest email (only if GMAIL credentials configured)
+    const hasGmailConfig = process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD;
+    if (activeProjects.length > 0 && hasGmailConfig) {
       log('Building high-interest daily digest HTML...');
       const dateStr = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
       const subject = `📋 สรุปงานจัดซื้อจัดจ้างประจำวัน — ${dateStr}`;
@@ -108,6 +109,8 @@ async function main() {
           logError(`❌ Failed to send daily digest to ${recipient}`);
         }
       }
+    } else if (activeProjects.length > 0) {
+      log('Email notification skipped: Viewing active projects directly via Web Dashboard.');
     } else {
       log('No active projects found to generate digest.');
     }

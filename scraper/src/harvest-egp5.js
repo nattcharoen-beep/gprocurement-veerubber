@@ -547,7 +547,7 @@ async function runBatchPuppeteer(batchName, keywords, lookbackDateStr, todayStr,
   const input = await page.$('input[name="keywordSearch"]');
   if (input) {
     await input.click();
-    await page.keyboard.type('กีฬา', { delay: 20 });
+    await page.keyboard.type('ยางรถยนต์', { delay: 20 });
     await page.evaluate(() => {
       const btns = Array.from(document.querySelectorAll('button'));
       const b = btns.find(x => x.innerText.trim() === 'ค้นหา');
@@ -870,7 +870,7 @@ export async function harvestEGP5(apiUrl, apiKey, options = {}) {
   const lookbackBudgetYear = getThaiBudgetYear(lookbackDate);
   const targetBudgetYears = Array.from(new Set([currentBudgetYear, lookbackBudgetYear]));
 
-  console.log(`[e-GP v5 Engine] Initializing 5-Batch Precision Harvest: >= ${lookbackDateStr} (Today: ${todayStr})`);
+  console.log(`[e-GP v5 Engine] Initializing ${BATCHES.length}-Batch Precision Harvest: >= ${lookbackDateStr} (Today: ${todayStr})`);
   console.log(`[e-GP v5 Engine] Target Budget Year(s): ${targetBudgetYears.join(', ')}`);
 
   // 1. Check for CapSolver API Key
@@ -885,7 +885,7 @@ export async function harvestEGP5(apiUrl, apiKey, options = {}) {
 
       // Probe authorization check
       console.log('[e-GP v5 Engine] Probing e-GP announcement search authorization...');
-      const probeUrl = `https://process5.gprocurement.go.th/egp-oann10-service/pb/a-egp-allt-project/announcement?announcementTodayFlag=false&budgetYear=${currentBudgetYear}&keywordSearch=%E0%B8%81%E0%B8%B5%E0%B8%AC%E0%B8%B2&page=1`;
+      const probeUrl = `https://process5.gprocurement.go.th/egp-oann10-service/pb/a-egp-allt-project/announcement?announcementTodayFlag=false&budgetYear=${currentBudgetYear}&keywordSearch=${encodeURIComponent('ยาง')}&page=1`;
       const probeRes = await fetchWithAuth(probeUrl, tokenManager);
       if (probeRes.ok) {
         const probeJson = await probeRes.json();

@@ -26,9 +26,9 @@ router.post('/announcements', async (c) => {
           budget, department, province, product_group, url,
           winner_name, winner_price, winner_tax_id, discount_percent,
           boq_summary, boq_matches, doc_verified,
-          doc_start_date, doc_end_date, bid_date, bid_time,
+          doc_start_date, doc_end_date, bid_date, bid_time, flow_name,
           updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(id) DO UPDATE SET
           project_id = excluded.project_id,
           project_name = excluded.project_name,
@@ -39,6 +39,7 @@ router.post('/announcements', async (c) => {
           province = excluded.province,
           product_group = excluded.product_group,
           url = excluded.url,
+          flow_name = COALESCE(excluded.flow_name, announcements.flow_name),
           winner_name = COALESCE(excluded.winner_name, announcements.winner_name),
           winner_price = COALESCE(excluded.winner_price, announcements.winner_price),
           winner_tax_id = COALESCE(excluded.winner_tax_id, announcements.winner_tax_id),
@@ -72,7 +73,8 @@ router.post('/announcements', async (c) => {
         item.doc_start_date || null,
         item.doc_end_date || null,
         item.bid_date || null,
-        item.bid_time || null
+        item.bid_time || null,
+        item.flow_name || null
       ).run();
       inserted++;
     } catch (err) {

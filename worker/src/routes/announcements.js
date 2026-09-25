@@ -9,7 +9,7 @@ const BASE_EXCLUSIONS = [
   '(flow_name IS NULL OR (flow_name NOT LIKE "%สัญญา%" AND flow_name NOT LIKE "%ผู้ชนะ%"))',
   'project_name NOT LIKE "%ยกเลิก%"',
   'project_id IS NOT NULL',
-  '(project_id LIKE "69%" OR project_id LIKE "68%")',
+  '(project_id LIKE "70%" OR project_id LIKE "69%" OR project_id LIKE "68%")',
   'budget IS NOT NULL AND budget > 0',
   'id NOT IN (SELECT announcement_id FROM project_feedback WHERE is_match = 0 GROUP BY announcement_id HAVING COUNT(DISTINCT user_id) >= 5)',
   // Strict Exclusion: Any project_id where ANY stage has been contracted, bidded, or won
@@ -93,7 +93,7 @@ router.get('/', async (c) => {
       conditions = [
         '((winner_name IS NOT NULL AND winner_name != "") OR announce_type IN ("W0", "W1", "W2", "IM") OR flow_name LIKE "%สัญญา%" OR flow_name LIKE "%ผู้ชนะ%")',
         'project_id IS NOT NULL',
-        '(project_id LIKE "69%" OR project_id LIKE "68%")',
+        '(project_id LIKE "70%" OR project_id LIKE "69%" OR project_id LIKE "68%")',
         'budget IS NOT NULL AND budget > 0'
       ];
     } else {
@@ -309,7 +309,7 @@ router.get('/stats', async (c) => {
         SELECT COUNT(*) as cnt FROM announcements 
         WHERE ((winner_name IS NOT NULL AND winner_name != "") OR announce_type IN ("W0", "W1", "W2", "IM") OR flow_name LIKE "%สัญญา%" OR flow_name LIKE "%ผู้ชนะ%")
           AND project_id IS NOT NULL
-          AND (project_id LIKE "69%" OR project_id LIKE "68%")
+          AND (project_id LIKE "70%" OR project_id LIKE "69%" OR project_id LIKE "68%")
           AND budget IS NOT NULL AND budget > 0
       `).all();
       archiveCount = archiveRow?.[0]?.cnt || 0;
