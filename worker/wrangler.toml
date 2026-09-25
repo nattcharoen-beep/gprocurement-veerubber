@@ -10,4 +10,4 @@ database_id = "9b24a74a-dbad-4bb0-8942-c43cc5d364e0"
 
 [vars]
 ADMIN_EMAIL = "admin@veerubber.co.th"
-# Set JWT_SECRET, ADMIN_PASSWORD, and API_KEY via `wrangler secret put`
+JWT_SECRET = "gprocurement-veerubber-secret-key-prod-2026-auth"

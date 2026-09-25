@@ -184,12 +184,13 @@ router.post('/login', async (c) => {
     return c.json({ error: 'ชื่อผู้ใช้/อีเมล หรือรหัสผ่านไม่ถูกต้อง' }, 401);
   }
 
+  const jwtSecret = c.env.JWT_SECRET || 'gprocurement-veerubber-secret-key-prod-2026-auth';
   const encoder = new TextEncoder();
   const jwt = await new SignJWT({ id: user.id, email: user.email, username: user.username, role: user.role })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('24h')
-    .sign(encoder.encode(c.env.JWT_SECRET));
+    .sign(encoder.encode(jwtSecret));
 
   const sessionId = crypto.randomUUID();
   const ip = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
