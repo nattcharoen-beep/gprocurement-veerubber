@@ -13,7 +13,7 @@ if (typeof window.typeLabels === 'undefined') {
   window.typeLabels = {
     'D0': 'เชิญชวน',
     'D1': 'เชิญชวน',
-    'IM': 'เชิญชวน',
+    'IM': 'เคาะแล้ว (สัญญา)',
     'B0': 'ร่าง TOR',
     'B1': 'ร่าง TOR',
     'B2': 'ร่าง TOR',
@@ -21,7 +21,9 @@ if (typeof window.typeLabels === 'undefined') {
     '15': 'ราคากลาง',
     'BOQ': 'ราคากลาง',
     'P0': 'แผนจัดซื้อ',
-    'W0': 'ผู้ชนะ'
+    'W0': 'ประกาศผู้ชนะ',
+    'W1': 'สัญญาแล้ว',
+    'W2': 'ยกเลิกผู้ชนะ'
   };
 }
 
@@ -57,11 +59,11 @@ if (typeof window.formatDate === 'undefined') {
 function getNormalizedType(type) {
   if (!type) return '';
   const t = type.toUpperCase().trim();
-  if (['D0', 'D1', 'IM'].includes(t)) return 'D0';
+  if (['D0', 'D1'].includes(t)) return 'D0';
+  if (['IM', 'W0', 'W1', 'W2'].includes(t)) return 'ARCHIVE';
   if (['B0', 'B1', 'B2', 'B3'].includes(t)) return 'B0';
   if (['15', 'BOQ'].includes(t)) return '15';
   if (['P0'].includes(t)) return 'P0';
-  if (['W0'].includes(t)) return 'W0';
   return t;
 }
 
@@ -1005,7 +1007,10 @@ function generateV2CardHTML(item, index) {
     }
   } else {
     const rawType = (item.announce_type || '').toUpperCase();
-    if (rawType === '15' || rawType === 'BOQ') {
+    const isFinished = ['IM', 'W0', 'W1', 'W2'].includes(rawType) || (item.winner_name && item.winner_name.trim() !== '') || (item.flow_name && (item.flow_name.includes('สัญญา') || item.flow_name.includes('ผู้ชนะ')));
+    if (isFinished) {
+      bidBadge = `<span style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;"><span>📁</span> <strong>เคาะแล้ว</strong> (${item.winner_name || 'จัดทำสัญญาแล้ว'})</span>`;
+    } else if (rawType === '15' || rawType === 'BOQ') {
       bidBadge = `<span style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;"><span>📋</span> ราคากลาง (${window.formatDate(item.announce_date)})</span>`;
     } else if (rawType.startsWith('B')) {
       bidBadge = `<span style="background: #fdf4ff; color: #86198f; border: 1px solid #f0abfc; padding: 4px 10px; border-radius: 20px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;"><span>📝</span> ร่าง TOR (${window.formatDate(item.announce_date)})</span>`;
@@ -1458,14 +1463,15 @@ function renderOpportunitiesList(list) {
 
   if (filtered.length === 0) {
     let archivePromptHTML = '';
-    if (v2SelectedStatus !== 'archived' && v2SearchKeyword) {
+    if (v2SelectedStatus !== 'archived') {
+      const arcCount = (window.v2Stats && window.v2Stats.archiveCount) ? window.v2Stats.archiveCount : 239;
       archivePromptHTML = `
         <div style="margin-top: 18px; padding-top: 18px; border-top: 1px dashed #cbd5e1;">
           <p style="color: #475569; font-size: 0.92rem; margin-bottom: 10px;">
-            📁 หากงานนี้เคาะราคาหรือทำสัญญาแล้ว โครงการจะถูกย้ายไปเก็บใน <strong>"คลังเคาะแล้ว (Archive)"</strong>
+            📁 โครงการจัดซื้อยางที่มีการเคาะราคา ประกาศผู้ชนะ หรือทำสัญญาแล้วทั้งหมด (<strong>${arcCount} โครงการ</strong>) ถูกแยกเก็บไว้ใน <strong>"คลังเคาะแล้ว (Archive)"</strong>
           </p>
-          <button type="button" onclick="goToArchiveWithSearch()" style="background: #003366; color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Anuphan', sans-serif;">
-            👉 กดที่นี่เพื่อเปิดค้นหาใน "📁 คลังเคาะแล้ว (Archive)"
+          <button type="button" onclick="switchV2View('archive')" style="background: #003366; color: #ffffff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Anuphan', sans-serif; box-shadow: 0 2px 4px rgba(0,51,102,0.2);">
+            👉 เปิดดูข้อมูลราคาและผู้ชนะใน "คลังเคาะแล้ว (Archive)"
           </button>
         </div>
       `;

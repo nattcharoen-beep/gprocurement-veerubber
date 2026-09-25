@@ -3,17 +3,19 @@ import { Hono } from 'hono';
 const router = new Hono();
 
 const BASE_EXCLUSIONS = [
-  'announce_type IN ("P0", "B0", "B1", "B2", "B3", "15", "D0", "D1", "IM", "BOQ")',
+  'announce_type IN ("P0", "B0", "B1", "B2", "B3", "15", "D0", "D1", "BOQ")',
   '(winner_name IS NULL OR winner_name = "")',
+  'announce_type NOT IN ("W0", "W1", "W2", "IM")',
+  '(flow_name IS NULL OR (flow_name NOT LIKE "%สัญญา%" AND flow_name NOT LIKE "%ผู้ชนะ%"))',
   'project_name NOT LIKE "%ยกเลิก%"',
   'project_id IS NOT NULL',
   '(project_id LIKE "69%" OR project_id LIKE "68%")',
   'budget IS NOT NULL AND budget > 0',
   'id NOT IN (SELECT announcement_id FROM project_feedback WHERE is_match = 0 GROUP BY announcement_id HAVING COUNT(DISTINCT user_id) >= 5)',
   // Strict Exclusion: Any project_id where ANY stage has been contracted, bidded, or won
-  'project_id NOT IN (SELECT project_id FROM announcements WHERE winner_name IS NOT NULL AND winner_name != "")',
-  // Deduplication: If tender announcement (D0/D1/IM) exists, suppress obsolete earlier stages (15/BOQ/B0)
-  'NOT (announce_type IN ("15", "BOQ", "B0", "B1", "B2", "B3") AND project_id IN (SELECT project_id FROM announcements WHERE announce_type IN ("D0", "D1", "IM")))'
+  'project_id NOT IN (SELECT project_id FROM announcements WHERE (winner_name IS NOT NULL AND winner_name != "") OR announce_type IN ("W0", "W1", "W2", "IM") OR flow_name LIKE "%สัญญา%" OR flow_name LIKE "%ผู้ชนะ%")',
+  // Deduplication: If tender announcement (D0/D1) exists, suppress obsolete earlier stages (15/BOQ/B0)
+  'NOT (announce_type IN ("15", "BOQ", "B0", "B1", "B2", "B3") AND project_id IN (SELECT project_id FROM announcements WHERE announce_type IN ("D0", "D1")))'
 ];
 
 // Post-query exclusion keywords for Vee Rubber (filtered in JS)
@@ -89,7 +91,7 @@ router.get('/', async (c) => {
     let conditions = [];
     if (status === 'archive') {
       conditions = [
-        '(winner_name IS NOT NULL AND winner_name != "")',
+        '((winner_name IS NOT NULL AND winner_name != "") OR announce_type IN ("W0", "W1", "W2", "IM") OR flow_name LIKE "%สัญญา%" OR flow_name LIKE "%ผู้ชนะ%")',
         'project_id IS NOT NULL',
         '(project_id LIKE "69%" OR project_id LIKE "68%")',
         'budget IS NOT NULL AND budget > 0'
@@ -104,7 +106,6 @@ router.get('/', async (c) => {
       const expandedTypes = new Set(rawTypes);
       if (rawTypes.includes('D0')) {
         expandedTypes.add('D1');
-        expandedTypes.add('IM');
       }
       if (rawTypes.includes('B0')) {
         expandedTypes.add('B1');
@@ -306,7 +307,7 @@ router.get('/stats', async (c) => {
     try {
       const { results: archiveRow } = await db.prepare(`
         SELECT COUNT(*) as cnt FROM announcements 
-        WHERE (winner_name IS NOT NULL AND winner_name != "")
+        WHERE ((winner_name IS NOT NULL AND winner_name != "") OR announce_type IN ("W0", "W1", "W2", "IM") OR flow_name LIKE "%สัญญา%" OR flow_name LIKE "%ผู้ชนะ%")
           AND project_id IS NOT NULL
           AND (project_id LIKE "69%" OR project_id LIKE "68%")
           AND budget IS NOT NULL AND budget > 0
